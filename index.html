@@ -160,8 +160,8 @@ background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%);pointer-
 /* ── MATURITY CARD ── */
 .mat-next-card{
 margin:0 14px 12px;
-background:linear-gradient(145deg,rgba(126,184,247,.09),rgba(126,184,247,.02));
-border:1px solid var(--blue-border);border-radius:var(--r);
+background:linear-gradient(145deg,rgba(224,112,112,.09),rgba(224,112,112,.02));
+border:1px solid var(--red-border);border-radius:var(--r);
 padding:18px 20px;
 backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
 box-shadow:var(--shadow);position:relative;overflow:hidden;
@@ -169,16 +169,16 @@ box-shadow:var(--shadow);position:relative;overflow:hidden;
 .mat-next-card::before{
 content:'';position:absolute;bottom:-25px;right:-25px;
 width:100px;height:100px;border-radius:50%;
-background:radial-gradient(circle,rgba(126,184,247,.12),transparent 70%);pointer-events:none;
+background:radial-gradient(circle,rgba(224,112,112,.12),transparent 70%);pointer-events:none;
 }
-.mnttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--blue);margin-bottom:11px;letter-spacing:.02em;}
+.mnttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--red);margin-bottom:11px;letter-spacing:.02em;}
 .mn-body{display:flex;align-items:flex-end;justify-content:space-between;}
 .mn-name{font-size:17px;font-weight:600;color:var(--text);font-family:'Cormorant',serif;letter-spacing:.01em;}
 .mn-sub{font-size:11px;color:var(--dim);margin-top:3px;}
 .mn-right{text-align:right;}
-.mn-days{font-size:26px;font-weight:700;color:var(--blue);letter-spacing:-.02em;line-height:1;}
-.mn-daysl{font-size:9px;color:rgba(126,184,247,.5);margin-top:3px;letter-spacing:.06em;}
-.mn-date{font-size:10px;color:rgba(126,184,247,.6);margin-top:2px;}
+.mn-days{font-size:26px;font-weight:700;color:var(--red);letter-spacing:-.02em;line-height:1;}
+.mn-daysl{font-size:9px;color:rgba(224,112,112,.5);margin-top:3px;letter-spacing:.06em;}
+.mn-date{font-size:10px;color:rgba(224,112,112,.6);margin-top:2px;}
 .mn-empty{font-size:12px;color:var(--muted);text-align:center;padding:4px 0;}
 
 /* ── MONTH CARD ── */
@@ -340,6 +340,22 @@ transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opa
 .pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
 .pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
 
+/* ── MATURITY ROW — only badge + red amount, no background change ── */
+.pay-row-mat{
+border-bottom:1px solid rgba(224,112,112,.12) !important;
+}
+
+.mat-badge{
+display:inline-block;
+background:var(--red-dim);
+border:1px solid var(--red-border);
+color:var(--red);
+font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+border-radius:50px;padding:2px 7px;
+vertical-align:middle;margin-left:5px;
+}
+.pay-amt-mat{color:var(--red) !important;}
+
 /* ── EMPTY ── */
 .empty{text-align:center;padding:48px 16px;color:var(--muted);}
 .empty-ico{font-size:34px;margin-bottom:10px;}
@@ -423,7 +439,7 @@ font-size:11px;color:var(--gold);font-weight:700;
 
   <div class="dash-hero">
     <div class="hero-eyebrow">Portofoliu personal</div>
-    <div class="hero-title">BondFlow</div>
+    <div class="hero-title" onclick="sw('settings',99)" style="cursor:pointer;">BondFlow</div>
     <div class="hero-sub">Obligațiuni de Stat</div>
     <div class="hero-line"></div>
   </div>
@@ -579,7 +595,8 @@ font-size:11px;color:var(--gold);font-weight:700;
 <!-- SETTINGS -->
 
 <div class="panel" id="panel-settings">
-  <div class="panel-hdr">
+  <div class="panel-hdr" style="display:flex;align-items:center;gap:14px;">
+    <button onclick="sw('dashboard',0)" style="background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);border-radius:50px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">← Înapoi</button>
     <div class="panel-hdr-title">Se<span>tări</span></div>
   </div>
   <div style="margin:0 14px 13px;">
@@ -611,7 +628,6 @@ font-size:11px;color:var(--gold);font-weight:700;
   <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
   <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
   <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
-  <div class="nav-it" onclick="sw('settings',3)"><span class="nav-ico">⚙️</span><span class="nav-lbl">Setări</span></div>
 </div>
 
 <div class="overlay" id="overlay">
@@ -658,8 +674,6 @@ function updateCurrencyUI() {
 }
 function updateFormLabels() {
   const sym = currSym();
-  document.querySelector('label[for-field="f-amt"]') && (document.querySelector('label[for-field="f-amt"]').textContent = `Suma investită (${sym})`);
-  // Update via ID on the amt label
   const amtLabel = document.getElementById('f-amt-label');
   if (amtLabel) amtLabel.textContent = `Suma investită (${sym})`;
   const amtInp = document.getElementById('f-amt');
@@ -668,7 +682,6 @@ function updateFormLabels() {
   if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
   const goalInp = document.getElementById('goal-inp');
   if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
-  // Update goal-inp-wrap pseudo-element via a CSS var trick
   document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
 }
 
@@ -677,7 +690,7 @@ function sw(tab, idx) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nav-it').forEach(n => n.classList.remove('on'));
   document.getElementById('panel-' + tab).classList.add('on');
-  document.querySelectorAll('.nav-it')[idx].classList.add('on');
+  if (idx !== 99) document.querySelectorAll('.nav-it')[idx].classList.add('on');
   document.getElementById('scroll-area').scrollTop = 0;
   if (tab === 'payments') renderPayments();
   if (tab === 'dashboard') renderDash();
@@ -705,7 +718,7 @@ function isActive(b)     { return !isMatured(b) && !isNotStarted(b); }
 function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 12); }
 function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
 
-// Fixed getPayDates logic
+// ── PAY DATE LOGIC ──
 function getPayDates(b) {
   const start    = new Date(b.start + 'T00:00:00');
   const maturity = new Date(b.mat   + 'T00:00:00');
@@ -733,6 +746,12 @@ function nextPay(b)        { const t = today0(); return getPayDates(b).find(d =>
 function paysLeft(b)       { return getPayDates(b).filter(d => d >= today0()).length; }
 function totalReceived(b)  { return getPayDates(b).filter(d => d < today0()).length * couponVal(b); }
 function totalRemaining(b) { return paysLeft(b) * couponVal(b); }
+function dateToKey(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function monthName(d) { return d.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }); }
 function sortedBonds() {
@@ -757,7 +776,6 @@ function runSim() {
   const box = document.getElementById('sim-res-box');
   const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
 
-  // Check if goal is already achieved — always show this, even without rate input
   if (goal > 0 && curMo >= goal) {
     box.classList.add('achieved');
     sv.textContent = '🎉 Obiectiv atins!';
@@ -782,13 +800,12 @@ function renderDash() {
   const expired  = bonds.filter(isMatured);
   const monthly  = active.reduce((s,b) => s + monthlyVal(b), 0);
 
-  // Status strip
   document.getElementById('s-active').textContent  = active.length;
   document.getElementById('s-monthly').textContent = fmt(monthly);
   document.getElementById('s-pending').textContent = pending.length;
   document.getElementById('s-expired').textContent = expired.length;
 
-  // ── NEXT COUPON across all active bonds ──
+  // ── NEXT COUPON ──
   const nccEl = document.getElementById('ncc-body');
   let allNextPays = [];
   active.forEach(b => {
@@ -800,7 +817,6 @@ function renderDash() {
   if (!allNextPays.length) {
     nccEl.innerHTML = '<div class="ncc-empty">Nicio plată viitoare de la obligațiunile active.</div>';
   } else {
-    // Group payments on the same earliest date
     const earliest = allNextPays[0].date.getTime();
     const sameDay  = allNextPays.filter(p => p.date.getTime() === earliest);
     const totalAmt = sameDay.reduce((s,p) => s+p.amt, 0);
@@ -820,7 +836,7 @@ function renderDash() {
       <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
   }
 
-  // ── NEXT MATURITY (active bonds only, earliest maturity) ──
+  // ── NEXT MATURITY ──
   const mnEl = document.getElementById('mn-body');
   const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
   if (!activeSorted.length) {
@@ -937,14 +953,22 @@ function renderPayments() {
   const el = document.getElementById('pay-list');
   const t  = today0();
   let all  = [];
+
   bonds.forEach(b => {
     const val = couponVal(b);
-    getPayDates(b).forEach(d => { if (d>=t) all.push({date:d,bond:b.name,amt:val}); });
+    const dates = getPayDates(b);
+    const lastDate = dates.length ? dates[dates.length-1] : null;
+    dates.forEach(d => {
+      if (d>=t) {
+        const isMat = lastDate && dateToKey(d) === dateToKey(lastDate);
+        all.push({date:d, bond:b.name, amt:val, isMat});
+      }
+    });
   });
   if (!all.length) { el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>'; return; }
   all.sort((a,b)=>a.date-b.date);
   const grp = {};
-  all.forEach(p => { const k=p.date.toISOString().split('T')[0]; if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
+  all.forEach(p => { const k=dateToKey(p.date); if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
   const now = new Date(); let inThisMonth=false; const keys=Object.keys(grp).sort();
   let html='';
   keys.forEach(k => {
@@ -957,13 +981,25 @@ function renderPayments() {
       html+=`<div class="pay-month-hdr"><div class="pml">Luna curentă</div><div class="pmv">${fmt(mTotal)}</div></div>`;
     }
     g.items.forEach((item,idx) => {
-      html+=`<div class="pay-row">
-        <div>
-          ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
-          <div class="pay-bond">${esc(item.bond)}</div>
-        </div>
-        <div style="text-align:right"><div class="pay-amt">${fmt(item.amt)}</div></div>
-      </div>`;
+      const matRow = item.isMat ? ' pay-row-mat' : '';
+      if (item.isMat) {
+        html+=`<div class="pay-row${matRow}" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;">
+          <div>
+            ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
+            <div class="pay-bond">${esc(item.bond)}</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;"><span class="mat-badge">maturitate</span></div>
+          <div style="text-align:right"><div class="pay-amt pay-amt-mat">${fmt(item.amt)}</div></div>
+        </div>`;
+      } else {
+        html+=`<div class="pay-row">
+          <div>
+            ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
+            <div class="pay-bond">${esc(item.bond)}</div>
+          </div>
+          <div style="text-align:right"><div class="pay-amt">${fmt(item.amt)}</div></div>
+        </div>`;
+      }
     });
     if (g.items.length>1) {
       const dt=g.items.reduce((s,i)=>s+i.amt,0);
@@ -981,12 +1017,8 @@ function toggleForm() {
   if(formOpen){w.classList.add('open');document.getElementById('fttl').textContent='Obligațiune nouă';clearForm();setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),60);}
   else w.classList.remove('open');
 }
-function cancelForm() { formOpen=false; document.getElementById('formwrap').classList.remove('open'); clearForm(); }
-function clearForm() {
-  ['f-name','f-start','f-mat','f-amt','f-rate'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-freq').value='6';
-  document.getElementById('eid').value='';
-}
+function cancelForm(){formOpen=false;document.getElementById('formwrap').classList.remove('open');clearForm();}
+function clearForm(){document.getElementById('eid').value='';document.getElementById('f-name').value='';document.getElementById('f-start').value='';document.getElementById('f-mat').value='';document.getElementById('f-amt').value='';document.getElementById('f-rate').value='';document.getElementById('f-freq').value='6';}
 function saveBond() {
   const name=document.getElementById('f-name').value.trim();
   const start=document.getElementById('f-start').value;
@@ -994,48 +1026,52 @@ function saveBond() {
   const amt=parseFloat(document.getElementById('f-amt').value);
   const rate=parseFloat(document.getElementById('f-rate').value);
   const freq=document.getElementById('f-freq').value;
+  if(!name||!start||!mat||isNaN(amt)||isNaN(rate)){toast('Te rog completează toate câmpurile corect.');return;}
+  if(new Date(start)>=new Date(mat)){toast('Data start trebuie să fie înainte de maturitate.');return;}
+
+  const b={name,start,mat,amt,rate,freq};
   const eid=document.getElementById('eid').value;
-  if(!name||!start||!mat||isNaN(amt)||isNaN(rate)){toast('⚠️ Completează toate câmpurile');return;}
-  if(new Date(mat)<=new Date(start)){toast('Maturitatea trebuie să fie după data de start');return;}
-  const bond={id:eid||Date.now().toString(),name,start,mat,amt,rate,freq};
-  if(eid){const idx=bonds.findIndex(b=>b.id===eid);if(idx!==-1)bonds[idx]=bond;toast('Actualizat ✓');}
-  else{bonds.push(bond);toast('Adăugat ✓');}
-  persist();cancelForm();renderBonds();renderDash();runSim();
+  if(eid!==''){bonds[parseInt(eid)]=b;toast('Obligațiune actualizată!');}
+  else{bonds.push(b);toast('Obligațiune salvată!');}
+  persist();cancelForm();renderBonds();
 }
-function editBond(i) {
-  const b=bonds[i];
-  document.getElementById('eid').value=b.id;document.getElementById('f-name').value=b.name;
-  document.getElementById('f-start').value=b.start;document.getElementById('f-mat').value=b.mat;
-  document.getElementById('f-amt').value=b.amt;document.getElementById('f-rate').value=b.rate;
+function editBond(idx) {
+  const b=bonds[idx];
+  document.getElementById('eid').value=idx;
+  document.getElementById('f-name').value=b.name;
+  document.getElementById('f-start').value=b.start;
+  document.getElementById('f-mat').value=b.mat;
+  document.getElementById('f-amt').value=b.amt;
+  document.getElementById('f-rate').value=b.rate;
   document.getElementById('f-freq').value=b.freq;
+  formOpen=true;
+  const w=document.getElementById('formwrap');w.classList.add('open');
   document.getElementById('fttl').textContent='Editează obligațiunea';
-  document.getElementById('formwrap').classList.add('open');formOpen=true;
-  setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
+  w.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-// ── DELETE ──
-function confirmDel(i) {
-  document.getElementById('ov-ttl').textContent='Ștergi obligațiunea?';
-  document.getElementById('ov-msg').textContent=`"${bonds[i].name}" va fi ștearsă definitiv.`;
-  document.getElementById('ov-ok').onclick=()=>{bonds.splice(i,1);persist();renderBonds();renderDash();runSim();closeOv();toast('Ștearsă');};
+// ── TOAST & OVERLAY ──
+function toast(msg) {
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+let dIdx=null;
+function confirmDel(idx) {
+  dIdx=idx;
+  document.getElementById('ov-msg').textContent=`Sigur vrei să ștergi obligațiunea "${bonds[idx].name}"?`;
+  document.getElementById('ov-ok').onclick=doDel;
   document.getElementById('overlay').classList.add('open');
 }
 function closeOv(){document.getElementById('overlay').classList.remove('open');}
-document.getElementById('overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOv();});
-
-// ── TOAST ──
-let toastT;
-function toast(msg){
-  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
-  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2800);
-}
+function doDel(){if(dIdx!==null){bonds.splice(dIdx,1);persist();renderBonds();toast('Obligațiune ștearsă.');}closeOv();}
 
 // ── INIT ──
-if(goal>0)document.getElementById('goal-inp').value=goal;
-updateCurrencyUI();
-updateFormLabels();
-renderDash();renderBonds();runSim();
+window.addEventListener('DOMContentLoaded', () => {
+  updateCurrencyUI();
+  updateFormLabels();
+  renderDash();
+  if (goal > 0) document.getElementById('goal-inp').value = goal;
+});
 </script>
-
 </body>
 </html>
