@@ -429,7 +429,7 @@ margin-bottom:14px;
       </div>
     </div>
     <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;">
-      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator — cât să investești</div>
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator -- cât să investești</div>
       <div class="field" style="margin-bottom:10px;">
         <label>Rata cuponului nou (%/an)</label>
         <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
@@ -601,7 +601,7 @@ margin-bottom:14px;
 <script>
 // ══════════════════════════════════════════════
 //  SUPABASE CONFIG
-//  Un singur utilizator fix — schimbă USER_KEY
+//  Un singur utilizator fix -- schimbă USER_KEY
 //  cu orice șir unic dacă vrei să resetezi datele.
 // ══════════════════════════════════════════════
 const SUPABASE_URL      = 'https://gbqmgromjwqdnlwrejnb.supabase.co';
@@ -678,10 +678,36 @@ async function loadFromSupabase() {
 
 async function savePrefsToSupabase() {
   try {
-    await sbUpsert('bf_preferences', {
-      user_key: USER_KEY, goal, currency, updated_at: new Date().toISOString()
-    });
-  } catch (e) { console.error('Prefs save error:', e); }
+    // 1. Verificăm mai întâi dacă utilizatorul are deja un rând salvat
+    const existent = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}`);
+    
+    if (existent && existent.length > 0) {
+      // 2. Dacă EXISTĂ, trimitem un update specific pentru acest utilizator
+      const r = await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
+        method: 'PATCH', // PATCH înseamnă UPDATE în Supabase
+        headers: { ...SB_HEADERS },
+        body: JSON.stringify({ 
+          goal: goal, 
+          currency: currency, 
+          updated_at: new Date().toISOString() 
+        })
+      });
+      if (!r.ok) throw new Error(await r.text());
+      console.log('Obiectiv actualizat cu succes!');
+    } else {
+      // 3. Dacă NU EXISTĂ (e prima intrare), îl creăm de la zero
+      await sbUpsert('bf_preferences', {
+        user_key: USER_KEY, 
+        goal, 
+        currency, 
+        updated_at: new Date().toISOString()
+      });
+      console.log('Obiectiv nou creat!');
+    }
+  } catch (e) { 
+    console.error('Prefs save error:', e); 
+    toast('⚠️ Eroare la salvarea în baza de date');
+  }
 }
 
 async function saveBondToSupabase(b) {
@@ -931,8 +957,6 @@ function renderDash() {
   const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
   document.getElementById('g-bar').style.width = pct + '%';
   document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
-  if (goal > 0 && !document.getElementById('goal-inp').value)
-    document.getElementById('goal-inp').value = goal;
 
   // This month
   const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
@@ -979,8 +1003,8 @@ function bondCard(b, ri) {
   const next = nextPay(b);
   const days = next ? daysDiff(next) : null;
   let banner = '';
-  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate — o poți șterge.</div>`;
-  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă — start: ${fmtD(b.start)}</div>`;
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate -- o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă -- start: ${fmtD(b.start)}</div>`;
   let nextBlock = '';
   if (!mat && !fut && next) {
     nextBlock = `<div class="bcnext">
