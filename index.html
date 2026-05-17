@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
@@ -34,8 +35,6 @@ document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {p
   --blue-dim: rgba(126,184,247,0.10);
   --blue-border: rgba(126,184,247,0.22);
   --purple: #b794f4;
-  --purple-dim: rgba(183,148,244,0.10);
-  --purple-border: rgba(183,148,244,0.22);
   --r: 22px;
   --rsm: 14px;
   --blur: blur(28px);
@@ -56,32 +55,6 @@ body::before{
     radial-gradient(ellipse 65% 55% at 95% 105%,rgba(126,184,247,0.05) 0%,transparent 55%),
     radial-gradient(ellipse 55% 50% at 50% 50%,rgba(78,205,164,0.025) 0%,transparent 65%);
 }
-
-/* ── SYNC INDICATOR ── */
-.sync-bar{
-  position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:460px;
-  height:2px;background:transparent;z-index:300;
-  transition:background .2s;
-}
-.sync-bar.syncing{background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:syncPulse 1.2s ease-in-out infinite;}
-.sync-bar.error{background:var(--red);}
-.sync-bar.ok{background:var(--green);animation:syncFade 1s ease forwards .4s;}
-@keyframes syncPulse{0%,100%{opacity:.4}50%{opacity:1}}
-@keyframes syncFade{to{opacity:0}}
-
-.sync-status{
-  position:fixed;top:8px;right:14px;z-index:301;
-  font-size:9px;letter-spacing:.08em;color:var(--muted);
-  display:flex;align-items:center;gap:4px;
-  opacity:0;transition:opacity .3s;pointer-events:none;
-}
-.sync-status.visible{opacity:1;}
-.sync-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
-.sync-status.syncing .sync-dot{background:var(--gold);animation:dotPulse .8s ease-in-out infinite;}
-.sync-status.error .sync-dot{background:var(--red);}
-.sync-status.ok .sync-dot{background:var(--green);}
-@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
 
 #app{position:relative;z-index:1;width:100%;max-width:460px;margin:0 auto;height:100vh;display:flex;flex-direction:column;}
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 86px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -105,6 +78,7 @@ pointer-events:none;
 font-family:'DM Serif Display',serif;font-size:52px;letter-spacing:.04em;line-height:1;
 background:linear-gradient(160deg,var(--gold-pale) 0%,var(--gold-l) 45%,var(--gold) 100%);
 -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;
+cursor:pointer;
 }
 .hero-sub{font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
 .hero-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0;opacity:.5;}
@@ -128,7 +102,7 @@ display:flex;padding:10px 0 22px;z-index:100;
 .nav-it.on .nav-lbl{color:var(--gold);}
 .nav-it.on .nav-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.75));}
 
-/* ── STATUS STRIP (4 tiles) ── */
+/* ── STATUS STRIP ── */
 .status-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 12px;}
 .sum-tile{
 background:var(--card);border:1px solid var(--gborder);border-radius:var(--rsm);
@@ -139,11 +113,11 @@ position:relative;overflow:hidden;
 .sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
 .sum-tile.gold {border-color:var(--gold-border);}
 .sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
-.sum-tile.grn {border-color:var(--green-border);}
+.sum-tile.grn{border-color:var(--green-border);}
 .sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
-.sum-tile.red {border-color:var(--red-border);}
+.sum-tile.red{border-color:var(--red-border);}
 .sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.sum-tile.blu {border-color:var(--blue-border);}
+.sum-tile.blu{border-color:var(--blue-border);}
 .sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
 .stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 .stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
@@ -277,7 +251,6 @@ outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
 .btn-gold:active{transform:scale(.97);box-shadow:0 2px 10px rgba(201,168,76,.15);}
 .btn-out{background:transparent;border:1px solid var(--gborder);color:var(--dim);}
 .btn-out:active{background:var(--ghover);}
-.btn-sm{width:auto;padding:8px 16px;font-size:12px;}
 .btn-del{background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
 .btn-edt{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
 .btn-del:active,.btn-edt:active{transform:scale(.96);}
@@ -408,7 +381,7 @@ background:rgba(255,255,255,.03);
 border:1px solid var(--gborder);border-radius:var(--rsm);overflow:hidden;
 margin-bottom:14px;
 }
-.ct-opt{padding:18px 14px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s;position:relative;}
+.ct-opt{padding:18px 14px;text-align:center;cursor:pointer;transition:background .2s;position:relative;}
 .ct-opt:active{transform:scale(.97);}
 .ct-opt.active{background:var(--gold-dim);}
 .ct-opt.active .ct-sym{color:var(--gold-l);}
@@ -422,23 +395,19 @@ margin-bottom:14px;
 .ct-note{font-size:11px;color:var(--muted);text-align:center;}
 .ct-note strong{color:var(--gold-l);}
 </style>
+
 </head>
 <body>
-
-<div class="sync-bar" id="sync-bar"></div>
-<div class="sync-status" id="sync-status">
-  <div class="sync-dot"></div>
-  <span id="sync-label">se sincronizează…</span>
-</div>
 
 <div id="app">
   <div class="scroll-area" id="scroll-area">
 
 <!-- DASHBOARD -->
+
 <div class="panel on" id="panel-dashboard">
   <div class="dash-hero">
     <div class="hero-eyebrow">Portofoliu personal</div>
-    <div class="hero-title" onclick="sw('settings',99)" style="cursor:pointer;">BondFlow</div>
+    <div class="hero-title" onclick="sw('settings',99)">BondFlow</div>
     <div class="hero-sub">Obligațiuni de Stat</div>
     <div class="hero-line"></div>
   </div>
@@ -460,7 +429,7 @@ margin-bottom:14px;
       </div>
     </div>
     <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;">
-      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator -- cât să investești</div>
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator — cât să investești</div>
       <div class="field" style="margin-bottom:10px;">
         <label>Rata cuponului nou (%/an)</label>
         <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
@@ -523,6 +492,7 @@ margin-bottom:14px;
 </div><!-- /dashboard -->
 
 <!-- BONDS -->
+
 <div class="panel" id="panel-bonds">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
@@ -567,6 +537,7 @@ margin-bottom:14px;
 </div><!-- /bonds -->
 
 <!-- PAYMENTS -->
+
 <div class="panel" id="panel-payments">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
@@ -577,6 +548,7 @@ margin-bottom:14px;
 </div><!-- /payments -->
 
 <!-- SETTINGS -->
+
 <div class="panel" id="panel-settings">
   <div class="panel-hdr" style="display:flex;align-items:center;gap:14px;">
     <button onclick="sw('dashboard',0)" style="background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);border-radius:50px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">← Înapoi</button>
@@ -600,19 +572,6 @@ margin-bottom:14px;
         </div>
       </div>
       <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
-    </div>
-
-    <!-- Sync info card -->
-    <div class="settings-card" style="margin-top:13px;">
-      <div class="sc-ttl">☁️ Sincronizare</div>
-      <div class="sc-desc">Datele tale sunt salvate în cloud via Supabase. Poți accesa portofoliul de pe orice dispozitiv folosind același ID de utilizator.</div>
-      <div style="background:rgba(255,255,255,.03);border:1px solid var(--gborder);border-radius:var(--rsm);padding:14px;">
-        <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">ID utilizator (read-only)</div>
-        <div style="font-size:11px;color:var(--gold-l);font-family:monospace;word-break:break-all;" id="user-key-display">--</div>
-      </div>
-      <div style="margin-top:12px;">
-        <button class="btn btn-out" style="font-size:12px;padding:10px;" onclick="forcSync()">↻ Sincronizează manual</button>
-      </div>
     </div>
   </div>
 </div><!-- /settings -->
@@ -642,9 +601,12 @@ margin-bottom:14px;
 <script>
 // ══════════════════════════════════════════════
 //  SUPABASE CONFIG
+//  Un singur utilizator fix — schimbă USER_KEY
+//  cu orice șir unic dacă vrei să resetezi datele.
 // ══════════════════════════════════════════════
 const SUPABASE_URL      = 'https://gbqmgromjwqdnlwrejnb.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_RjWheWI2qN_ES0qOKYmcNQ_iJfgdzz0';
+const USER_KEY          = 'personal-main'; // ← fix, un singur utilizator
 
 const SB_HEADERS = {
   'Content-Type':  'application/json',
@@ -653,10 +615,9 @@ const SB_HEADERS = {
   'Prefer':        'return=representation'
 };
 
-// Helper REST wrapper
 async function sbGet(table, filter = '') {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
-    headers: { ...SB_HEADERS, 'Prefer': 'return=representation' }
+    headers: { ...SB_HEADERS }
   });
   if (!r.ok) throw new Error(await r.text());
   return r.json();
@@ -680,57 +641,19 @@ async function sbDelete(table, filter) {
 }
 
 // ══════════════════════════════════════════════
-//  USER KEY -- UUID persistent per browser
-// ══════════════════════════════════════════════
-function getUserKey() {
-  let k = localStorage.getItem('bf3_user_key');
-  if (!k) {
-    k = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = Math.random() * 16 | 0;
-      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-    localStorage.setItem('bf3_user_key', k);
-  }
-  return k;
-}
-const USER_KEY = getUserKey();
-
-// ══════════════════════════════════════════════
-//  SYNC STATUS UI
-// ══════════════════════════════════════════════
-let syncTimer;
-function setSyncState(state, msg) {
-  const bar   = document.getElementById('sync-bar');
-  const ss    = document.getElementById('sync-status');
-  const lbl   = document.getElementById('sync-label');
-  bar.className   = 'sync-bar ' + state;
-  ss.className    = 'sync-status visible ' + state;
-  lbl.textContent = msg;
-  clearTimeout(syncTimer);
-  if (state === 'ok' || state === 'error') {
-    syncTimer = setTimeout(() => { ss.classList.remove('visible'); }, 2500);
-  }
-}
-
-// ══════════════════════════════════════════════
-//  DATA (in-memory, mirrored to Supabase)
+//  DATA
 // ══════════════════════════════════════════════
 let bonds    = [];
 let goal     = 0;
 let currency = 'EUR';
 
-// ── Load from Supabase on start ──
 async function loadFromSupabase() {
-  setSyncState('syncing', 'se încarcă datele…');
   try {
-    // Preferences
     const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=goal,currency`);
     if (prefs.length) {
       goal     = parseFloat(prefs[0].goal) || 0;
       currency = prefs[0].currency || 'EUR';
     }
-
-    // Bonds
     const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
     bonds = rows.map(r => ({
       id:    r.id,
@@ -741,36 +664,27 @@ async function loadFromSupabase() {
       rate:  parseFloat(r.rate),
       freq:  String(r.freq)
     }));
-
-    setSyncState('ok', 'date încărcate ✓');
   } catch (e) {
     console.error('Load error:', e);
-    setSyncState('error', 'eroare la încărcare');
-    toast('⚠️ Nu s-au putut încărca datele');
+    toast('⚠️ Eroare la încărcarea datelor');
   }
-
-  // Update UI
   if (goal > 0) document.getElementById('goal-inp').value = goal;
   updateCurrencyUI();
   updateFormLabels();
-  document.getElementById('user-key-display').textContent = USER_KEY;
   renderDash();
   renderBonds();
   runSim();
 }
 
-// ── Save preferences ──
 async function savePrefsToSupabase() {
   try {
-    await sbUpsert('bf_preferences', { user_key: USER_KEY, goal, currency, updated_at: new Date().toISOString() });
-  } catch (e) {
-    console.error('Prefs save error:', e);
-  }
+    await sbUpsert('bf_preferences', {
+      user_key: USER_KEY, goal, currency, updated_at: new Date().toISOString()
+    });
+  } catch (e) { console.error('Prefs save error:', e); }
 }
 
-// ── Save single bond ──
 async function saveBondToSupabase(b) {
-  setSyncState('syncing', 'se salvează…');
   try {
     await sbUpsert('bf_bonds', {
       id:         b.id,
@@ -783,38 +697,24 @@ async function saveBondToSupabase(b) {
       freq:       parseInt(b.freq),
       updated_at: new Date().toISOString()
     });
-    setSyncState('ok', 'salvat ✓');
   } catch (e) {
     console.error('Bond save error:', e);
-    setSyncState('error', 'eroare la salvare');
-    toast('⚠️ Eroare la salvare în cloud');
+    toast('⚠️ Eroare la salvare');
   }
 }
 
-// ── Delete bond ──
 async function deleteBondFromSupabase(id) {
-  setSyncState('syncing', 'se șterge…');
   try {
     await sbDelete('bf_bonds', `id=eq.${id}&user_key=eq.${USER_KEY}`);
-    setSyncState('ok', 'șters ✓');
   } catch (e) {
     console.error('Bond delete error:', e);
-    setSyncState('error', 'eroare la ștergere');
   }
-}
-
-// ── Force full sync ──
-async function forcSync() {
-  setSyncState('syncing', 'sincronizare completă…');
-  toast('↻ Se sincronizează…');
-  await loadFromSupabase();
-  toast('☁️ Sincronizat ✓');
 }
 
 // ══════════════════════════════════════════════
 //  CURRENCY
 // ══════════════════════════════════════════════
-function currSym()  { return currency === 'RON' ? 'lei' : '€'; }
+function currSym() { return currency === 'RON' ? 'lei' : '€'; }
 function fmt(n) {
   if (isNaN(n) || n === null) return currency === 'RON' ? '0 lei' : '€0';
   const num = Math.round(n).toLocaleString('ro-RO');
@@ -859,7 +759,7 @@ function sw(tab, idx) {
   if (tab === 'payments')  renderPayments();
   if (tab === 'dashboard') renderDash();
   if (tab === 'bonds')     renderBonds();
-  if (tab === 'settings')  { updateCurrencyUI(); document.getElementById('user-key-display').textContent = USER_KEY; }
+  if (tab === 'settings')  updateCurrencyUI();
 }
 
 // ══════════════════════════════════════════════
@@ -883,13 +783,13 @@ function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 1
 function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
 
 function getPayDates(b) {
-  const start     = new Date(b.start + 'T00:00:00');
-  const maturity  = new Date(b.mat   + 'T00:00:00');
-  const freq      = parseInt(b.freq);
+  const start    = new Date(b.start + 'T00:00:00');
+  const maturity = new Date(b.mat   + 'T00:00:00');
+  const freq     = parseInt(b.freq);
   const anchorDay = start.getDate();
-  const baseY     = start.getFullYear();
-  const baseM     = start.getMonth();
-  const dates     = [];
+  const baseY = start.getFullYear();
+  const baseM = start.getMonth();
+  const dates = [];
   let step = 1;
   while (true) {
     const totalMonths = baseM + step * freq;
@@ -927,7 +827,6 @@ function saveGoal() {
   goal = (!isNaN(v) && v > 0) ? v : 0;
   renderDash();
   runSim();
-  // Debounce Supabase write -- only after 800ms of inactivity
   clearTimeout(goalSaveTimer);
   goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
 }
@@ -1016,9 +915,9 @@ function renderDash() {
   if (!activeSorted.length) {
     mnEl.innerHTML = '<div class="mn-empty">Nicio obligațiune activă.</div>';
   } else {
-    const first = activeSorted[0];
+    const first   = activeSorted[0];
     const matDate = new Date(first.mat + 'T00:00:00');
-    const dys = daysDiff(matDate);
+    const dys     = daysDiff(matDate);
     mnEl.innerHTML = `
       <div class="mn-body">
         <div><div class="mn-name">${esc(first.name)}</div><div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div></div>
@@ -1080,8 +979,8 @@ function bondCard(b, ri) {
   const next = nextPay(b);
   const days = next ? daysDiff(next) : null;
   let banner = '';
-  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate -- o poți șterge.</div>`;
-  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă -- start: ${fmtD(b.start)}</div>`;
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate — o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă — start: ${fmtD(b.start)}</div>`;
   let nextBlock = '';
   if (!mat && !fut && next) {
     nextBlock = `<div class="bcnext">
@@ -1122,17 +1021,20 @@ function renderPayments() {
   const t  = today0();
   let all  = [];
   bonds.forEach(b => {
-    const val = couponVal(b);
+    const val   = couponVal(b);
     const dates = getPayDates(b);
     const lastDate = dates.length ? dates[dates.length-1] : null;
     dates.forEach(d => {
-      if (d>=t) {
+      if (d >= t) {
         const isMat = lastDate && dateToKey(d) === dateToKey(lastDate);
         all.push({date:d, bond:b.name, amt:val, isMat});
       }
     });
   });
-  if (!all.length) { el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>'; return; }
+  if (!all.length) {
+    el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>';
+    return;
+  }
   all.sort((a,b) => a.date - b.date);
   const grp = {};
   all.forEach(p => { const k=dateToKey(p.date); if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
@@ -1210,19 +1112,20 @@ async function saveBond() {
   if (eid) {
     const idx = bonds.findIndex(b => b.id === eid);
     if (idx !== -1) bonds[idx] = bond;
-    toast('Se actualizează… ☁️');
   } else {
     bonds.push(bond);
-    toast('Se salvează… ☁️');
   }
 
-  await saveBondToSupabase(bond);
   cancelForm();
   renderBonds();
   renderDash();
   runSim();
+  await saveBondToSupabase(bond);
 }
 
+// ══════════════════════════════════════════════
+//  EDIT
+// ══════════════════════════════════════════════
 function editBond(i) {
   const b = bonds[i];
   document.getElementById('eid').value      = b.id;
@@ -1243,7 +1146,7 @@ function editBond(i) {
 // ══════════════════════════════════════════════
 function confirmDel(i) {
   document.getElementById('ov-ttl').textContent = 'Ștergi obligațiunea?';
-  document.getElementById('ov-msg').textContent = `"${bonds[i].name}" va fi ștearsă definitiv din cloud.`;
+  document.getElementById('ov-msg').textContent = `"${bonds[i].name}" va fi ștearsă definitiv.`;
   document.getElementById('ov-ok').onclick = async () => {
     const id = bonds[i].id;
     bonds.splice(i, 1);
@@ -1273,5 +1176,6 @@ function toast(msg) {
 // ══════════════════════════════════════════════
 loadFromSupabase();
 </script>
+
 </body>
 </html>
