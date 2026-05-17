@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
@@ -9,7 +8,7 @@ document.addEventListener('touchmove', function(e){ if(e.touches.length>1) e.pre
 document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
 </script>
 <title>BondFlow</title>
-<link href="[https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --gold: #c9a84c;
@@ -57,6 +56,32 @@ body::before{
     radial-gradient(ellipse 65% 55% at 95% 105%,rgba(126,184,247,0.05) 0%,transparent 55%),
     radial-gradient(ellipse 55% 50% at 50% 50%,rgba(78,205,164,0.025) 0%,transparent 65%);
 }
+
+/* ── SYNC INDICATOR ── */
+.sync-bar{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:460px;
+  height:2px;background:transparent;z-index:300;
+  transition:background .2s;
+}
+.sync-bar.syncing{background:linear-gradient(90deg,transparent,var(--gold),transparent);animation:syncPulse 1.2s ease-in-out infinite;}
+.sync-bar.error{background:var(--red);}
+.sync-bar.ok{background:var(--green);animation:syncFade 1s ease forwards .4s;}
+@keyframes syncPulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes syncFade{to{opacity:0}}
+
+.sync-status{
+  position:fixed;top:8px;right:14px;z-index:301;
+  font-size:9px;letter-spacing:.08em;color:var(--muted);
+  display:flex;align-items:center;gap:4px;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.sync-status.visible{opacity:1;}
+.sync-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.sync-status.syncing .sync-dot{background:var(--gold);animation:dotPulse .8s ease-in-out infinite;}
+.sync-status.error .sync-dot{background:var(--red);}
+.sync-status.ok .sync-dot{background:var(--green);}
+@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
 
 #app{position:relative;z-index:1;width:100%;max-width:460px;margin:0 auto;height:100vh;display:flex;flex-direction:column;}
 .scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 86px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
@@ -148,7 +173,6 @@ background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%);pointer-
 }
 .nccttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:13px;letter-spacing:.02em;}
 .ncc-body{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
-.ncc-days-wrap{}
 .ncc-days{font-size:44px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-.03em;}
 .ncc-days-lbl{font-size:10px;color:rgba(201,168,76,.55);margin-top:3px;letter-spacing:.06em;}
 .ncc-right{text-align:right;}
@@ -173,7 +197,7 @@ background:radial-gradient(circle,rgba(224,112,112,.12),transparent 70%);pointer
 }
 .mnttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--red);margin-bottom:11px;letter-spacing:.02em;}
 .mn-body{display:flex;align-items:flex-end;justify-content:space-between;}
-.mn-name{font-size:17px;color:var(--text);font-family:'DM Serif Display',serif;letter-spacing:.01em;font-feature-settings:"lnum" 1,"tnum" 1;}
+.mn-name{font-size:17px;color:var(--text);font-family:'DM Serif Display',serif;letter-spacing:.01em;}
 .mn-sub{font-size:11px;color:var(--dim);margin-top:3px;}
 .mn-right{text-align:right;}
 .mn-days{font-size:26px;font-weight:700;color:var(--red);letter-spacing:-.02em;line-height:1;}
@@ -225,22 +249,11 @@ background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-
 .currency-ron .goal-inp-wrap input{padding-left:14px !important;}
 
 /* ── SIM CARD ── */
-.sim-card{
-margin:0 14px 12px;
-background:linear-gradient(145deg,rgba(126,184,247,.08),rgba(126,184,247,.02));
-border:1px solid var(--blue-border);border-radius:var(--r);
-padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);
-}
-.sttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--blue);margin-bottom:4px;letter-spacing:.02em;}
-.sdesc{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6;}
 .sim-res{
 background:rgba(126,184,247,.07);border:1px solid var(--blue-border);
 border-radius:var(--rsm);padding:16px;text-align:center;
 }
-.sim-res.achieved{
-background:rgba(78,205,164,.07);border-color:var(--green-border);
-}
+.sim-res.achieved{background:rgba(78,205,164,.07);border-color:var(--green-border);}
 .srval{font-size:28px;font-weight:700;color:var(--blue);letter-spacing:-.01em;}
 .sim-res.achieved .srval{color:var(--green);}
 .srlbl{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5;}
@@ -282,7 +295,7 @@ padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overf
 .bc.fut::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
 
 .bchd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
-.bcname{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;font-feature-settings:"lnum" 1,"tnum" 1;}
+.bcname{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;}
 .bc-rate-box{text-align:right;}
 .bcrv{font-size:22px;font-weight:700;color:var(--green);letter-spacing:-.01em;}
 .bcrl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
@@ -341,18 +354,8 @@ transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opa
 .pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
 
 /* ── MATURITY ROW ── */
-.pay-row-mat{
-border-bottom:1px solid rgba(224,112,112,.12) !important;
-}
-.mat-badge{
-display:inline-block;
-background:var(--red-dim);
-border:1px solid var(--red-border);
-color:var(--red);
-font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-border-radius:50px;padding:2px 7px;
-vertical-align:middle;margin-left:5px;
-}
+.pay-row-mat{border-bottom:1px solid rgba(224,112,112,.12) !important;}
+.mat-badge{display:inline-block;background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:50px;padding:2px 7px;vertical-align:middle;margin-left:5px;}
 .pay-amt-mat{color:var(--red) !important;}
 
 /* ── EMPTY ── */
@@ -405,20 +408,13 @@ background:rgba(255,255,255,.03);
 border:1px solid var(--gborder);border-radius:var(--rsm);overflow:hidden;
 margin-bottom:14px;
 }
-.ct-opt{
-padding:18px 14px;text-align:center;cursor:pointer;
-transition:background .2s,border-color .2s;
-position:relative;
-}
+.ct-opt{padding:18px 14px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s;position:relative;}
 .ct-opt:active{transform:scale(.97);}
 .ct-opt.active{background:var(--gold-dim);}
 .ct-opt.active .ct-sym{color:var(--gold-l);}
 .ct-opt.active .ct-name{color:var(--text);}
 .ct-opt.active .ct-code{color:var(--gold);}
-.ct-opt.active::after{
-content:'✓';position:absolute;top:8px;right:10px;
-font-size:11px;color:var(--gold);font-weight:700;
-}
+.ct-opt.active::after{content:'✓';position:absolute;top:8px;right:10px;font-size:11px;color:var(--gold);font-weight:700;}
 .ct-sym{font-family:'DM Serif Display',serif;font-size:26px;color:var(--muted);margin-bottom:4px;transition:color .2s;}
 .ct-name{font-size:11px;color:var(--muted);font-weight:500;transition:color .2s;}
 .ct-code{font-size:9px;color:var(--muted);letter-spacing:.12em;margin-top:2px;transition:color .2s;}
@@ -426,24 +422,26 @@ font-size:11px;color:var(--gold);font-weight:700;
 .ct-note{font-size:11px;color:var(--muted);text-align:center;}
 .ct-note strong{color:var(--gold-l);}
 </style>
-
 </head>
 <body>
+
+<div class="sync-bar" id="sync-bar"></div>
+<div class="sync-status" id="sync-status">
+  <div class="sync-dot"></div>
+  <span id="sync-label">se sincronizează…</span>
+</div>
+
 <div id="app">
   <div class="scroll-area" id="scroll-area">
 
 <!-- DASHBOARD -->
-
 <div class="panel on" id="panel-dashboard">
-
   <div class="dash-hero">
     <div class="hero-eyebrow">Portofoliu personal</div>
     <div class="hero-title" onclick="sw('settings',99)" style="cursor:pointer;">BondFlow</div>
     <div class="hero-sub">Obligațiuni de Stat</div>
     <div class="hero-line"></div>
   </div>
-
-  <!-- 1. Goal + Simulator integrat -->
 
   <div class="goal-card">
     <div class="gttl">🎯 Obiectiv lunar</div>
@@ -461,38 +459,29 @@ font-size:11px;color:var(--gold);font-weight:700;
         <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
       </div>
     </div>
-
-<!-- Simulator — vizibil doar când obiectivul NU e atins -->
-<div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;">
-  <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator — cât să investești</div>
-  <div class="field" style="margin-bottom:10px;">
-    <label>Rata cuponului nou (%/an)</label>
-    <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
+    <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;">
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator -- cât să investești</div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Rata cuponului nou (%/an)</label>
+        <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
+      </div>
+      <div class="sim-res" id="sim-res-box" style="display:none;">
+        <div class="srval" id="sim-val">&mdash;</div>
+        <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
+      </div>
+    </div>
+    <div id="goal-achieved-box" style="display:none;border-top:1px solid rgba(78,205,164,.2);padding-top:14px;">
+      <div class="sim-res achieved">
+        <div class="srval">🎉 Obiectiv atins!</div>
+        <div class="srlbl" id="goal-achieved-lbl"></div>
+      </div>
+    </div>
   </div>
-  <div class="sim-res" id="sim-res-box" style="display:none;">
-    <div class="srval" id="sim-val">&mdash;</div>
-    <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
-  </div>
-</div>
-
-<!-- Mesaj obiectiv atins — vizibil doar când e atins -->
-<div id="goal-achieved-box" style="display:none;border-top:1px solid rgba(78,205,164,.2);padding-top:14px;">
-  <div class="sim-res achieved">
-    <div class="srval">🎉 Obiectiv atins!</div>
-    <div class="srlbl" id="goal-achieved-lbl"></div>
-  </div>
-</div>
-
-  </div>
-
-  <!-- 2. Next coupon card -->
 
   <div class="next-coupon-card">
     <div class="nccttl">🏷️ Următorul cupon</div>
     <div id="ncc-body"></div>
   </div>
-
-  <!-- 3. In asteptare (stanga) + Active (dreapta) -->
 
   <div class="status-strip">
     <div class="sum-tile blu">
@@ -507,8 +496,6 @@ font-size:11px;color:var(--gold);font-weight:700;
     </div>
   </div>
 
-  <!-- 4. This month -->
-
   <div class="month-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
       <div class="mcttl" style="margin-bottom:0;">📅 Luna aceasta</div>
@@ -516,19 +503,16 @@ font-size:11px;color:var(--gold);font-weight:700;
     </div>
     <div class="mc-inner">
       <div>
-        <div class="mctotal" id="mc-total">€0,00</div>
-        <div class="mcsub">de primit în <span id="mc-month">—</span></div>
+        <div class="mctotal" id="mc-total">€0</div>
+        <div class="mcsub">de primit în <span id="mc-month">--</span></div>
       </div>
     </div>
     <div id="mc-breakdown"></div>
   </div>
 
-  <!-- 5. Next maturity card + Expirate integrate -->
-
   <div class="mat-next-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;">
       <div class="mnttl" style="margin-bottom:0;">⏰ Prima obligațiune la maturitate</div>
-      <!-- Badgeul expirate — ascuns când sunt 0 -->
       <div id="expired-badge" style="display:none;align-items:center;gap:4px;background:var(--red-dim);border:1px solid var(--red-border);border-radius:50px;padding:3px 8px;flex-shrink:0;margin-left:10px;">
         <span style="font-size:10px;color:rgba(224,112,112,.6);">expirate</span>
         <span style="font-size:10px;font-weight:700;color:var(--red);" id="s-expired">0</span>
@@ -536,11 +520,9 @@ font-size:11px;color:var(--gold);font-weight:700;
     </div>
     <div id="mn-body"></div>
   </div>
-
 </div><!-- /dashboard -->
 
 <!-- BONDS -->
-
 <div class="panel" id="panel-bonds">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
@@ -548,7 +530,6 @@ font-size:11px;color:var(--gold);font-weight:700;
   <div class="pad14" style="margin-bottom:13px;">
     <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
   </div>
-
   <div class="formwrap" id="formwrap">
     <div class="fttl" id="fttl">Obligațiune nouă</div>
     <input type="hidden" id="eid">
@@ -582,12 +563,10 @@ font-size:11px;color:var(--gold);font-weight:700;
       <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
     </div>
   </div>
-
   <div id="bonds-list"></div>
 </div><!-- /bonds -->
 
 <!-- PAYMENTS -->
-
 <div class="panel" id="panel-payments">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
@@ -598,7 +577,6 @@ font-size:11px;color:var(--gold);font-weight:700;
 </div><!-- /payments -->
 
 <!-- SETTINGS -->
-
 <div class="panel" id="panel-settings">
   <div class="panel-hdr" style="display:flex;align-items:center;gap:14px;">
     <button onclick="sw('dashboard',0)" style="background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);border-radius:50px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">← Înapoi</button>
@@ -622,6 +600,19 @@ font-size:11px;color:var(--gold);font-weight:700;
         </div>
       </div>
       <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
+    </div>
+
+    <!-- Sync info card -->
+    <div class="settings-card" style="margin-top:13px;">
+      <div class="sc-ttl">☁️ Sincronizare</div>
+      <div class="sc-desc">Datele tale sunt salvate în cloud via Supabase. Poți accesa portofoliul de pe orice dispozitiv folosind același ID de utilizator.</div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--gborder);border-radius:var(--rsm);padding:14px;">
+        <div style="font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">ID utilizator (read-only)</div>
+        <div style="font-size:11px;color:var(--gold-l);font-family:monospace;word-break:break-all;" id="user-key-display">--</div>
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-out" style="font-size:12px;padding:10px;" onclick="forcSync()">↻ Sincronizează manual</button>
+      </div>
     </div>
   </div>
 </div><!-- /settings -->
@@ -649,15 +640,181 @@ font-size:11px;color:var(--gold);font-weight:700;
 <div class="toast" id="toast"></div>
 
 <script>
-// ── DATA ──
-let bonds    = JSON.parse(localStorage.getItem('bf3_bonds') || '[]');
-let goal     = parseFloat(localStorage.getItem('bf3_goal') || '0');
-let currency = localStorage.getItem('bf3_currency') || 'EUR';
-function persist() { localStorage.setItem('bf3_bonds', JSON.stringify(bonds)); }
+// ══════════════════════════════════════════════
+//  SUPABASE CONFIG
+// ══════════════════════════════════════════════
+const SUPABASE_URL      = 'https://gbqmgromjwqdnlwrejnb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_RjWheWI2qN_ES0qOKYmcNQ_iJfgdzz0';
 
-// ── CURRENCY ──
+const SB_HEADERS = {
+  'Content-Type':  'application/json',
+  'apikey':        SUPABASE_ANON_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+  'Prefer':        'return=representation'
+};
+
+// Helper REST wrapper
+async function sbGet(table, filter = '') {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
+    headers: { ...SB_HEADERS, 'Prefer': 'return=representation' }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbUpsert(table, body) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=representation' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbDelete(table, filter) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
+    method: 'DELETE',
+    headers: SB_HEADERS
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+
+// ══════════════════════════════════════════════
+//  USER KEY -- UUID persistent per browser
+// ══════════════════════════════════════════════
+function getUserKey() {
+  let k = localStorage.getItem('bf3_user_key');
+  if (!k) {
+    k = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    localStorage.setItem('bf3_user_key', k);
+  }
+  return k;
+}
+const USER_KEY = getUserKey();
+
+// ══════════════════════════════════════════════
+//  SYNC STATUS UI
+// ══════════════════════════════════════════════
+let syncTimer;
+function setSyncState(state, msg) {
+  const bar   = document.getElementById('sync-bar');
+  const ss    = document.getElementById('sync-status');
+  const lbl   = document.getElementById('sync-label');
+  bar.className   = 'sync-bar ' + state;
+  ss.className    = 'sync-status visible ' + state;
+  lbl.textContent = msg;
+  clearTimeout(syncTimer);
+  if (state === 'ok' || state === 'error') {
+    syncTimer = setTimeout(() => { ss.classList.remove('visible'); }, 2500);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  DATA (in-memory, mirrored to Supabase)
+// ══════════════════════════════════════════════
+let bonds    = [];
+let goal     = 0;
+let currency = 'EUR';
+
+// ── Load from Supabase on start ──
+async function loadFromSupabase() {
+  setSyncState('syncing', 'se încarcă datele…');
+  try {
+    // Preferences
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=goal,currency`);
+    if (prefs.length) {
+      goal     = parseFloat(prefs[0].goal) || 0;
+      currency = prefs[0].currency || 'EUR';
+    }
+
+    // Bonds
+    const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
+    bonds = rows.map(r => ({
+      id:    r.id,
+      name:  r.name,
+      start: r.start_date,
+      mat:   r.mat_date,
+      amt:   parseFloat(r.amount),
+      rate:  parseFloat(r.rate),
+      freq:  String(r.freq)
+    }));
+
+    setSyncState('ok', 'date încărcate ✓');
+  } catch (e) {
+    console.error('Load error:', e);
+    setSyncState('error', 'eroare la încărcare');
+    toast('⚠️ Nu s-au putut încărca datele');
+  }
+
+  // Update UI
+  if (goal > 0) document.getElementById('goal-inp').value = goal;
+  updateCurrencyUI();
+  updateFormLabels();
+  document.getElementById('user-key-display').textContent = USER_KEY;
+  renderDash();
+  renderBonds();
+  runSim();
+}
+
+// ── Save preferences ──
+async function savePrefsToSupabase() {
+  try {
+    await sbUpsert('bf_preferences', { user_key: USER_KEY, goal, currency, updated_at: new Date().toISOString() });
+  } catch (e) {
+    console.error('Prefs save error:', e);
+  }
+}
+
+// ── Save single bond ──
+async function saveBondToSupabase(b) {
+  setSyncState('syncing', 'se salvează…');
+  try {
+    await sbUpsert('bf_bonds', {
+      id:         b.id,
+      user_key:   USER_KEY,
+      name:       b.name,
+      start_date: b.start,
+      mat_date:   b.mat,
+      amount:     b.amt,
+      rate:       b.rate,
+      freq:       parseInt(b.freq),
+      updated_at: new Date().toISOString()
+    });
+    setSyncState('ok', 'salvat ✓');
+  } catch (e) {
+    console.error('Bond save error:', e);
+    setSyncState('error', 'eroare la salvare');
+    toast('⚠️ Eroare la salvare în cloud');
+  }
+}
+
+// ── Delete bond ──
+async function deleteBondFromSupabase(id) {
+  setSyncState('syncing', 'se șterge…');
+  try {
+    await sbDelete('bf_bonds', `id=eq.${id}&user_key=eq.${USER_KEY}`);
+    setSyncState('ok', 'șters ✓');
+  } catch (e) {
+    console.error('Bond delete error:', e);
+    setSyncState('error', 'eroare la ștergere');
+  }
+}
+
+// ── Force full sync ──
+async function forcSync() {
+  setSyncState('syncing', 'sincronizare completă…');
+  toast('↻ Se sincronizează…');
+  await loadFromSupabase();
+  toast('☁️ Sincronizat ✓');
+}
+
+// ══════════════════════════════════════════════
+//  CURRENCY
+// ══════════════════════════════════════════════
 function currSym()  { return currency === 'RON' ? 'lei' : '€'; }
-function currCode() { return currency === 'RON' ? 'RON' : 'EUR'; }
 function fmt(n) {
   if (isNaN(n) || n === null) return currency === 'RON' ? '0 lei' : '€0';
   const num = Math.round(n).toLocaleString('ro-RO');
@@ -665,9 +822,9 @@ function fmt(n) {
 }
 function setCurrency(c) {
   currency = c;
-  localStorage.setItem('bf3_currency', c);
   updateCurrencyUI();
   updateFormLabels();
+  savePrefsToSupabase();
   renderDash(); renderBonds(); runSim();
   if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
 }
@@ -690,30 +847,32 @@ function updateFormLabels() {
   document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
 }
 
-// ── TABS ──
+// ══════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════
 function sw(tab, idx) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nav-it').forEach(n => n.classList.remove('on'));
   document.getElementById('panel-' + tab).classList.add('on');
   if (idx !== 99) document.querySelectorAll('.nav-it')[idx].classList.add('on');
   document.getElementById('scroll-area').scrollTop = 0;
-  if (tab === 'payments') renderPayments();
+  if (tab === 'payments')  renderPayments();
   if (tab === 'dashboard') renderDash();
-  if (tab === 'bonds') renderBonds();
-  if (tab === 'settings') updateCurrencyUI();
+  if (tab === 'bonds')     renderBonds();
+  if (tab === 'settings')  { updateCurrencyUI(); document.getElementById('user-key-display').textContent = USER_KEY; }
 }
 
-// ── UTILS ──
+// ══════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════
 function fmtD(s) {
-  if (!s) return '—';
+  if (!s) return '--';
   const d = (s instanceof Date) ? s : new Date(s + 'T00:00:00');
-  return d.toLocaleDateString('ro-RO', { day: '2-digit', month: 'short', year: 'numeric' });
+  return d.toLocaleDateString('ro-RO', { day:'2-digit', month:'short', year:'numeric' });
 }
 function today0() { const d = new Date(); d.setHours(0,0,0,0); return d; }
 function daysDiff(dateStrOrDate) {
-  let d;
-  if (dateStrOrDate instanceof Date) { d = new Date(dateStrOrDate); }
-  else { d = new Date(dateStrOrDate + 'T00:00:00'); }
+  let d = dateStrOrDate instanceof Date ? new Date(dateStrOrDate) : new Date(dateStrOrDate + 'T00:00:00');
   d.setHours(0,0,0,0);
   return Math.ceil((d - today0()) / 86400000);
 }
@@ -724,13 +883,13 @@ function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 1
 function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
 
 function getPayDates(b) {
-  const start    = new Date(b.start + 'T00:00:00');
-  const maturity = new Date(b.mat   + 'T00:00:00');
-  const freq     = parseInt(b.freq);
-  const anchorDay= start.getDate();
-  const baseY    = start.getFullYear();
-  const baseM    = start.getMonth();
-  const dates    = [];
+  const start     = new Date(b.start + 'T00:00:00');
+  const maturity  = new Date(b.mat   + 'T00:00:00');
+  const freq      = parseInt(b.freq);
+  const anchorDay = start.getDate();
+  const baseY     = start.getFullYear();
+  const baseM     = start.getMonth();
+  const dates     = [];
   let step = 1;
   while (true) {
     const totalMonths = baseM + step * freq;
@@ -742,7 +901,7 @@ function getPayDates(b) {
     dates.push(d);
     step++;
   }
-  const lastMs = dates.length ? dates[dates.length - 1].getTime() : 0;
+  const lastMs = dates.length ? dates[dates.length-1].getTime() : 0;
   if (lastMs !== maturity.getTime()) dates.push(new Date(maturity));
   return dates;
 }
@@ -751,72 +910,71 @@ function paysLeft(b)       { return getPayDates(b).filter(d => d >= today0()).le
 function totalReceived(b)  { return getPayDates(b).filter(d => d < today0()).length * couponVal(b); }
 function totalRemaining(b) { return paysLeft(b) * couponVal(b); }
 function dateToKey(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function monthName(d) { return d.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }); }
+function monthName(d) { return d.toLocaleDateString('ro-RO', { month:'long', year:'numeric' }); }
 function sortedBonds() {
   return [...bonds.filter(isMatured), ...bonds.filter(isNotStarted), ...bonds.filter(isActive)];
 }
 
-// ── GOAL ──
+// ══════════════════════════════════════════════
+//  GOAL
+// ══════════════════════════════════════════════
+let goalSaveTimer;
 function saveGoal() {
   const v = parseFloat(document.getElementById('goal-inp').value);
   goal = (!isNaN(v) && v > 0) ? v : 0;
-  if (goal) localStorage.setItem('bf3_goal', goal);
-  else localStorage.removeItem('bf3_goal');
   renderDash();
   runSim();
+  // Debounce Supabase write -- only after 800ms of inactivity
+  clearTimeout(goalSaveTimer);
+  goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
 }
 
-// ── SIMULATOR ──
+// ══════════════════════════════════════════════
+//  SIMULATOR
+// ══════════════════════════════════════════════
 function runSim() {
   const rate = parseFloat(document.getElementById('sim-rate').value);
   const sv   = document.getElementById('sim-val');
   const sl   = document.getElementById('sim-lbl');
   const box  = document.getElementById('sim-res-box');
-  const simSection     = document.getElementById('sim-section');
-  const achievedBox    = document.getElementById('goal-achieved-box');
-  const achievedLbl    = document.getElementById('goal-achieved-lbl');
-
+  const simSection  = document.getElementById('sim-section');
+  const achievedBox = document.getElementById('goal-achieved-box');
+  const achievedLbl = document.getElementById('goal-achieved-lbl');
   const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
 
-  // Obiectiv atins
   if (goal > 0 && curMo >= goal) {
     simSection.style.display  = 'none';
     achievedBox.style.display = 'block';
     achievedLbl.textContent   = `Câștigi deja ${fmt(curMo)}/lună față de ținta ${fmt(goal)}`;
     return;
   }
-
-  // Obiectiv neatins — arată simulatorul, ascunde achieved
   simSection.style.display  = 'block';
   achievedBox.style.display = 'none';
   box.classList.remove('achieved');
 
   if (isNaN(rate) || rate <= 0) { box.style.display = 'none'; return; }
-
   box.style.display = '';
   const gap = goal > 0 ? goal - curMo : 0;
-  if (!goal) { sv.textContent='—'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
+  if (!goal) { sv.textContent='--'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
   sv.textContent = fmt(gap / (rate / 100 / 12));
   sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
 }
 
-// ── DASHBOARD ──
+// ══════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════
 function renderDash() {
-  const active   = bonds.filter(isActive);
-  const pending  = bonds.filter(isNotStarted);
-  const expired  = bonds.filter(isMatured);
-  const monthly  = active.reduce((s,b) => s + monthlyVal(b), 0);
+  const active  = bonds.filter(isActive);
+  const pending = bonds.filter(isNotStarted);
+  const expired = bonds.filter(isMatured);
+  const monthly = active.reduce((s,b) => s + monthlyVal(b), 0);
 
   document.getElementById('s-active').textContent  = active.length;
   document.getElementById('s-pending').textContent = pending.length;
 
-  // Badge expirate: vizibil doar dacă > 0
   const expiredBadge = document.getElementById('expired-badge');
   if (expired.length > 0) {
     document.getElementById('s-expired').textContent = expired.length;
@@ -825,29 +983,25 @@ function renderDash() {
     expiredBadge.style.display = 'none';
   }
 
-  // ── NEXT COUPON ──
+  // Next coupon
   const nccEl = document.getElementById('ncc-body');
   let allNextPays = [];
   active.forEach(b => {
     const np = nextPay(b);
-    if (np) allNextPays.push({ bond: b, date: np, amt: couponVal(b) });
+    if (np) allNextPays.push({ bond:b, date:np, amt:couponVal(b) });
   });
   allNextPays.sort((a,b) => a.date - b.date);
-
   if (!allNextPays.length) {
     nccEl.innerHTML = '<div class="ncc-empty">Nicio plată viitoare de la obligațiunile active.</div>';
   } else {
     const earliest = allNextPays[0].date.getTime();
     const sameDay  = allNextPays.filter(p => p.date.getTime() === earliest);
-    const totalAmt = sameDay.reduce((s,p) => s+p.amt, 0);
+    const totalAmt = sameDay.reduce((s,p) => s + p.amt, 0);
     const dys      = daysDiff(allNextPays[0].date);
     const names    = sameDay.map(p => esc(p.bond.name)).join(', ');
     nccEl.innerHTML = `
       <div class="ncc-body">
-        <div class="ncc-days-wrap">
-          <div class="ncc-days">${dys}</div>
-          <div class="ncc-days-lbl">ZILE RĂMASE</div>
-        </div>
+        <div><div class="ncc-days">${dys}</div><div class="ncc-days-lbl">ZILE RĂMASE</div></div>
         <div class="ncc-right">
           <div class="ncc-amt">${fmt(totalAmt)}</div>
           <div class="ncc-from">${names}</div>
@@ -856,7 +1010,7 @@ function renderDash() {
       <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
   }
 
-  // ── NEXT MATURITY ──
+  // Next maturity
   const mnEl = document.getElementById('mn-body');
   const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
   if (!activeSorted.length) {
@@ -867,19 +1021,12 @@ function renderDash() {
     const dys = daysDiff(matDate);
     mnEl.innerHTML = `
       <div class="mn-body">
-        <div>
-          <div class="mn-name">${esc(first.name)}</div>
-          <div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div>
-        </div>
-        <div class="mn-right">
-          <div class="mn-days">${dys}</div>
-          <div class="mn-daysl">ZILE RĂMASE</div>
-          <div class="mn-date">${fmtD(matDate)}</div>
-        </div>
+        <div><div class="mn-name">${esc(first.name)}</div><div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div></div>
+        <div class="mn-right"><div class="mn-days">${dys}</div><div class="mn-daysl">ZILE RĂMASE</div><div class="mn-date">${fmtD(matDate)}</div></div>
       </div>`;
   }
 
-  // Goal
+  // Goal bar
   document.getElementById('g-cur').textContent    = fmt(monthly);
   document.getElementById('g-target').textContent = fmt(goal);
   const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
@@ -894,11 +1041,11 @@ function renderDash() {
   bonds.forEach(b => {
     const val = couponVal(b);
     getPayDates(b).forEach(d => {
-      if (d.getFullYear()===cy && d.getMonth()===cm) pays.push({bond:b.name,date:d,amt:val});
+      if (d.getFullYear()===cy && d.getMonth()===cm) pays.push({bond:b.name, date:d, amt:val});
     });
   });
-  pays.sort((a,b)=>a.date-b.date);
-  const mTotal = pays.reduce((s,p)=>s+p.amt,0);
+  pays.sort((a,b) => a.date - b.date);
+  const mTotal = pays.reduce((s,p) => s+p.amt, 0);
   document.getElementById('mc-badge').textContent = pays.length + ' plăți';
   document.getElementById('mc-total').textContent = fmt(mTotal);
   document.getElementById('mc-month').textContent = monthName(now);
@@ -916,7 +1063,9 @@ function renderDash() {
   runSim();
 }
 
-// ── BONDS ──
+// ══════════════════════════════════════════════
+//  BONDS
+// ══════════════════════════════════════════════
 function renderBonds() {
   const el = document.getElementById('bonds-list');
   if (!bonds.length) {
@@ -930,11 +1079,9 @@ function bondCard(b, ri) {
   const mat  = isMatured(b); const fut = isNotStarted(b);
   const next = nextPay(b);
   const days = next ? daysDiff(next) : null;
-
   let banner = '';
-  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate — o poți șterge.</div>`;
-  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă — start: ${fmtD(b.start)}</div>`;
-
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate -- o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă -- start: ${fmtD(b.start)}</div>`;
   let nextBlock = '';
   if (!mat && !fut && next) {
     nextBlock = `<div class="bcnext">
@@ -942,7 +1089,6 @@ function bondCard(b, ri) {
       <div style="text-align:right"><div class="bcndays">${days}</div><div class="bcndl">zile rămase</div></div>
     </div>`;
   }
-
   return `<div class="bc ${mat?'mat':(fut?'fut':'')}">
     ${banner}
     <div class="bchd">
@@ -950,14 +1096,14 @@ function bondCard(b, ri) {
       <div class="bc-rate-box"><div class="bcrv">${b.rate}%</div><div class="bcrl">cupon/an</div></div>
     </div>
     <div class="bcgrid">
-      <div class="bc-cell"><div class="bclbl">Sumă investită</div><div class="bcval g">${fmt(b.amt)}</div></div>
-      <div class="bc-cell"><div class="bclbl">Câștig/lună</div><div class="bcval grn">${fmt(monthlyVal(b))}</div></div>
-      <div class="bc-cell"><div class="bclbl">Valoare cupon</div><div class="bcval blu">${fmt(couponVal(b))}</div></div>
-      <div class="bc-cell"><div class="bclbl">Interval</div><div class="bcval">${b.freq==='1'?'Lunar':'La '+b.freq+' luni'}</div></div>
-      <div class="bc-cell"><div class="bclbl">Plăți rămase</div><div class="bcval">${paysLeft(b)}</div></div>
-      <div class="bc-cell"><div class="bclbl">Total rămas</div><div class="bcval g">${fmt(totalRemaining(b))}</div></div>
-      <div class="bc-cell"><div class="bclbl">Primit până acum</div><div class="bcval grn">${fmt(totalReceived(b))}</div></div>
-      <div class="bc-cell"><div class="bclbl">Maturitate</div><div class="bcval">${fmtD(b.mat)}</div></div>
+      <div><div class="bclbl">Sumă investită</div><div class="bcval g">${fmt(b.amt)}</div></div>
+      <div><div class="bclbl">Câștig/lună</div><div class="bcval grn">${fmt(monthlyVal(b))}</div></div>
+      <div><div class="bclbl">Valoare cupon</div><div class="bcval blu">${fmt(couponVal(b))}</div></div>
+      <div><div class="bclbl">Interval</div><div class="bcval">${b.freq==='1'?'Lunar':'La '+b.freq+' luni'}</div></div>
+      <div><div class="bclbl">Plăți rămase</div><div class="bcval">${paysLeft(b)}</div></div>
+      <div><div class="bclbl">Total rămas</div><div class="bcval g">${fmt(totalRemaining(b))}</div></div>
+      <div><div class="bclbl">Primit până acum</div><div class="bcval grn">${fmt(totalReceived(b))}</div></div>
+      <div><div class="bclbl">Maturitate</div><div class="bcval">${fmtD(b.mat)}</div></div>
     </div>
     <div class="divider-line"></div>
     ${nextBlock}
@@ -968,12 +1114,13 @@ function bondCard(b, ri) {
   </div>`;
 }
 
-// ── PAYMENTS ──
+// ══════════════════════════════════════════════
+//  PAYMENTS
+// ══════════════════════════════════════════════
 function renderPayments() {
   const el = document.getElementById('pay-list');
   const t  = today0();
   let all  = [];
-
   bonds.forEach(b => {
     const val = couponVal(b);
     const dates = getPayDates(b);
@@ -986,7 +1133,7 @@ function renderPayments() {
     });
   });
   if (!all.length) { el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>'; return; }
-  all.sort((a,b)=>a.date-b.date);
+  all.sort((a,b) => a.date - b.date);
   const grp = {};
   all.forEach(p => { const k=dateToKey(p.date); if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
   const now = new Date(); let inThisMonth=false; const keys=Object.keys(grp).sort();
@@ -1029,7 +1176,9 @@ function renderPayments() {
   el.innerHTML=html;
 }
 
-// ── FORM ──
+// ══════════════════════════════════════════════
+//  FORM
+// ══════════════════════════════════════════════
 let formOpen=false;
 function toggleForm() {
   formOpen=!formOpen;
@@ -1043,55 +1192,86 @@ function clearForm() {
   document.getElementById('f-freq').value='6';
   document.getElementById('eid').value='';
 }
-function saveBond() {
-  const name=document.getElementById('f-name').value.trim();
-  const start=document.getElementById('f-start').value;
-  const mat=document.getElementById('f-mat').value;
-  const amt=parseFloat(document.getElementById('f-amt').value);
-  const rate=parseFloat(document.getElementById('f-rate').value);
-  const freq=document.getElementById('f-freq').value;
-  const eid=document.getElementById('eid').value;
-  if(!name||!start||!mat||isNaN(amt)||isNaN(rate)){toast('⚠️ Completează toate câmpurile');return;}
-  if(new Date(mat)<=new Date(start)){toast('Maturitatea trebuie să fie după data de start');return;}
-  const bond={id:eid||Date.now().toString(),name,start,mat,amt,rate,freq};
-  if(eid){const idx=bonds.findIndex(b=>b.id===eid);if(idx!==-1)bonds[idx]=bond;toast('Actualizat ✓');}
-  else{bonds.push(bond);toast('Adăugat ✓');}
-  persist();cancelForm();renderBonds();renderDash();runSim();
+
+async function saveBond() {
+  const name  = document.getElementById('f-name').value.trim();
+  const start = document.getElementById('f-start').value;
+  const mat   = document.getElementById('f-mat').value;
+  const amt   = parseFloat(document.getElementById('f-amt').value);
+  const rate  = parseFloat(document.getElementById('f-rate').value);
+  const freq  = document.getElementById('f-freq').value;
+  const eid   = document.getElementById('eid').value;
+
+  if (!name||!start||!mat||isNaN(amt)||isNaN(rate)) { toast('⚠️ Completează toate câmpurile'); return; }
+  if (new Date(mat) <= new Date(start)) { toast('Maturitatea trebuie să fie după data de start'); return; }
+
+  const bond = { id: eid || Date.now().toString(), name, start, mat, amt, rate, freq };
+
+  if (eid) {
+    const idx = bonds.findIndex(b => b.id === eid);
+    if (idx !== -1) bonds[idx] = bond;
+    toast('Se actualizează… ☁️');
+  } else {
+    bonds.push(bond);
+    toast('Se salvează… ☁️');
+  }
+
+  await saveBondToSupabase(bond);
+  cancelForm();
+  renderBonds();
+  renderDash();
+  runSim();
 }
+
 function editBond(i) {
-  const b=bonds[i];
-  document.getElementById('eid').value=b.id;document.getElementById('f-name').value=b.name;
-  document.getElementById('f-start').value=b.start;document.getElementById('f-mat').value=b.mat;
-  document.getElementById('f-amt').value=b.amt;document.getElementById('f-rate').value=b.rate;
-  document.getElementById('f-freq').value=b.freq;
-  document.getElementById('fttl').textContent='Editează obligațiunea';
-  document.getElementById('formwrap').classList.add('open');formOpen=true;
+  const b = bonds[i];
+  document.getElementById('eid').value      = b.id;
+  document.getElementById('f-name').value   = b.name;
+  document.getElementById('f-start').value  = b.start;
+  document.getElementById('f-mat').value    = b.mat;
+  document.getElementById('f-amt').value    = b.amt;
+  document.getElementById('f-rate').value   = b.rate;
+  document.getElementById('f-freq').value   = b.freq;
+  document.getElementById('fttl').textContent = 'Editează obligațiunea';
+  document.getElementById('formwrap').classList.add('open');
+  formOpen = true;
   setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
 
-// ── DELETE ──
+// ══════════════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════════════
 function confirmDel(i) {
-  document.getElementById('ov-ttl').textContent='Ștergi obligațiunea?';
-  document.getElementById('ov-msg').textContent=`"${bonds[i].name}" va fi ștearsă definitiv.`;
-  document.getElementById('ov-ok').onclick=()=>{bonds.splice(i,1);persist();renderBonds();renderDash();runSim();closeOv();toast('Ștearsă');};
+  document.getElementById('ov-ttl').textContent = 'Ștergi obligațiunea?';
+  document.getElementById('ov-msg').textContent = `"${bonds[i].name}" va fi ștearsă definitiv din cloud.`;
+  document.getElementById('ov-ok').onclick = async () => {
+    const id = bonds[i].id;
+    bonds.splice(i, 1);
+    renderBonds(); renderDash(); runSim(); closeOv();
+    await deleteBondFromSupabase(id);
+    toast('Ștearsă ✓');
+  };
   document.getElementById('overlay').classList.add('open');
 }
-function closeOv(){document.getElementById('overlay').classList.remove('open');}
-document.getElementById('overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOv();});
+function closeOv() { document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closeOv(); });
 
-// ── TOAST ──
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
 let toastT;
-function toast(msg){
-  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
-  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2800);
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => el.classList.remove('show'), 2800);
 }
 
-// ── INIT ──
-if(goal>0)document.getElementById('goal-inp').value=goal;
-updateCurrencyUI();
-updateFormLabels();
-renderDash();renderBonds();runSim();
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+loadFromSupabase();
 </script>
-
 </body>
 </html>
