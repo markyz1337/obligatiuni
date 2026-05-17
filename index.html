@@ -112,13 +112,13 @@ padding:14px 12px;text-align:center;box-shadow:var(--shadow);
 position:relative;overflow:hidden;
 }
 .sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
-.sum-tile.gold{border-color:var(--gold-border);}
+.sum-tile.gold {border-color:var(--gold-border);}
 .sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
-.sum-tile.grn{border-color:var(--green-border);}
+.sum-tile.grn {border-color:var(--green-border);}
 .sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
-.sum-tile.red{border-color:var(--red-border);}
+.sum-tile.red {border-color:var(--red-border);}
 .sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.sum-tile.blu{border-color:var(--blue-border);}
+.sum-tile.blu {border-color:var(--blue-border);}
 .sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
 .stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 .stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
@@ -340,7 +340,7 @@ transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opa
 .pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
 .pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
 
-/* ── MATURITY ROW — only badge + red amount, no background change ── */
+/* ── MATURITY ROW ── */
 .pay-row-mat{
 border-bottom:1px solid rgba(224,112,112,.12) !important;
 }
@@ -444,60 +444,7 @@ font-size:11px;color:var(--gold);font-weight:700;
     <div class="hero-line"></div>
   </div>
 
-  <!-- 4-tile status strip -->
-
-  <div class="status-strip">
-    <div class="sum-tile grn">
-      <div class="stl">Active</div>
-      <div class="stv" id="s-active">0</div>
-      <div class="sts">obligațiuni</div>
-    </div>
-    <div class="sum-tile gold">
-      <div class="stl">Câștig lunar</div>
-      <div class="stv" id="s-monthly">€0</div>
-      <div class="sts">estimat</div>
-    </div>
-    <div class="sum-tile blu">
-      <div class="stl">În așteptare</div>
-      <div class="stv" id="s-pending">0</div>
-      <div class="sts">neîncepute</div>
-    </div>
-    <div class="sum-tile red">
-      <div class="stl">Expirate</div>
-      <div class="stv" id="s-expired">0</div>
-      <div class="sts">la maturitate</div>
-    </div>
-  </div>
-
-  <!-- Next coupon card -->
-
-  <div class="next-coupon-card">
-    <div class="nccttl">🏷 Următorul cupon</div>
-    <div id="ncc-body"></div>
-  </div>
-
-  <!-- Next maturity card -->
-
-  <div class="mat-next-card">
-    <div class="mnttl">⏰ Prima obligațiune la maturitate</div>
-    <div id="mn-body"></div>
-  </div>
-
-  <!-- This month -->
-
-  <div class="month-card">
-    <div class="mcttl">📆 Luna aceasta</div>
-    <div class="mc-inner">
-      <div>
-        <div class="mctotal" id="mc-total">€0,00</div>
-        <div class="mcsub">de primit în <span id="mc-month">—</span></div>
-      </div>
-      <div class="mcbadge" id="mc-badge">0 plăți</div>
-    </div>
-    <div id="mc-breakdown"></div>
-  </div>
-
-  <!-- Goal -->
+  <!-- 1. Goal -->
 
   <div class="goal-card">
     <div class="gttl">🎯 Obiectiv lunar</div>
@@ -517,7 +464,65 @@ font-size:11px;color:var(--gold);font-weight:700;
     </div>
   </div>
 
-  <!-- Simulator -->
+  <!-- 2. Next coupon card -->
+
+  <div class="next-coupon-card">
+    <div class="nccttl">🏷 Următorul cupon</div>
+    <div id="ncc-body"></div>
+  </div>
+
+  <!-- 3. Active + Câștig lunar -->
+
+  <div class="status-strip">
+    <div class="sum-tile grn">
+      <div class="stl">Active</div>
+      <div class="stv" id="s-active">0</div>
+      <div class="sts">obligațiuni</div>
+    </div>
+    <div class="sum-tile gold">
+      <div class="stl">Câștig lunar</div>
+      <div class="stv" id="s-monthly">€0</div>
+      <div class="sts">estimat</div>
+    </div>
+  </div>
+
+  <!-- 4. This month -->
+
+  <div class="month-card">
+    <div class="mcttl">📆 Luna aceasta</div>
+    <div class="mc-inner">
+      <div>
+        <div class="mctotal" id="mc-total">€0,00</div>
+        <div class="mcsub">de primit în <span id="mc-month">—</span></div>
+      </div>
+      <div class="mcbadge" id="mc-badge">0 plăți</div>
+    </div>
+    <div id="mc-breakdown"></div>
+  </div>
+
+  <!-- 5. Next maturity card -->
+
+  <div class="mat-next-card">
+    <div class="mnttl">⏰ Prima obligațiune la maturitate</div>
+    <div id="mn-body"></div>
+  </div>
+
+  <!-- 6. În așteptare + Expirate -->
+
+  <div class="status-strip">
+    <div class="sum-tile blu">
+      <div class="stl">În așteptare</div>
+      <div class="stv" id="s-pending">0</div>
+      <div class="sts">neîncepute</div>
+    </div>
+    <div class="sum-tile red">
+      <div class="stl">Expirate</div>
+      <div class="stv" id="s-expired">0</div>
+      <div class="sts">la maturitate</div>
+    </div>
+  </div>
+
+  <!-- 7. Simulator -->
 
   <div class="sim-card">
     <div class="sttl">📊 Simulator investiție</div>
@@ -718,7 +723,6 @@ function isActive(b)     { return !isMatured(b) && !isNotStarted(b); }
 function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 12); }
 function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
 
-// ── PAY DATE LOGIC ──
 function getPayDates(b) {
   const start    = new Date(b.start + 'T00:00:00');
   const maturity = new Date(b.mat   + 'T00:00:00');
@@ -1017,8 +1021,12 @@ function toggleForm() {
   if(formOpen){w.classList.add('open');document.getElementById('fttl').textContent='Obligațiune nouă';clearForm();setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),60);}
   else w.classList.remove('open');
 }
-function cancelForm(){formOpen=false;document.getElementById('formwrap').classList.remove('open');clearForm();}
-function clearForm(){document.getElementById('eid').value='';document.getElementById('f-name').value='';document.getElementById('f-start').value='';document.getElementById('f-mat').value='';document.getElementById('f-amt').value='';document.getElementById('f-rate').value='';document.getElementById('f-freq').value='6';}
+function cancelForm() { formOpen=false; document.getElementById('formwrap').classList.remove('open'); clearForm(); }
+function clearForm() {
+  ['f-name','f-start','f-mat','f-amt','f-rate'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-freq').value='6';
+  document.getElementById('eid').value='';
+}
 function saveBond() {
   const name=document.getElementById('f-name').value.trim();
   const start=document.getElementById('f-start').value;
@@ -1026,52 +1034,48 @@ function saveBond() {
   const amt=parseFloat(document.getElementById('f-amt').value);
   const rate=parseFloat(document.getElementById('f-rate').value);
   const freq=document.getElementById('f-freq').value;
-  if(!name||!start||!mat||isNaN(amt)||isNaN(rate)){toast('Te rog completează toate câmpurile corect.');return;}
-  if(new Date(start)>=new Date(mat)){toast('Data start trebuie să fie înainte de maturitate.');return;}
-
-  const b={name,start,mat,amt,rate,freq};
   const eid=document.getElementById('eid').value;
-  if(eid!==''){bonds[parseInt(eid)]=b;toast('Obligațiune actualizată!');}
-  else{bonds.push(b);toast('Obligațiune salvată!');}
-  persist();cancelForm();renderBonds();
+  if(!name||!start||!mat||isNaN(amt)||isNaN(rate)){toast('⚠️ Completează toate câmpurile');return;}
+  if(new Date(mat)<=new Date(start)){toast('Maturitatea trebuie să fie după data de start');return;}
+  const bond={id:eid||Date.now().toString(),name,start,mat,amt,rate,freq};
+  if(eid){const idx=bonds.findIndex(b=>b.id===eid);if(idx!==-1)bonds[idx]=bond;toast('Actualizat ✓');}
+  else{bonds.push(bond);toast('Adăugat ✓');}
+  persist();cancelForm();renderBonds();renderDash();runSim();
 }
-function editBond(idx) {
-  const b=bonds[idx];
-  document.getElementById('eid').value=idx;
-  document.getElementById('f-name').value=b.name;
-  document.getElementById('f-start').value=b.start;
-  document.getElementById('f-mat').value=b.mat;
-  document.getElementById('f-amt').value=b.amt;
-  document.getElementById('f-rate').value=b.rate;
+function editBond(i) {
+  const b=bonds[i];
+  document.getElementById('eid').value=b.id;document.getElementById('f-name').value=b.name;
+  document.getElementById('f-start').value=b.start;document.getElementById('f-mat').value=b.mat;
+  document.getElementById('f-amt').value=b.amt;document.getElementById('f-rate').value=b.rate;
   document.getElementById('f-freq').value=b.freq;
-  formOpen=true;
-  const w=document.getElementById('formwrap');w.classList.add('open');
   document.getElementById('fttl').textContent='Editează obligațiunea';
-  w.scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('formwrap').classList.add('open');formOpen=true;
+  setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
 
-// ── TOAST & OVERLAY ──
-function toast(msg) {
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
-}
-let dIdx=null;
-function confirmDel(idx) {
-  dIdx=idx;
-  document.getElementById('ov-msg').textContent=`Sigur vrei să ștergi obligațiunea "${bonds[idx].name}"?`;
-  document.getElementById('ov-ok').onclick=doDel;
+// ── DELETE ──
+function confirmDel(i) {
+  document.getElementById('ov-ttl').textContent='Ștergi obligațiunea?';
+  document.getElementById('ov-msg').textContent=`"${bonds[i].name}" va fi ștearsă definitiv.`;
+  document.getElementById('ov-ok').onclick=()=>{bonds.splice(i,1);persist();renderBonds();renderDash();runSim();closeOv();toast('Ștearsă');};
   document.getElementById('overlay').classList.add('open');
 }
 function closeOv(){document.getElementById('overlay').classList.remove('open');}
-function doDel(){if(dIdx!==null){bonds.splice(dIdx,1);persist();renderBonds();toast('Obligațiune ștearsă.');}closeOv();}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOv();});
+
+// ── TOAST ──
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2800);
+}
 
 // ── INIT ──
-window.addEventListener('DOMContentLoaded', () => {
-  updateCurrencyUI();
-  updateFormLabels();
-  renderDash();
-  if (goal > 0) document.getElementById('goal-inp').value = goal;
-});
+if(goal>0)document.getElementById('goal-inp').value=goal;
+updateCurrencyUI();
+updateFormLabels();
+renderDash();renderBonds();runSim();
 </script>
+
 </body>
 </html>
