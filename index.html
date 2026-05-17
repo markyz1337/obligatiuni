@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BondFlow</title>
+<link href="[https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap)" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-l: #e8c97a;
+  --gold-pale: #f5e4a8;
+  --gold-dim: rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.24);
+  --bg: #06080e;
+  --card: rgba(255,255,255,0.036);
+  --glass: rgba(255,255,255,0.048);
+  --gborder: rgba(255,255,255,0.085);
+  --ghover: rgba(255,255,255,0.075);
+  --text: #ece8de;
+  --dim: rgba(236,232,222,0.48);
+  --muted: rgba(236,232,222,0.24);
+  --green: #4ecda4;
+  --green-dim: rgba(78,205,164,0.10);
+  --green-border: rgba(78,205,164,0.22);
+  --red: #e07070;
+  --red-dim: rgba(224,112,112,0.10);
+  --red-border: rgba(224,112,112,0.24);
+  --blue: #7eb8f7;
+  --blue-dim: rgba(126,184,247,0.10);
+  --blue-border: rgba(126,184,247,0.22);
+  --r: 22px;
+  --rsm: 14px;
+  --blur: blur(28px);
+  --shadow: 0 12px 48px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overscroll-behavior:none;
+}
+
+/* ambient background */
+body::before{
+content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+background:
+radial-gradient(ellipse 90% 60% at 5% -5%,rgba(201,168,76,0.07) 0%,transparent 60%),
+radial-gradient(ellipse 65% 55% at 95% 105%,rgba(126,184,247,0.05) 0%,transparent 55%),
+radial-gradient(ellipse 55% 50% at 50% 50%,rgba(78,205,164,0.025) 0%,transparent 65%);
+}
+
+/* ── LAYOUT ── */
+#app{position:relative;z-index:1;width:100%;max-width:460px;margin:0 auto;height:100vh;display:flex;flex-direction:column;}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 86px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.scroll-area::-webkit-scrollbar{display:none}
+
+/* ── PANEL ── */
+.panel{display:none;animation:fu .3s ease;}
+.panel.on{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+/* ════════════════════════════════
+DASHBOARD HERO HEADER
+════════════════════════════════ */
+.dash-hero{
+position:relative;
+padding:52px 20px 28px;
+text-align:center;
+overflow:hidden;
+}
+.dash-hero::before{
+content:'';position:absolute;inset:0;
+background:radial-gradient(ellipse 100% 80% at 50% 0%,rgba(201,168,76,0.08) 0%,transparent 70%);
+pointer-events:none;
+}
+.hero-eyebrow{
+font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+color:var(--gold);opacity:.7;margin-bottom:8px;font-weight:500;
+}
+.hero-title{
+font-family:'Cormorant',serif;
+font-size:52px;font-weight:600;letter-spacing:.04em;line-height:1;
+background:linear-gradient(160deg,var(--gold-pale) 0%,var(--gold-l) 45%,var(--gold) 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+margin-bottom:6px;
+}
+.hero-sub{
+font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;
+}
+.hero-line{
+width:40px;height:1px;
+background:linear-gradient(90deg,transparent,var(--gold),transparent);
+margin:14px auto 0;
+opacity:.5;
+}
+
+/* ── SECTION PANEL HEADER (bonds / payments) ── */
+.panel-hdr{
+padding:52px 20px 20px;
+}
+.panel-hdr-title{
+font-family:'Cormorant',serif;
+font-size:34px;font-weight:600;color:var(--text);letter-spacing:.02em;
+}
+.panel-hdr-title span{
+font-style:italic;
+background:linear-gradient(135deg,var(--gold-l),var(--gold));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* ── NAV ── */
+.nav{
+position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+width:100%;max-width:460px;
+background:rgba(6,8,14,0.95);
+border-top:1px solid var(--gborder);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+display:flex;padding:10px 0 22px;z-index:100;
+}
+.nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:5px 0;transition:.2s;}
+.nav-ico{font-size:19px;transition:.2s;}
+.nav-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;font-weight:500;transition:.2s;}
+.nav-it.on .nav-lbl{color:var(--gold);}
+.nav-it.on .nav-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.75));}
+
+/* ── CARD ── */
+.card{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:18px;margin-bottom:13px;
+box-shadow:var(--shadow);
+}
+
+/* ── SUM STRIP ── */
+.sum-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 12px;}
+.sum-tile{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--rsm);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:16px 14px;text-align:center;
+box-shadow:var(--shadow);
+position:relative;overflow:hidden;
+}
+.sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.sum-tile.gold{border-color:var(--gold-border);}
+.sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
+.sum-tile.grn{border-color:var(--green-border);}
+.sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.stl{font-size:9px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;}
+.stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
+.sum-tile.gold .stv{color:var(--gold-l);}
+.sum-tile.grn .stv{color:var(--green);}
+
+/* ── MONTH CARD ── */
+.month-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(78,205,164,.09),rgba(78,205,164,.02));
+border:1px solid var(--green-border);border-radius:var(--r);
+padding:20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.month-card::before{
+content:'';position:absolute;top:-30px;right:-30px;
+width:100px;height:100px;border-radius:50%;
+background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);
+pointer-events:none;
+}
+.mcttl{
+font-family:'Cormorant',serif;font-size:15px;font-weight:600;
+color:var(--green);margin-bottom:12px;letter-spacing:.02em;
+}
+.mc-inner{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.mctotal{font-size:32px;font-weight:700;color:var(--green);letter-spacing:-.02em;line-height:1;}
+.mcsub{font-size:10px;color:rgba(78,205,164,.6);margin-top:4px;letter-spacing:.05em;}
+.mcbadge{
+display:inline-flex;align-items:center;gap:4px;
+background:var(--green-dim);border:1px solid var(--green-border);
+border-radius:50px;padding:5px 13px;font-size:12px;color:var(--green);font-weight:600;
+}
+
+/* ── GOAL CARD ── */
+.goal-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(201,168,76,.09),rgba(201,168,76,.02));
+border:1px solid var(--gold-border);border-radius:var(--r);
+padding:20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.goal-card::before{
+content:'';position:absolute;bottom:-40px;right:-40px;
+width:130px;height:130px;border-radius:50%;
+background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);
+pointer-events:none;
+}
+.gttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;}
+.grow{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
+.gbig{font-size:30px;font-weight:700;color:var(--gold-l);line-height:1;letter-spacing:-.02em;}
+.gof{font-size:10px;color:var(--dim);margin-top:4px;}
+.gpct{font-size:14px;font-weight:700;color:var(--gold);}
+.barwrap{background:rgba(255,255,255,.06);border-radius:50px;height:6px;overflow:hidden;margin-bottom:14px;}
+.barfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .65s cubic-bezier(.4,0,.2,1);}
+.goal-inp-wrap{position:relative;}
+.goal-inp-wrap::before{content:'€';position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:14px;font-weight:600;pointer-events:none;}
+.goal-inp-wrap input{padding-left:28px !important;}
+
+/* ── SIM CARD ── */
+.sim-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(126,184,247,.08),rgba(126,184,247,.02));
+border:1px solid var(--blue-border);border-radius:var(--r);
+padding:20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);
+}
+.sttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--blue);margin-bottom:4px;letter-spacing:.02em;}
+.sdesc{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6;}
+.sim-res{
+background:rgba(126,184,247,.07);border:1px solid var(--blue-border);
+border-radius:var(--rsm);padding:16px;text-align:center;
+}
+.srval{font-size:28px;font-weight:700;color:var(--blue);letter-spacing:-.01em;}
+.srlbl{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5;}
+
+/* ── FIELDS ── */
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
+.field input,.field select{
+width:100%;background:rgba(255,255,255,.04);
+border:1px solid var(--gborder);border-radius:var(--rsm);
+padding:11px 14px;color:var(--text);
+font-family:'Outfit',sans-serif;font-size:15px;
+outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
+-webkit-appearance:none;appearance:none;
+}
+.field input:focus,.field select:focus{
+border-color:var(--gold);
+background:rgba(255,255,255,.065);
+box-shadow:0 0 0 3px rgba(201,168,76,.08);
+}
+.field select option{background:#0c0f1e;}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:13px;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em;}
+.btn-gold{
+background:linear-gradient(135deg,var(--gold-l),var(--gold),#9c7020);
+background-size:200% 200%;background-position:0% 50%;
+color:#050810;
+box-shadow:0 4px 20px rgba(201,168,76,.25);
+}
+.btn-gold:active{transform:scale(.97);box-shadow:0 2px 10px rgba(201,168,76,.15);}
+.btn-out{background:transparent;border:1px solid var(--gborder);color:var(--dim);}
+.btn-out:active{background:var(--ghover);}
+.btn-sm{width:auto;padding:8px 16px;font-size:12px;}
+.btn-del{
+background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);
+font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;
+padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;
+}
+.btn-edt{
+background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);
+font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;
+padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;
+}
+.btn-del:active,.btn-edt:active{transform:scale(.96);}
+
+/* ── BOND CARD ── */
+.bc{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:18px;margin:0 14px 13px;
+box-shadow:var(--shadow);position:relative;overflow:hidden;transition:border-color .25s;
+}
+.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent);opacity:.5;}
+.bc.mat{border-color:var(--red-border);}
+.bc.mat::before{background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.bc.fut{border-color:var(--blue-border);}
+.bc.fut::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+
+.bchd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.bcname{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;}
+.bc-rate-box{text-align:right;}
+.bcrv{font-size:22px;font-weight:700;color:var(--green);letter-spacing:-.01em;}
+.bcrl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+
+.bcgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;}
+.bc-cell{}
+.bclbl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.bcval{font-size:13.5px;font-weight:500;color:var(--text);}
+.bcval.g{color:var(--gold-l);}
+.bcval.grn{color:var(--green);}
+.bcval.blu{color:var(--blue);}
+.bcval.red{color:var(--red);}
+
+.divider-line{height:1px;background:var(--gborder);margin:0 0 13px;}
+
+.bcnext{
+background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);
+border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;
+display:flex;justify-content:space-between;align-items:center;
+}
+.bcnl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.bcnd animate{font-size:14px;font-weight:600;color:var(--gold-l);}
+.bcndays{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-.01em;}
+.bcndl{font-size:9px;color:var(--muted);}
+
+.mat-banner{background:var(--red-dim);border:1px solid var(--red-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--red);text-align:center;margin-bottom:12px;font-weight:500;}
+.fut-banner{background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--blue);text-align:center;margin-bottom:12px;font-weight:500;}
+.bcact{display:flex;gap:8px;}
+
+/* ── FORM ── */
+.formwrap{
+margin:0 14px 13px;
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:0 18px;
+max-height:0;overflow:hidden;
+transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;
+opacity:0;
+}
+.formwrap.open{max-height:1000px;opacity:1;padding:18px;}
+.fttl{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
+.row2{display:flex;gap:9px;}
+.row2 .field{flex:1;}
+
+/* ── PAYMENTS ── */
+.pay-list-wrap{margin:0 14px;}
+.pay-card{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:18px;box-shadow:var(--shadow);
+}
+.pay-month-hdr{
+display:flex;justify-content:space-between;align-items:center;
+padding:0 0 10px;margin-bottom:4px;
+border-bottom:1px solid var(--gold-border);
+}
+.pml{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+.pmv{font-size:13px;font-weight:700;color:var(--gold-l);}
+.pay-row{
+display:flex;justify-content:space-between;align-items:center;
+padding:11px 0;border-bottom:1px solid rgba(255,255,255,.048);
+}
+.pay-row:last-child{border-bottom:none;}
+.pay-date{font-size:14px;font-weight:500;color:var(--text);}
+.pay-bond{font-size:11px;color:var(--muted);margin-top:2px;}
+.pay-days{font-size:10px;color:var(--gold);margin-top:2px;}
+.pay-amt{font-size:16px;font-weight:600;color:var(--green);}
+.pay-dtotal{
+display:flex;justify-content:space-between;align-items:center;
+padding:8px 0 4px;border-top:1px solid var(--gold-border);margin-top:2px;
+}
+.pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
+.pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px 16px;color:var(--muted);}
+.empty-ico{font-size:34px;margin-bottom:10px;}
+.empty p{font-size:13px;line-height:1.7;}
+
+/* ── TOAST ── */
+.toast{
+position:fixed;bottom:106px;left:50%;
+transform:translateX(-50%) translateY(12px);
+background:rgba(12,15,26,.97);
+border:1px solid var(--gborder);border-radius:50px;
+padding:10px 22px;font-size:12px;color:var(--text);
+z-index:200;opacity:0;transition:all .26s;white-space:nowrap;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── OVERLAY ── */
+.overlay{
+position:fixed;inset:0;z-index:150;
+background:rgba(0,0,0,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+display:flex;align-items:flex-end;justify-content:center;
+opacity:0;pointer-events:none;transition:opacity .24s;
+}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{
+background:#0a0d1c;border:1px solid var(--gborder);
+border-radius:var(--r) var(--r) 0 0;
+padding:24px 18px 36px;width:100%;max-width:460px;
+transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.overlay.open .modal{transform:translateY(0);}
+.mttl{font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--gold-l);margin-bottom:6px;}
+.mmsg{font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.55;}
+.mbtns{display:flex;gap:9px;}
+
+/* ── MISC ── */
+.pad14{padding:0 14px;}
+.small{font-size:11px;color:var(--muted);}
+</style>
+
+</head>
+<body>
+<div id="app">
+  <div class="scroll-area" id="scroll-area">
+
+<!-- DASHBOARD -->
+<div class="panel on" id="panel-dashboard">
+
+  <!-- Hero title only on dashboard -->
+  <div class="dash-hero">
+    <div class="hero-eyebrow">Portofoliu personal</div>
+    <div class="hero-title">BondFlow</div>
+    <div class="hero-sub">Obligațiuni de Stat</div>
+    <div class="hero-line"></div>
+  </div>
+
+  <div class="sum-strip">
+    <div class="sum-tile gold">
+      <div class="stl">Câștig lunar</div>
+      <div class="stv" id="s-monthly">€0</div>
+    </div>
+    <div class="sum-tile grn">
+      <div class="stl">Active</div>
+      <div class="stv" id="s-active">0</div>
+    </div>
+  </div>
+
+  <div class="month-card">
+    <div class="mcttl">📆 Luna aceasta</div>
+    <div class="mc-inner">
+      <div>
+        <div class="mctotal" id="mc-total">€0,00</div>
+        <div class="mcsub">de primit în <span id="mc-month">—</span></div>
+      </div>
+      <div class="mcbadge" id="mc-badge">0 plăți</div>
+    </div>
+    <div id="mc-breakdown"></div>
+  </div>
+
+  <div class="goal-card">
+    <div class="gttl">🎯 Obiectiv lunar</div>
+    <div class="grow">
+      <div>
+        <div class="gbig" id="g-cur">€0</div>
+        <div class="gof">din <span id="g-target">€0</span> țintă</div>
+      </div>
+      <div class="gpct" id="g-pct">0%</div>
+    </div>
+    <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
+    <div class="field" style="margin:0;">
+      <label>Obiectiv lunar (€)</label>
+      <div class="goal-inp-wrap">
+        <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
+      </div>
+    </div>
+  </div>
+
+  <div class="sim-card">
+    <div class="sttl">📊 Simulator investiție</div>
+    <div class="sdesc">Cât trebuie să investești într-un cupon nou pentru a atinge obiectivul lunar.</div>
+    <div class="field">
+      <label>Rata cuponului nou (%/an)</label>
+      <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
+    </div>
+    <div class="sim-res">
+      <div class="srval" id="sim-val">—</div>
+      <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
+    </div>
+  </div>
+
+</div><!-- /dashboard -->
+
+<!-- BONDS -->
+<div class="panel" id="panel-bonds">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
+  </div>
+  <div class="pad14" style="margin-bottom:13px;">
+    <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
+  </div>
+
+  <div class="formwrap" id="formwrap">
+    <div class="fttl" id="fttl">Obligațiune nouă</div>
+    <input type="hidden" id="eid">
+    <div class="field">
+      <label>Denumire</label>
+      <input type="text" id="f-name" placeholder="ex: FIDELIS 2027">
+    </div>
+    <div class="row2">
+      <div class="field"><label>Data start</label><input type="date" id="f-start"></div>
+      <div class="field"><label>Maturitate</label><input type="date" id="f-mat"></div>
+    </div>
+    <div class="field">
+      <label>Suma investită (€)</label>
+      <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
+    </div>
+    <div class="field">
+      <label>Rata cuponului (%/an)</label>
+      <input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01">
+    </div>
+    <div class="field">
+      <label>Interval plată cupon</label>
+      <select id="f-freq">
+        <option value="6">La 6 luni</option>
+        <option value="3">La 3 luni</option>
+        <option value="12">La 12 luni</option>
+        <option value="1">Lunar</option>
+      </select>
+    </div>
+    <div class="row2">
+      <button class="btn btn-gold" onclick="saveBond()">Salvează</button>
+      <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
+    </div>
+  </div>
+
+  <div id="bonds-list"></div>
+</div><!-- /bonds -->
+
+<!-- PAYMENTS -->
+<div class="panel" id="panel-payments">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
+  </div>
+  <div class="pay-list-wrap">
+    <div class="pay-card" id="pay-list"></div>
+  </div>
+</div><!-- /payments -->
+
+  </div><!-- /scroll-area -->
+</div><!-- /app -->
+
+<!-- NAV -->
+
+<div class="nav">
+  <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
+  <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
+  <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
+</div>
+
+<!-- OVERLAY -->
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mttl" id="ov-ttl">Confirmare</div>
+    <div class="mmsg" id="ov-msg"></div>
+    <div class="mbtns">
+      <button class="btn btn-del" id="ov-ok">Șterge</button>
+      <button class="btn btn-out" onclick="closeOv()">Anulează</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+let bonds = JSON.parse(localStorage.getItem('bf3_bonds') || '[]');
+let goal  = parseFloat(localStorage.getItem('bf3_goal') || '0');
+function persist() { localStorage.setItem('bf3_bonds', JSON.stringify(bonds)); }
+
+// ── TABS ──
+function sw(tab, idx) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nav-it').forEach(n => n.classList.remove('on'));
+  document.getElementById('panel-' + tab).classList.add('on');
+  document.querySelectorAll('.nav-it')[idx].classList.add('on');
+  document.getElementById('scroll-area').scrollTop = 0;
+  if (tab === 'payments') renderPayments();
+  if (tab === 'dashboard') renderDash();
+  if (tab === 'bonds') renderBonds();
+}
+
+// ── UTILS ──
+function eur(n) {
+  if (isNaN(n) || n === null) return '€0,00';
+  return '€' + n.toLocaleString('ro-RO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+function fmtD(s) {
+  if (!s) return '—';
+  return new Date(s + 'T00:00:00').toLocaleDateString('ro-RO', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+function today0() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+function daysDiff(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00'); d.setHours(0,0,0,0);
+  return Math.ceil((d - today0()) / 86400000);
+}
+function isMatured(b)    { return new Date(b.mat   + 'T00:00:00') < today0(); }
+function isNotStarted(b) { return new Date(b.start + 'T00:00:00') > today0(); }
+function isActive(b)     { return !isMatured(b) && !isNotStarted(b); }
+function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 12); }
+function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
+
+function getPayDates(b) {
+  const start     = new Date(b.start + 'T00:00:00');
+  const maturity  = new Date(b.mat   + 'T00:00:00');
+  const freq      = parseInt(b.freq);
+  const anchorDay = start.getDate();
+  const baseY     = start.getFullYear();
+  const baseM     = start.getMonth();
+  const dates     = [];
+  let step = 1;
+  while (true) {
+    const totalMonths = baseM + step * freq;
+    const y = baseY + Math.floor(totalMonths / 12);
+    const m = totalMonths % 12;
+    const maxDay = new Date(y, m + 1, 0).getDate();
+    const d = new Date(y, m, Math.min(anchorDay, maxDay));
+    if (d > maturity) break;
+    dates.push(d);
+    step++;
+  }
+  const lastMs = dates.length ? dates[dates.length - 1].getTime() : 0;
+  if (lastMs !== maturity.getTime()) dates.push(new Date(maturity));
+  return dates;
+}
+function nextPay(b)        { const t = today0(); return getPayDates(b).find(d => d >= t) || null; }
+function paysLeft(b)       { return getPayDates(b).filter(d => d >= today0()).length; }
+function totalReceived(b)  { return getPayDates(b).filter(d => d < today0()).length * couponVal(b); }
+function totalRemaining(b) { return paysLeft(b) * couponVal(b); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function monthName(d) { return d.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }); }
+function sortedBonds() {
+  return [...bonds.filter(isMatured), ...bonds.filter(isNotStarted), ...bonds.filter(isActive)];
+}
+
+// ── GOAL ──
+function saveGoal() {
+  const v = parseFloat(document.getElementById('goal-inp').value);
+  goal = (!isNaN(v) && v > 0) ? v : 0;
+  if (goal) localStorage.setItem('bf3_goal', goal);
+  else localStorage.removeItem('bf3_goal');
+  renderDash();
+  runSim();
+}
+
+// ── SIMULATOR ──
+function runSim() {
+  const rate = parseFloat(document.getElementById('sim-rate').value);
+  const sv = document.getElementById('sim-val');
+  const sl = document.getElementById('sim-lbl');
+  if (!goal && isNaN(rate)) { sv.textContent='—'; sl.textContent='introdu rata cuponului și obiectivul'; return; }
+  if (!goal) { sv.textContent='—'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
+  if (isNaN(rate) || rate <= 0) { sv.textContent='—'; sl.textContent='introdu rata cuponului nou'; return; }
+  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+  const gap = goal - curMo;
+  if (gap <= 0) {
+    sv.textContent = '🎉 Obiectiv atins!';
+    sl.textContent = `Câștigi deja ${eur(curMo)}/lună`;
+  } else {
+    sv.textContent = eur(gap / (rate / 100 / 12));
+    sl.textContent = `de investit la ${rate}% pentru +${eur(gap)}/lună`;
+  }
+}
+
+// ── DASHBOARD ──
+function renderDash() {
+  const active  = bonds.filter(isActive);
+  const monthly = active.reduce((s,b) => s + monthlyVal(b), 0);
+  document.getElementById('s-monthly').textContent = eur(monthly);
+  document.getElementById('s-active').textContent  = active.length;
+  document.getElementById('g-cur').textContent     = eur(monthly);
+  document.getElementById('g-target').textContent  = eur(goal);
+  const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
+  document.getElementById('g-bar').style.width = pct + '%';
+  document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
+  if (goal > 0 && !document.getElementById('goal-inp').value)
+    document.getElementById('goal-inp').value = goal;
+
+  const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
+  let pays = [];
+  bonds.forEach(b => {
+    const val = couponVal(b);
+    getPayDates(b).forEach(d => {
+      if (d.getFullYear()===cy && d.getMonth()===cm) pays.push({bond:b.name,date:d,amt:val});
+    });
+  });
+  pays.sort((a,b)=>a.date-b.date);
+  const mTotal = pays.reduce((s,p)=>s+p.amt,0);
+  document.getElementById('mc-badge').textContent = pays.length + ' plăți';
+  document.getElementById('mc-total').textContent = eur(mTotal);
+  document.getElementById('mc-month').textContent = monthName(now);
+  const bd = document.getElementById('mc-breakdown');
+  if (!pays.length) {
+    bd.innerHTML = '<div class="small" style="margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);">Nicio plată în această lună.</div>';
+  } else {
+    bd.innerHTML = '<div style="border-top:1px solid rgba(78,205,164,.15);margin-top:2px;padding-top:8px;">' +
+      pays.map(p=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;">
+        <div><div style="font-size:12px;color:var(--text);">${esc(p.bond)}</div><div style="font-size:10px;color:rgba(78,205,164,.55);">${fmtD(p.date.toISOString().split('T')[0])}</div></div>
+        <div style="font-size:13px;font-weight:600;color:var(--green);">${eur(p.amt)}</div>
+      </div>`).join('') + '</div>';
+  }
+}
+
+// ── BONDS ──
+function renderBonds() {
+  const el = document.getElementById('bonds-list');
+  if (!bonds.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">📄</div><p>Nicio obligațiune adăugată.<br>Apasă butonul de mai sus.</p></div>';
+    return;
+  }
+  el.innerHTML = sortedBonds().map(b => bondCard(b, bonds.indexOf(b))).join('');
+}
+
+function bondCard(b, ri) {
+  const mat  = isMatured(b); const fut = isNotStarted(b);
+  const next = nextPay(b);
+  const days = next ? daysDiff(next.toISOString().split('T')[0]) : null;
+
+  let banner = '';
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate — o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă — start: ${fmtD(b.start)}</div>`;
+
+  let nextBlock = '';
+  if (!mat && !fut && next) {
+    nextBlock = `<div class="bcnext">
+      <div><div class="bcnl">Următoarea plată</div><div class="bcnd">${fmtD(next.toISOString().split('T')[0])}</div></div>
+      <div style="text-align:right"><div class="bcndays">${days}</div><div class="bcndl">zile rămase</div></div>
+    </div>`;
+  }
+
+  return `<div class="bc ${mat?'mat':(fut?'fut':'')}">
+    ${banner}
+    <div class="bchd">
+      <div class="bcname">${esc(b.name)}</div>
+      <div class="bc-rate-box"><div class="bcrv">${b.rate}%</div><div class="bcrl">cupon/an</div></div>
+    </div>
+    <div class="bcgrid">
+      <div class="bc-cell"><div class="bclbl">Sumă investită</div><div class="bcval g">${eur(b.amt)}</div></div>
+      <div class="bc-cell"><div class="bclbl">Câștig/lună</div><div class="bcval grn">${eur(monthlyVal(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Valoare cupon</div><div class="bcval blu">${eur(couponVal(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Interval</div><div class="bcval">${b.freq==='1'?'Lunar':'La '+b.freq+' luni'}</div></div>
+      <div class="bc-cell"><div class="bclbl">Plăți rămase</div><div class="bcval">${paysLeft(b)}</div></div>
+      <div class="bc-cell"><div class="bclbl">Total rămas</div><div class="bcval g">${eur(totalRemaining(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Primit până acum</div><div class="bcval grn">${eur(totalReceived(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Maturitate</div><div class="bcval">${fmtD(b.mat)}</div></div>
+    </div>
+    <div class="divider-line"></div>
+    ${nextBlock}
+    <div class="bcact">
+      <button class="btn-edt" onclick="editBond(${ri})">✏️ Editează</button>
+      <button class="btn-del" onclick="confirmDel(${ri})">🗑️ Șterge</button>
+    </div>
+  </div>`;
+}
+
+// ── PAYMENTS ──
+function renderPayments() {
+  const el = document.getElementById('pay-list');
+  const t  = today0();
+  let all  = [];
+  bonds.forEach(b => {
+    const val = couponVal(b);
+    getPayDates(b).forEach(d => { if (d>=t) all.push({date:d,bond:b.name,amt:val}); });
+  });
+  if (!all.length) { el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>'; return; }
+  all.sort((a,b)=>a.date-b.date);
+  const grp = {};
+  all.forEach(p => { const k=p.date.toISOString().split('T')[0]; if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
+  const now = new Date(); let inThisMonth=false; const keys=Object.keys(grp).sort();
+  let html='';
+  keys.forEach(k => {
+    const g=grp[k]; const d=g.date; const dys=daysDiff(k);
+    const isThisM=d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+    if (isThisM && !inThisMonth) {
+      inThisMonth=true;
+      const mTotal=keys.filter(kk=>{const dd=grp[kk].date;return dd.getFullYear()===now.getFullYear()&&dd.getMonth()===now.getMonth();})
+        .reduce((s,kk)=>s+grp[kk].items.reduce((ss,ii)=>ss+ii.amt,0),0);
+      html+=`<div class="pay-month-hdr"><div class="pml">Luna curentă</div><div class="pmv">${eur(mTotal)}</div></div>`;
+    }
+    g.items.forEach((item,idx) => {
+      html+=`<div class="pay-row">
+        <div>
+          ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
+          <div class="pay-bond">${esc(item.bond)}</div>
+        </div>
+        <div style="text-align:right"><div class="pay-amt">${eur(item.amt)}</div></div>
+      </div>`;
+    });
+    if (g.items.length>1) {
+      const dt=g.items.reduce((s,i)=>s+i.amt,0);
+      html+=`<div class="pay-dtotal"><div class="pay-dtl">Total ${fmtD(k)}</div><div class="pay-dtv">${eur(dt)}</div></div>`;
+    }
+  });
+  el.innerHTML=html;
+}
+
+// ── FORM ──
+let formOpen=false;
+function toggleForm() {
+  formOpen=!formOpen;
+  const w=document.getElementById('formwrap');
+  if(formOpen){w.classList.add('open');document.getElementById('fttl').textContent='Obligațiune nouă';clearForm();setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),60);}
+  else w.classList.remove('open');
+}
+function cancelForm() { formOpen=false; document.getElementById('formwrap').classList.remove('open'); clearForm(); }
+function clearForm() {
+  ['f-name','f-start','f-mat','f-amt','f-rate'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-freq').value='6';
+  document.getElementById('eid').value='';
+}
+function saveBond() {
+  const name=document.getElementById('f-name').value.trim();
+  const start=document.getElementById('f-start').value;
+  const mat=document.getElementById('f-mat').value;
+  const amt=parseFloat(document.getElementById('f-amt').value);
+  const rate=parseFloat(document.getElementById('f-rate').value);
+  const freq=document.getElementById('f-freq').value;
+  const eid=document.getElementById('eid').value;
+  if(!name||!start||!mat||isNaN(amt)||isNaN(rate)){toast('⚠️ Completează toate câmpurile');return;}
+  if(new Date(mat)<=new Date(start)){toast('Maturitatea trebuie să fie după data de start');return;}
+  const bond={id:eid||Date.now().toString(),name,start,mat,amt,rate,freq};
+  if(eid){const idx=bonds.findIndex(b=>b.id===eid);if(idx!==-1)bonds[idx]=bond;toast('Actualizat ✓');}
+  else{bonds.push(bond);toast('Adăugat ✓');}
+  persist();cancelForm();renderBonds();renderDash();runSim();
+}
+function editBond(i) {
+  const b=bonds[i];
+  document.getElementById('eid').value=b.id;document.getElementById('f-name').value=b.name;
+  document.getElementById('f-start').value=b.start;document.getElementById('f-mat').value=b.mat;
+  document.getElementById('f-amt').value=b.amt;document.getElementById('f-rate').value=b.rate;
+  document.getElementById('f-freq').value=b.freq;
+  document.getElementById('fttl').textContent='Editează obligațiunea';
+  document.getElementById('formwrap').classList.add('open');formOpen=true;
+  setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
+}
+
+// ── DELETE ──
+function confirmDel(i) {
+  document.getElementById('ov-ttl').textContent='Ștergi obligațiunea?';
+  document.getElementById('ov-msg').textContent=`"${bonds[i].name}" va fi ștearsă definitiv.`;
+  document.getElementById('ov-ok').onclick=()=>{bonds.splice(i,1);persist();renderBonds();renderDash();runSim();closeOv();toast('Ștearsă');};
+  document.getElementById('overlay').classList.add('open');
+}
+function closeOv(){document.getElementById('overlay').classList.remove('open');}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOv();});
+
+// ── TOAST ──
+let toastT;
+function toast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+// ── INIT ──
+if(goal>0)document.getElementById('goal-inp').value=goal;
+renderDash();renderBonds();runSim();
+</script>
+
+</body>
+</html>
