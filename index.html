@@ -9,7 +9,7 @@ document.addEventListener('touchmove', function(e){ if(e.touches.length>1) e.pre
 document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
 </script>
 <title>BondFlow</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
   --gold: #c9a84c;
@@ -77,7 +77,7 @@ pointer-events:none;
 }
 .hero-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:8px;font-weight:500;}
 .hero-title{
-font-family:'Cormorant',serif;font-size:52px;font-weight:600;letter-spacing:.04em;line-height:1;
+font-family:'DM Serif Display',serif;font-size:52px;letter-spacing:.04em;line-height:1;
 background:linear-gradient(160deg,var(--gold-pale) 0%,var(--gold-l) 45%,var(--gold) 100%);
 -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;
 }
@@ -86,7 +86,7 @@ background:linear-gradient(160deg,var(--gold-pale) 0%,var(--gold-l) 45%,var(--go
 
 /* ── PANEL HEADER ── */
 .panel-hdr{padding:52px 20px 20px;}
-.panel-hdr-title{font-family:'Cormorant',serif;font-size:34px;font-weight:600;color:var(--text);letter-spacing:.02em;}
+.panel-hdr-title{font-family:'DM Serif Display',serif;font-size:34px;color:var(--text);letter-spacing:.02em;}
 .panel-hdr-title span{font-style:italic;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
 /* ── NAV ── */
@@ -112,13 +112,13 @@ padding:14px 12px;text-align:center;box-shadow:var(--shadow);
 position:relative;overflow:hidden;
 }
 .sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
-.sum-tile.gold {border-color:var(--gold-border);}
+.sum-tile.gold{border-color:var(--gold-border);}
 .sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
-.sum-tile.grn {border-color:var(--green-border);}
+.sum-tile.grn{border-color:var(--green-border);}
 .sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
-.sum-tile.red {border-color:var(--red-border);}
+.sum-tile.red{border-color:var(--red-border);}
 .sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.sum-tile.blu {border-color:var(--blue-border);}
+.sum-tile.blu{border-color:var(--blue-border);}
 .sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
 .stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 .stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
@@ -146,7 +146,7 @@ content:'';position:absolute;top:-20px;left:-20px;
 width:110px;height:110px;border-radius:50%;
 background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%);pointer-events:none;
 }
-.nccttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--gold-l);margin-bottom:13px;letter-spacing:.02em;}
+.nccttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:13px;letter-spacing:.02em;}
 .ncc-body{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
 .ncc-days-wrap{}
 .ncc-days{font-size:44px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-.03em;}
@@ -171,9 +171,9 @@ content:'';position:absolute;bottom:-25px;right:-25px;
 width:100px;height:100px;border-radius:50%;
 background:radial-gradient(circle,rgba(224,112,112,.12),transparent 70%);pointer-events:none;
 }
-.mnttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--red);margin-bottom:11px;letter-spacing:.02em;}
+.mnttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--red);margin-bottom:11px;letter-spacing:.02em;}
 .mn-body{display:flex;align-items:flex-end;justify-content:space-between;}
-.mn-name{font-size:17px;font-weight:600;color:var(--text);font-family:'Cormorant',serif;letter-spacing:.01em;}
+.mn-name{font-size:17px;color:var(--text);font-family:'DM Serif Display',serif;letter-spacing:.01em;font-feature-settings:"lnum" 1,"tnum" 1;}
 .mn-sub{font-size:11px;color:var(--dim);margin-top:3px;}
 .mn-right{text-align:right;}
 .mn-days{font-size:26px;font-weight:700;color:var(--red);letter-spacing:-.02em;line-height:1;}
@@ -193,7 +193,7 @@ box-shadow:var(--shadow);position:relative;overflow:hidden;
 content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
 background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-events:none;
 }
-.mcttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--green);margin-bottom:12px;letter-spacing:.02em;}
+.mcttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--green);margin-bottom:12px;letter-spacing:.02em;}
 .mc-inner{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
 .mctotal{font-size:32px;font-weight:700;color:var(--green);letter-spacing:-.02em;line-height:1;}
 .mcsub{font-size:10px;color:rgba(78,205,164,.6);margin-top:4px;letter-spacing:.05em;}
@@ -211,7 +211,7 @@ box-shadow:var(--shadow);position:relative;overflow:hidden;
 content:'';position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;border-radius:50%;
 background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-events:none;
 }
-.gttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;}
+.gttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;}
 .grow{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
 .gbig{font-size:30px;font-weight:700;color:var(--gold-l);line-height:1;letter-spacing:-.02em;}
 .gof{font-size:10px;color:var(--dim);margin-top:4px;}
@@ -232,7 +232,7 @@ border:1px solid var(--blue-border);border-radius:var(--r);
 padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
 box-shadow:var(--shadow);
 }
-.sttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--blue);margin-bottom:4px;letter-spacing:.02em;}
+.sttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--blue);margin-bottom:4px;letter-spacing:.02em;}
 .sdesc{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6;}
 .sim-res{
 background:rgba(126,184,247,.07);border:1px solid var(--blue-border);
@@ -282,7 +282,7 @@ padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overf
 .bc.fut::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
 
 .bchd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
-.bcname{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;}
+.bcname{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;font-feature-settings:"lnum" 1,"tnum" 1;}
 .bc-rate-box{text-align:right;}
 .bcrv{font-size:22px;font-weight:700;color:var(--green);letter-spacing:-.01em;}
 .bcrl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
@@ -320,7 +320,7 @@ padding:0 18px;max-height:0;overflow:hidden;
 transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
 }
 .formwrap.open{max-height:1000px;opacity:1;padding:18px;}
-.fttl{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
+.fttl{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
 .row2{display:flex;gap:9px;}
 .row2 .field{flex:1;}
 
@@ -384,7 +384,7 @@ padding:24px 18px 36px;width:100%;max-width:460px;
 transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
 .overlay.open .modal{transform:translateY(0);}
-.mttl{font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--gold-l);margin-bottom:6px;}
+.mttl{font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold-l);margin-bottom:6px;}
 .mmsg{font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.55;}
 .mbtns{display:flex;gap:9px;}
 
@@ -397,7 +397,7 @@ background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
 backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
 padding:22px;box-shadow:var(--shadow);
 }
-.sc-ttl{font-family:'Cormorant',serif;font-size:18px;font-weight:600;color:var(--gold-l);margin-bottom:8px;letter-spacing:.02em;}
+.sc-ttl{font-family:'DM Serif Display',serif;font-size:18px;color:var(--gold-l);margin-bottom:8px;letter-spacing:.02em;}
 .sc-desc{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:20px;}
 .currency-toggle{
 display:grid;grid-template-columns:1fr auto 1fr;
@@ -420,7 +420,7 @@ position:relative;
 content:'✓';position:absolute;top:8px;right:10px;
 font-size:11px;color:var(--gold);font-weight:700;
 }
-.ct-sym{font-family:'Cormorant',serif;font-size:26px;font-weight:700;color:var(--muted);margin-bottom:4px;transition:color .2s;}
+.ct-sym{font-family:'DM Serif Display',serif;font-size:26px;color:var(--muted);margin-bottom:4px;transition:color .2s;}
 .ct-name{font-size:11px;color:var(--muted);font-weight:500;transition:color .2s;}
 .ct-code{font-size:9px;color:var(--muted);letter-spacing:.12em;margin-top:2px;transition:color .2s;}
 .ct-divider{width:1px;background:var(--gborder);margin:12px 0;}
@@ -444,22 +444,33 @@ font-size:11px;color:var(--gold);font-weight:700;
     <div class="hero-line"></div>
   </div>
 
-  <!-- 1. Goal -->
+  <!-- 1. Goal + Simulator integrat -->
 
   <div class="goal-card">
-    <div class="gttl">🎯 Obiectiv lunar</div>
+    <div class="gttl">&#127919; Obiectiv lunar</div>
     <div class="grow">
       <div>
-        <div class="gbig" id="g-cur">€0</div>
-        <div class="gof">din <span id="g-target">€0</span> țintă</div>
+        <div class="gbig" id="g-cur">&#8364;0</div>
+        <div class="gof">din <span id="g-target">&#8364;0</span> &#x21B3; tint&#x103;</div>
       </div>
       <div class="gpct" id="g-pct">0%</div>
     </div>
     <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
-    <div class="field" style="margin:0;">
-      <label id="goal-label">Obiectiv lunar (€)</label>
+    <div class="field" style="margin:0 0 12px;">
+      <label id="goal-label">Obiectiv lunar (&#8364;)</label>
       <div class="goal-inp-wrap">
         <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;">
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">&#128202; Simulator &mdash; c&acirc;t s&#x103; investești</div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Rata cuponului nou (%/an)</label>
+        <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
+      </div>
+      <div class="sim-res" id="sim-res-box" style="display:none;">
+        <div class="srval" id="sim-val">&mdash;</div>
+        <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
       </div>
     </div>
   </div>
@@ -467,74 +478,50 @@ font-size:11px;color:var(--gold);font-weight:700;
   <!-- 2. Next coupon card -->
 
   <div class="next-coupon-card">
-    <div class="nccttl">🏷 Următorul cupon</div>
+    <div class="nccttl">&#127991; Urm&#x103;torul cupon</div>
     <div id="ncc-body"></div>
   </div>
 
-  <!-- 3. Active + Câștig lunar -->
+  <!-- 3. In asteptare (stanga) + Active (dreapta) -->
 
   <div class="status-strip">
+    <div class="sum-tile blu">
+      <div class="stl">&Icirc;n a&#x219;teptare</div>
+      <div class="stv" id="s-pending">0</div>
+      <div class="sts">ne&icirc;ncepute</div>
+    </div>
     <div class="sum-tile grn">
       <div class="stl">Active</div>
       <div class="stv" id="s-active">0</div>
-      <div class="sts">obligațiuni</div>
-    </div>
-    <div class="sum-tile gold">
-      <div class="stl">Câștig lunar</div>
-      <div class="stv" id="s-monthly">€0</div>
-      <div class="sts">estimat</div>
+      <div class="sts">obliga&#x21B;iuni</div>
     </div>
   </div>
 
   <!-- 4. This month -->
 
   <div class="month-card">
-    <div class="mcttl">📆 Luna aceasta</div>
+    <div class="mcttl">&#128198; Luna aceasta</div>
     <div class="mc-inner">
       <div>
-        <div class="mctotal" id="mc-total">€0,00</div>
-        <div class="mcsub">de primit în <span id="mc-month">—</span></div>
+        <div class="mctotal" id="mc-total">&#8364;0,00</div>
+        <div class="mcsub">de primit &icirc;n <span id="mc-month">&mdash;</span></div>
       </div>
-      <div class="mcbadge" id="mc-badge">0 plăți</div>
+      <div class="mcbadge" id="mc-badge">0 pl&#x103;&#x21B;i</div>
     </div>
     <div id="mc-breakdown"></div>
   </div>
 
-  <!-- 5. Next maturity card -->
+  <!-- 5. Next maturity card + Expirate integrate -->
 
   <div class="mat-next-card">
-    <div class="mnttl">⏰ Prima obligațiune la maturitate</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;">
+      <div class="mnttl" style="margin-bottom:0;">&#9200; Prima obliga&#x21B;iune la maturitate</div>
+      <div style="display:inline-flex;align-items:center;gap:4px;background:var(--red-dim);border:1px solid var(--red-border);border-radius:50px;padding:3px 8px;flex-shrink:0;margin-left:10px;">
+        <span style="font-size:10px;color:rgba(224,112,112,.6);">expirate</span>
+        <span style="font-size:10px;font-weight:700;color:var(--red);" id="s-expired">0</span>
+      </div>
+    </div>
     <div id="mn-body"></div>
-  </div>
-
-  <!-- 6. În așteptare + Expirate -->
-
-  <div class="status-strip">
-    <div class="sum-tile blu">
-      <div class="stl">În așteptare</div>
-      <div class="stv" id="s-pending">0</div>
-      <div class="sts">neîncepute</div>
-    </div>
-    <div class="sum-tile red">
-      <div class="stl">Expirate</div>
-      <div class="stv" id="s-expired">0</div>
-      <div class="sts">la maturitate</div>
-    </div>
-  </div>
-
-  <!-- 7. Simulator -->
-
-  <div class="sim-card">
-    <div class="sttl">📊 Simulator investiție</div>
-    <div class="sdesc">Cât trebuie să investești într-un cupon nou pentru a atinge obiectivul lunar.</div>
-    <div class="field">
-      <label>Rata cuponului nou (%/an)</label>
-      <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
-    </div>
-    <div class="sim-res" id="sim-res-box">
-      <div class="srval" id="sim-val">—</div>
-      <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
-    </div>
   </div>
 
 </div><!-- /dashboard -->
@@ -781,6 +768,7 @@ function runSim() {
   const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
 
   if (goal > 0 && curMo >= goal) {
+    box.style.display = '';
     box.classList.add('achieved');
     sv.textContent = '🎉 Obiectiv atins!';
     sl.textContent = `Câștigi deja ${fmt(curMo)}/lună față de ținta ${fmt(goal)}`;
@@ -788,11 +776,11 @@ function runSim() {
   }
   box.classList.remove('achieved');
 
-  if (!goal && isNaN(rate)) { sv.textContent='—'; sl.textContent='introdu rata cuponului și obiectivul'; return; }
-  if (!goal) { sv.textContent='—'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
-  if (isNaN(rate) || rate <= 0) { sv.textContent='—'; sl.textContent='introdu rata cuponului nou'; return; }
+  if (isNaN(rate) || rate <= 0) { box.style.display = 'none'; return; }
 
-  const gap = goal - curMo;
+  box.style.display = '';
+  const gap = goal > 0 ? goal - curMo : 0;
+  if (!goal) { sv.textContent='—'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
   sv.textContent = fmt(gap / (rate / 100 / 12));
   sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
 }
@@ -805,7 +793,6 @@ function renderDash() {
   const monthly  = active.reduce((s,b) => s + monthlyVal(b), 0);
 
   document.getElementById('s-active').textContent  = active.length;
-  document.getElementById('s-monthly').textContent = fmt(monthly);
   document.getElementById('s-pending').textContent = pending.length;
   document.getElementById('s-expired').textContent = expired.length;
 
