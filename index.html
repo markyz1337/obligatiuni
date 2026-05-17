@@ -510,12 +510,11 @@ margin-bottom:14px;
 <div class="row2">
   <div class="field">
     <label>Data start</label>
-    <!-- Am adăugat inputmode="decimal" pentru tastatură numerică cu simboluri -->
-    <input type="text" id="f-start" inputmode="decimal" placeholder="ZZ-LL-AAAA (ex: 17-05-2026)">
+    <input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
   </div>
   <div class="field">
     <label>Maturitate</label>
-    <input type="text" id="f-mat" inputmode="decimal" placeholder="ZZ-LL-AAAA (ex: 17-05-2029)">
+    <input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
   </div>
 </div>
     <div class="field">
@@ -1127,13 +1126,11 @@ function clearForm() {
 }
 
 
-// Funcție care transformă DD-MM-YYYY în YYYY-MM-DD pentru baza de date și invers
 function importDateFormat(str) {
   if (!str) return '';
-  const curat = str.replace(/[\/\.]/g, '-'); // Permite și puncte sau slash-uri
-  const parti = curat.split('-');
+  const parti = str.split('-');
   if (parti.length === 3 && parti[2].length === 4) {
-    return `${parti[2]}-${parti[1]}-${parti[0]}`; // Întoarce YYYY-MM-DD
+    return `${parti[2]}-${parti[1]}-${parti[0]}`; // Traduce corect în YYYY-MM-DD
   }
   return str;
 }
@@ -1185,7 +1182,19 @@ async function saveBond() {
 }
 
 
-
+function formatDateInput(input) {
+  // Eliminăm orice caracter care nu este cifră
+  let v = input.value.replace(/\D/g, '');
+  
+  // Reconstruim textul cu cratime automate pe măsură ce utilizatorul tastează
+  if (v.length > 2 && v.length <= 4) {
+    input.value = v.slice(0, 2) + '-' + v.slice(2);
+  } else if (v.length > 4) {
+    input.value = v.slice(0, 2) + '-' + v.slice(2, 4) + '-' + v.slice(4, 8);
+  } else {
+    input.value = v;
+  }
+}
 
 // ══════════════════════════════════════════════
 //  EDIT
