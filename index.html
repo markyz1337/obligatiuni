@@ -310,6 +310,91 @@ transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opa
 .row2{display:flex;gap:9px;}
 .row2 .field{flex:1;}
 
+/* ── BONDS SUMMARY BAR ── */
+.bonds-summary-bar{
+margin:0 14px 14px;
+background:linear-gradient(145deg,rgba(201,168,76,.10),rgba(201,168,76,.02));
+border:1px solid var(--gold-border);
+border-radius:var(--r);
+padding:18px 20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);
+position:relative;overflow:hidden;
+transition:opacity .22s, transform .22s;
+}
+.bonds-summary-bar::before{
+content:'';position:absolute;top:0;left:0;right:0;height:1px;
+background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
+}
+.bsb-ttl{font-family:'DM Serif Display',serif;font-size:13px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;opacity:.8;}
+.bsb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.bsb-item{}
+.bsb-lbl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.bsb-val{font-size:19px;font-weight:700;letter-spacing:-.01em;}
+.bsb-val.gold{color:var(--gold-l);}
+.bsb-val.green{color:var(--green);}
+.bsb-val.blue{color:var(--blue);}
+.bsb-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* ── SEARCH BAR ── */
+.search-wrap{
+margin:0 14px 12px;
+position:relative;
+}
+.search-wrap::before{
+content:'🔍';
+position:absolute;left:14px;top:50%;transform:translateY(-50%);
+font-size:14px;pointer-events:none;
+filter:grayscale(1) opacity(.45);
+}
+.search-inp{
+width:100%;
+background:rgba(255,255,255,.04);
+border:1px solid var(--gborder);
+border-radius:50px;
+padding:11px 14px 11px 40px;
+color:var(--text);
+font-family:'Outfit',sans-serif;
+font-size:14px;
+outline:none;
+transition:border-color .2s,background .2s,box-shadow .2s;
+-webkit-appearance:none;appearance:none;
+}
+.search-inp:focus{
+border-color:var(--gold);
+background:rgba(255,255,255,.065);
+box-shadow:0 0 0 3px rgba(201,168,76,.08);
+}
+.search-inp::placeholder{color:var(--muted);}
+.search-clear{
+position:absolute;right:14px;top:50%;transform:translateY(-50%);
+background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;
+padding:4px;line-height:1;display:none;
+}
+.search-clear.vis{display:block;}
+.search-count{
+font-size:10px;color:var(--muted);text-align:center;
+padding:0 0 8px;letter-spacing:.06em;
+}
+
+/* ── Search hide targets ── */
+#bonds-add-btn-wrap,
+#bonds-summary-bar {
+transition: opacity .22s, max-height .28s cubic-bezier(.4,0,.2,1), margin .28s;
+overflow: hidden;
+}
+#bonds-add-btn-wrap.search-hidden,
+#bonds-summary-bar.search-hidden {
+opacity: 0;
+max-height: 0 !important;
+margin-top: 0 !important;
+margin-bottom: 0 !important;
+pointer-events: none;
+}
+#bonds-add-btn-wrap {
+max-height: 80px;
+}
+
 /* ── PAYMENTS ── */
 .pay-list-wrap{margin:0 14px;}
 .pay-card{background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:18px;box-shadow:var(--shadow);}
@@ -497,9 +582,15 @@ margin-bottom:14px;
   <div class="panel-hdr">
     <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
   </div>
-  <div class="pad14" style="margin-bottom:13px;">
+
+  <!-- 1. BUTON ADAUGĂ -->
+
+  <div class="pad14" style="margin-bottom:13px;" id="bonds-add-btn-wrap">
     <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
   </div>
+
+  <!-- FORM (expandable, sub buton) -->
+
   <div class="formwrap" id="formwrap">
     <div class="fttl" id="fttl">Obligațiune nouă</div>
     <input type="hidden" id="eid">
@@ -507,16 +598,16 @@ margin-bottom:14px;
       <label>Denumire</label>
       <input type="text" id="f-name" placeholder="ex: FIDELIS 2027">
     </div>
-<div class="row2">
-  <div class="field">
-    <label>Data start</label>
-    <input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
-  </div>
-  <div class="field">
-    <label>Maturitate</label>
-    <input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
-  </div>
-</div>
+    <div class="row2">
+      <div class="field">
+        <label>Data start</label>
+        <input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
+      </div>
+      <div class="field">
+        <label>Maturitate</label>
+        <input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
+      </div>
+    </div>
     <div class="field">
       <label id="f-amt-label">Suma investită (€)</label>
       <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
@@ -539,6 +630,45 @@ margin-bottom:14px;
       <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
     </div>
   </div>
+
+  <!-- 2. SEARCH -->
+
+  <div class="search-wrap">
+    <input class="search-inp" type="text" id="bond-search" placeholder="Caută obligațiune..." oninput="filterBonds()" autocomplete="off">
+    <button class="search-clear" id="search-clear-btn" onclick="clearSearch()">✕</button>
+  </div>
+  <div class="search-count" id="search-count" style="display:none;"></div>
+
+  <!-- 3. SUMAR PORTOFOLIU -->
+
+  <div class="bonds-summary-bar" id="bonds-summary-bar">
+    <div class="bsb-ttl">💼 Sumar portofoliu activ</div>
+    <div class="bsb-grid">
+      <div class="bsb-item">
+        <div class="bsb-lbl">Total investit</div>
+        <div class="bsb-val gold" id="bsb-total">—</div>
+        <div class="bsb-sub" id="bsb-count">— obligațiuni</div>
+      </div>
+      <div class="bsb-item">
+        <div class="bsb-lbl">Câștig lunar total</div>
+        <div class="bsb-val green" id="bsb-monthly">—</div>
+        <div class="bsb-sub" id="bsb-yearly">— / an</div>
+      </div>
+      <div class="bsb-item">
+        <div class="bsb-lbl">Active acum</div>
+        <div class="bsb-val gold" id="bsb-active-amt">—</div>
+        <div class="bsb-sub" id="bsb-active-cnt">— obligațiuni</div>
+      </div>
+      <div class="bsb-item">
+        <div class="bsb-lbl">În așteptare</div>
+        <div class="bsb-val blue" id="bsb-pending-amt">—</div>
+        <div class="bsb-sub" id="bsb-pending-cnt">— obligațiuni</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. LISTA OBLIGAȚIUNI -->
+
   <div id="bonds-list"></div>
 </div><!-- /bonds -->
 
@@ -607,12 +737,10 @@ margin-bottom:14px;
 <script>
 // ══════════════════════════════════════════════
 //  SUPABASE CONFIG
-//  Un singur utilizator fix -- schimbă USER_KEY
-//  cu orice șir unic dacă vrei să resetezi datele.
 // ══════════════════════════════════════════════
 const SUPABASE_URL      = 'https://gbqmgromjwqdnlwrejnb.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_RjWheWI2qN_ES0qOKYmcNQ_iJfgdzz0';
-const USER_KEY          = 'personal-main'; // ← fix, un singur utilizator
+const USER_KEY          = 'personal-main';
 
 const SB_HEADERS = {
   'Content-Type':  'application/json',
@@ -684,34 +812,28 @@ async function loadFromSupabase() {
 
 async function savePrefsToSupabase() {
   try {
-    // 1. Verificăm mai întâi dacă utilizatorul are deja un rând salvat
     const existent = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}`);
-    
     if (existent && existent.length > 0) {
-      // 2. Dacă EXISTĂ, trimitem un update specific pentru acest utilizator
       const r = await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
-        method: 'PATCH', // PATCH înseamnă UPDATE în Supabase
+        method: 'PATCH',
         headers: { ...SB_HEADERS },
-        body: JSON.stringify({ 
-          goal: goal, 
-          currency: currency, 
-          updated_at: new Date().toISOString() 
+        body: JSON.stringify({
+          goal: goal,
+          currency: currency,
+          updated_at: new Date().toISOString()
         })
       });
       if (!r.ok) throw new Error(await r.text());
-      console.log('Obiectiv actualizat cu succes!');
     } else {
-      // 3. Dacă NU EXISTĂ (e prima intrare), îl creăm de la zero
       await sbUpsert('bf_preferences', {
-        user_key: USER_KEY, 
-        goal, 
-        currency, 
+        user_key: USER_KEY,
+        goal,
+        currency,
         updated_at: new Date().toISOString()
       });
-      console.log('Obiectiv nou creat!');
     }
-  } catch (e) { 
-    console.error('Prefs save error:', e); 
+  } catch (e) {
+    console.error('Prefs save error:', e);
     toast('⚠️ Eroare la salvarea în baza de date');
   }
 }
@@ -757,7 +879,9 @@ function setCurrency(c) {
   updateCurrencyUI();
   updateFormLabels();
   savePrefsToSupabase();
-  renderDash(); renderBonds(); runSim();
+  renderDash();
+  renderBonds();
+  runSim();
   if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
 }
 function updateCurrencyUI() {
@@ -993,15 +1117,103 @@ function renderDash() {
 }
 
 // ══════════════════════════════════════════════
+//  BONDS SUMMARY BAR
+// ══════════════════════════════════════════════
+function renderBondsSummary() {
+  const active  = bonds.filter(isActive);
+  const pending = bonds.filter(isNotStarted);
+  const relevant = [...active, ...pending];
+
+  const totalAmt   = relevant.reduce((s,b) => s + b.amt, 0);
+  const totalCount = relevant.length;
+  const activeAmt  = active.reduce((s,b) => s + b.amt, 0);
+  const pendingAmt = pending.reduce((s,b) => s + b.amt, 0);
+  const monthlyAll = active.reduce((s,b) => s + monthlyVal(b), 0);
+  const yearlyAll  = monthlyAll * 12;
+
+  const bar = document.getElementById('bonds-summary-bar');
+  if (totalCount === 0) {
+    bar.style.display = 'none';
+    return;
+  }
+  bar.style.display = '';
+
+  document.getElementById('bsb-total').textContent      = fmt(totalAmt);
+  document.getElementById('bsb-count').textContent      = `${totalCount} obligațiun${totalCount===1?'e':'i'}`;
+  document.getElementById('bsb-monthly').textContent    = fmt(monthlyAll);
+  document.getElementById('bsb-yearly').textContent     = fmt(yearlyAll) + ' / an';
+  document.getElementById('bsb-active-amt').textContent = fmt(activeAmt);
+  document.getElementById('bsb-active-cnt').textContent = `${active.length} active`;
+  document.getElementById('bsb-pending-amt').textContent= fmt(pendingAmt);
+  document.getElementById('bsb-pending-cnt').textContent= `${pending.length} în așteptare`;
+}
+
+// ══════════════════════════════════════════════
+//  SEARCH
+// ══════════════════════════════════════════════
+let searchQuery = '';
+
+function filterBonds() {
+  searchQuery = document.getElementById('bond-search').value.trim().toLowerCase();
+  const clearBtn  = document.getElementById('search-clear-btn');
+  const countEl   = document.getElementById('search-count');
+  const addBtn    = document.getElementById('bonds-add-btn-wrap');
+  const summaryBar= document.getElementById('bonds-summary-bar');
+
+  clearBtn.classList.toggle('vis', searchQuery.length > 0);
+
+  if (searchQuery.length > 0) {
+    // Ascunde butonul adaugă și sumarul
+    addBtn.classList.add('search-hidden');
+    summaryBar.classList.add('search-hidden');
+    countEl.style.display = 'block';
+  } else {
+    // Reapară butonul adaugă și sumarul
+    addBtn.classList.remove('search-hidden');
+    summaryBar.classList.remove('search-hidden');
+    countEl.style.display = 'none';
+  }
+
+  renderBondsList();
+}
+
+// ══════════════════════════════════════════════
 //  BONDS
 // ══════════════════════════════════════════════
 function renderBonds() {
+  renderBondsSummary();
+  renderBondsList();
+}
+
+function renderBondsList() {
   const el = document.getElementById('bonds-list');
+  const countEl = document.getElementById('search-count');
+
   if (!bonds.length) {
     el.innerHTML = '<div class="empty"><div class="empty-ico">📄</div><p>Nicio obligațiune adăugată.<br>Apasă butonul de mai sus.</p></div>';
+    countEl.style.display = 'none';
     return;
   }
-  el.innerHTML = sortedBonds().map(b => bondCard(b, bonds.indexOf(b))).join('');
+
+  let filtered = sortedBonds();
+  if (searchQuery) {
+    filtered = filtered.filter(b => b.name.toLowerCase().includes(searchQuery));
+    countEl.style.display = 'block';
+    if (filtered.length === 0) {
+      countEl.textContent = `Niciun rezultat pentru "${searchQuery}"`;
+    } else {
+      countEl.textContent = `${filtered.length} din ${bonds.length} obligațiun${filtered.length===1?'e':'i'}`;
+    }
+  } else {
+    countEl.style.display = 'none';
+  }
+
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-ico">🔍</div><p>Nicio obligațiune găsită.<br>Încearcă alt termen de căutare.</p></div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(b => bondCard(b, bonds.indexOf(b))).join('');
 }
 
 function bondCard(b, ri) {
@@ -1125,12 +1337,11 @@ function clearForm() {
   document.getElementById('eid').value='';
 }
 
-
 function importDateFormat(str) {
   if (!str) return '';
   const parti = str.split('-');
   if (parti.length === 3 && parti[2].length === 4) {
-    return `${parti[2]}-${parti[1]}-${parti[0]}`; // Traduce corect în YYYY-MM-DD
+    return `${parti[2]}-${parti[1]}-${parti[0]}`;
   }
   return str;
 }
@@ -1139,15 +1350,13 @@ function exportDateFormat(str) {
   if (!str) return '';
   const parti = str.split('-');
   if (parti.length === 3 && parti[0].length === 4) {
-    return `${parti[2]}-${parti[1]}-${parti[0]}`; // Întoarce DD-MM-YYYY
+    return `${parti[2]}-${parti[1]}-${parti[0]}`;
   }
   return str;
 }
 
-
 async function saveBond() {
   const name  = document.getElementById('f-name').value.trim();
-  // Aplicăm conversia aici:
   const start = importDateFormat(document.getElementById('f-start').value.trim());
   const mat   = importDateFormat(document.getElementById('f-mat').value.trim());
   const amt   = parseFloat(document.getElementById('f-amt').value);
@@ -1156,13 +1365,10 @@ async function saveBond() {
   const eid   = document.getElementById('eid').value;
 
   if (!name||!start||!mat||isNaN(amt)||isNaN(rate)) { toast('⚠️ Completează toate câmpurile'); return; }
-  
-  // Verificăm dacă formatul a fost introdus corect (trebuie să aibă lungimea unui format YYYY-MM-DD valid)
   if (start.length !== 10 || mat.length !== 10) {
     toast('⚠️ Format dată incorect! Folosește ZZ-LL-AAAA');
     return;
   }
-
   if (new Date(mat) <= new Date(start)) { toast('Maturitatea trebuie să fie după data de start'); return; }
 
   const bond = { id: eid || Date.now().toString(), name, start, mat, amt, rate, freq };
@@ -1181,12 +1387,8 @@ async function saveBond() {
   await saveBondToSupabase(bond);
 }
 
-
 function formatDateInput(input) {
-  // Eliminăm orice caracter care nu este cifră
   let v = input.value.replace(/\D/g, '');
-  
-  // Reconstruim textul cu cratime automate pe măsură ce utilizatorul tastează
   if (v.length > 2 && v.length <= 4) {
     input.value = v.slice(0, 2) + '-' + v.slice(2);
   } else if (v.length > 4) {
@@ -1203,7 +1405,6 @@ function editBond(i) {
   const b = bonds[i];
   document.getElementById('eid').value      = b.id;
   document.getElementById('f-name').value   = b.name;
-  // Convertim înapoi în DD-MM-YYYY pentru a fi ușor de citit în formular:
   document.getElementById('f-start').value  = exportDateFormat(b.start);
   document.getElementById('f-mat').value    = exportDateFormat(b.mat);
   document.getElementById('f-amt').value    = b.amt;
