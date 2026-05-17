@@ -507,10 +507,17 @@ margin-bottom:14px;
       <label>Denumire</label>
       <input type="text" id="f-name" placeholder="ex: FIDELIS 2027">
     </div>
-    <div class="row2">
-      <div class="field"><label>Data start</label><input type="date" id="f-start"></div>
-      <div class="field"><label>Maturitate</label><input type="date" id="f-mat"></div>
-    </div>
+<div class="row2">
+  <div class="field">
+    <label>Data start</label>
+    <!-- Am adăugat inputmode="decimal" pentru tastatură numerică cu simboluri -->
+    <input type="text" id="f-start" inputmode="decimal" placeholder="ZZ-LL-AAAA (ex: 17-05-2026)">
+  </div>
+  <div class="field">
+    <label>Maturitate</label>
+    <input type="text" id="f-mat" inputmode="decimal" placeholder="ZZ-LL-AAAA (ex: 17-05-2029)">
+  </div>
+</div>
     <div class="field">
       <label id="f-amt-label">Suma investită (€)</label>
       <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
@@ -1119,16 +1126,46 @@ function clearForm() {
   document.getElementById('eid').value='';
 }
 
+
+// Funcție care transformă DD-MM-YYYY în YYYY-MM-DD pentru baza de date și invers
+function importDateFormat(str) {
+  if (!str) return '';
+  const curat = str.replace(/[\/\.]/g, '-'); // Permite și puncte sau slash-uri
+  const parti = curat.split('-');
+  if (parti.length === 3 && parti[2].length === 4) {
+    return `${parti[2]}-${parti[1]}-${parti[0]}`; // Întoarce YYYY-MM-DD
+  }
+  return str;
+}
+
+function exportDateFormat(str) {
+  if (!str) return '';
+  const parti = str.split('-');
+  if (parti.length === 3 && parti[0].length === 4) {
+    return `${parti[2]}-${parti[1]}-${parti[0]}`; // Întoarce DD-MM-YYYY
+  }
+  return str;
+}
+
+
 async function saveBond() {
   const name  = document.getElementById('f-name').value.trim();
-  const start = document.getElementById('f-start').value;
-  const mat   = document.getElementById('f-mat').value;
+  // Aplicăm conversia aici:
+  const start = importDateFormat(document.getElementById('f-start').value.trim());
+  const mat   = importDateFormat(document.getElementById('f-mat').value.trim());
   const amt   = parseFloat(document.getElementById('f-amt').value);
   const rate  = parseFloat(document.getElementById('f-rate').value);
   const freq  = document.getElementById('f-freq').value;
   const eid   = document.getElementById('eid').value;
 
   if (!name||!start||!mat||isNaN(amt)||isNaN(rate)) { toast('⚠️ Completează toate câmpurile'); return; }
+  
+  // Verificăm dacă formatul a fost introdus corect (trebuie să aibă lungimea unui format YYYY-MM-DD valid)
+  if (start.length !== 10 || mat.length !== 10) {
+    toast('⚠️ Format dată incorect! Folosește ZZ-LL-AAAA');
+    return;
+  }
+
   if (new Date(mat) <= new Date(start)) { toast('Maturitatea trebuie să fie după data de start'); return; }
 
   const bond = { id: eid || Date.now().toString(), name, start, mat, amt, rate, freq };
@@ -1147,6 +1184,9 @@ async function saveBond() {
   await saveBondToSupabase(bond);
 }
 
+
+
+
 // ══════════════════════════════════════════════
 //  EDIT
 // ══════════════════════════════════════════════
@@ -1154,8 +1194,9 @@ function editBond(i) {
   const b = bonds[i];
   document.getElementById('eid').value      = b.id;
   document.getElementById('f-name').value   = b.name;
-  document.getElementById('f-start').value  = b.start;
-  document.getElementById('f-mat').value    = b.mat;
+  // Convertim înapoi în DD-MM-YYYY pentru a fi ușor de citit în formular:
+  document.getElementById('f-start').value  = exportDateFormat(b.start);
+  document.getElementById('f-mat').value    = exportDateFormat(b.mat);
   document.getElementById('f-amt').value    = b.amt;
   document.getElementById('f-rate').value   = b.rate;
   document.getElementById('f-freq').value   = b.freq;
