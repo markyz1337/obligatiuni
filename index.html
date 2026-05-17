@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
@@ -302,7 +303,606 @@ border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;
 display:flex;justify-content:space-between;align-items:center;
 }
 .bcnl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
-.bcnd">${fmtD(next)}</div></div>
+.bcnd{font-size:14px;font-weight:600;color:var(--gold-l);}
+.bcndays{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-.01em;}
+.bcndl{font-size:9px;color:var(--muted);}
+
+.mat-banner{background:var(--red-dim);border:1px solid var(--red-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--red);text-align:center;margin-bottom:12px;font-weight:500;}
+.fut-banner{background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--blue);text-align:center;margin-bottom:12px;font-weight:500;}
+.bcact{display:flex;gap:8px;}
+
+/* ── FORM ── */
+.formwrap{
+margin:0 14px 13px;
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:0 18px;max-height:0;overflow:hidden;
+transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
+}
+.formwrap.open{max-height:1000px;opacity:1;padding:18px;}
+.fttl{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
+.row2{display:flex;gap:9px;}
+.row2 .field{flex:1;}
+
+/* ── PAYMENTS ── */
+.pay-list-wrap{margin:0 14px;}
+.pay-card{background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:18px;box-shadow:var(--shadow);}
+.pay-month-hdr{display:flex;justify-content:space-between;align-items:center;padding:0 0 10px;margin-bottom:4px;border-bottom:1px solid var(--gold-border);}
+.pml{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+.pmv{font-size:13px;font-weight:700;color:var(--gold-l);}
+.pay-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.048);}
+.pay-row:last-child{border-bottom:none;}
+.pay-date{font-size:14px;font-weight:500;color:var(--text);}
+.pay-bond{font-size:11px;color:var(--muted);margin-top:2px;}
+.pay-days{font-size:10px;color:var(--gold);margin-top:2px;}
+.pay-amt{font-size:16px;font-weight:600;color:var(--green);}
+.pay-dtotal{display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px;border-top:1px solid var(--gold-border);margin-top:2px;}
+.pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
+.pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px 16px;color:var(--muted);}
+.empty-ico{font-size:34px;margin-bottom:10px;}
+.empty p{font-size:13px;line-height:1.7;}
+
+/* ── TOAST ── */
+.toast{
+position:fixed;bottom:106px;left:50%;transform:translateX(-50%) translateY(12px);
+background:rgba(12,15,26,.97);border:1px solid var(--gborder);border-radius:50px;
+padding:10px 22px;font-size:12px;color:var(--text);z-index:200;opacity:0;transition:all .26s;
+white-space:nowrap;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── OVERLAY ── */
+.overlay{
+position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.78);
+backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+display:flex;align-items:flex-end;justify-content:center;
+opacity:0;pointer-events:none;transition:opacity .24s;
+}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{
+background:#0a0d1c;border:1px solid var(--gborder);border-radius:var(--r) var(--r) 0 0;
+padding:24px 18px 36px;width:100%;max-width:460px;
+transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.overlay.open .modal{transform:translateY(0);}
+.mttl{font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--gold-l);margin-bottom:6px;}
+.mmsg{font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.55;}
+.mbtns{display:flex;gap:9px;}
+
+.pad14{padding:0 14px;}
+.small{font-size:11px;color:var(--muted);}
+
+/* ── SETTINGS ── */
+.settings-card{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:22px;box-shadow:var(--shadow);
+}
+.sc-ttl{font-family:'Cormorant',serif;font-size:18px;font-weight:600;color:var(--gold-l);margin-bottom:8px;letter-spacing:.02em;}
+.sc-desc{font-size:12px;color:var(--dim);line-height:1.6;margin-bottom:20px;}
+.currency-toggle{
+display:grid;grid-template-columns:1fr auto 1fr;
+align-items:stretch;
+background:rgba(255,255,255,.03);
+border:1px solid var(--gborder);border-radius:var(--rsm);overflow:hidden;
+margin-bottom:14px;
+}
+.ct-opt{
+padding:18px 14px;text-align:center;cursor:pointer;
+transition:background .2s,border-color .2s;
+position:relative;
+}
+.ct-opt:active{transform:scale(.97);}
+.ct-opt.active{background:var(--gold-dim);}
+.ct-opt.active .ct-sym{color:var(--gold-l);}
+.ct-opt.active .ct-name{color:var(--text);}
+.ct-opt.active .ct-code{color:var(--gold);}
+.ct-opt.active::after{
+content:'✓';position:absolute;top:8px;right:10px;
+font-size:11px;color:var(--gold);font-weight:700;
+}
+.ct-sym{font-family:'Cormorant',serif;font-size:26px;font-weight:700;color:var(--muted);margin-bottom:4px;transition:color .2s;}
+.ct-name{font-size:11px;color:var(--muted);font-weight:500;transition:color .2s;}
+.ct-code{font-size:9px;color:var(--muted);letter-spacing:.12em;margin-top:2px;transition:color .2s;}
+.ct-divider{width:1px;background:var(--gborder);margin:12px 0;}
+.ct-note{font-size:11px;color:var(--muted);text-align:center;}
+.ct-note strong{color:var(--gold-l);}
+</style>
+
+</head>
+<body>
+<div id="app">
+  <div class="scroll-area" id="scroll-area">
+
+<!-- DASHBOARD -->
+
+<div class="panel on" id="panel-dashboard">
+
+  <div class="dash-hero">
+    <div class="hero-eyebrow">Portofoliu personal</div>
+    <div class="hero-title">BondFlow</div>
+    <div class="hero-sub">Obligațiuni de Stat</div>
+    <div class="hero-line"></div>
+  </div>
+
+  <!-- 4-tile status strip -->
+
+  <div class="status-strip">
+    <div class="sum-tile grn">
+      <div class="stl">Active</div>
+      <div class="stv" id="s-active">0</div>
+      <div class="sts">obligațiuni</div>
+    </div>
+    <div class="sum-tile gold">
+      <div class="stl">Câștig lunar</div>
+      <div class="stv" id="s-monthly">€0</div>
+      <div class="sts">estimat</div>
+    </div>
+    <div class="sum-tile blu">
+      <div class="stl">În așteptare</div>
+      <div class="stv" id="s-pending">0</div>
+      <div class="sts">neîncepute</div>
+    </div>
+    <div class="sum-tile red">
+      <div class="stl">Expirate</div>
+      <div class="stv" id="s-expired">0</div>
+      <div class="sts">la maturitate</div>
+    </div>
+  </div>
+
+  <!-- Next coupon card -->
+
+  <div class="next-coupon-card">
+    <div class="nccttl">🏷 Următorul cupon</div>
+    <div id="ncc-body"></div>
+  </div>
+
+  <!-- Next maturity card -->
+
+  <div class="mat-next-card">
+    <div class="mnttl">⏰ Prima obligațiune la maturitate</div>
+    <div id="mn-body"></div>
+  </div>
+
+  <!-- This month -->
+
+  <div class="month-card">
+    <div class="mcttl">📆 Luna aceasta</div>
+    <div class="mc-inner">
+      <div>
+        <div class="mctotal" id="mc-total">€0,00</div>
+        <div class="mcsub">de primit în <span id="mc-month">—</span></div>
+      </div>
+      <div class="mcbadge" id="mc-badge">0 plăți</div>
+    </div>
+    <div id="mc-breakdown"></div>
+  </div>
+
+  <!-- Goal -->
+
+  <div class="goal-card">
+    <div class="gttl">🎯 Obiectiv lunar</div>
+    <div class="grow">
+      <div>
+        <div class="gbig" id="g-cur">€0</div>
+        <div class="gof">din <span id="g-target">€0</span> țintă</div>
+      </div>
+      <div class="gpct" id="g-pct">0%</div>
+    </div>
+    <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
+    <div class="field" style="margin:0;">
+      <label id="goal-label">Obiectiv lunar (€)</label>
+      <div class="goal-inp-wrap">
+        <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
+      </div>
+    </div>
+  </div>
+
+  <!-- Simulator -->
+
+  <div class="sim-card">
+    <div class="sttl">📊 Simulator investiție</div>
+    <div class="sdesc">Cât trebuie să investești într-un cupon nou pentru a atinge obiectivul lunar.</div>
+    <div class="field">
+      <label>Rata cuponului nou (%/an)</label>
+      <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
+    </div>
+    <div class="sim-res" id="sim-res-box">
+      <div class="srval" id="sim-val">—</div>
+      <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
+    </div>
+  </div>
+
+</div><!-- /dashboard -->
+
+<!-- BONDS -->
+
+<div class="panel" id="panel-bonds">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
+  </div>
+  <div class="pad14" style="margin-bottom:13px;">
+    <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
+  </div>
+
+  <div class="formwrap" id="formwrap">
+    <div class="fttl" id="fttl">Obligațiune nouă</div>
+    <input type="hidden" id="eid">
+    <div class="field">
+      <label>Denumire</label>
+      <input type="text" id="f-name" placeholder="ex: FIDELIS 2027">
+    </div>
+    <div class="row2">
+      <div class="field"><label>Data start</label><input type="date" id="f-start"></div>
+      <div class="field"><label>Maturitate</label><input type="date" id="f-mat"></div>
+    </div>
+    <div class="field">
+      <label id="f-amt-label">Suma investită (€)</label>
+      <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
+    </div>
+    <div class="field">
+      <label>Rata cuponului (%/an)</label>
+      <input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01">
+    </div>
+    <div class="field">
+      <label>Interval plată cupon</label>
+      <select id="f-freq">
+        <option value="6">La 6 luni</option>
+        <option value="3">La 3 luni</option>
+        <option value="12">La 12 luni</option>
+        <option value="1">Lunar</option>
+      </select>
+    </div>
+    <div class="row2">
+      <button class="btn btn-gold" onclick="saveBond()">Salvează</button>
+      <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
+    </div>
+  </div>
+
+  <div id="bonds-list"></div>
+</div><!-- /bonds -->
+
+<!-- PAYMENTS -->
+
+<div class="panel" id="panel-payments">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
+  </div>
+  <div class="pay-list-wrap">
+    <div class="pay-card" id="pay-list"></div>
+  </div>
+</div><!-- /payments -->
+
+<!-- SETTINGS -->
+
+<div class="panel" id="panel-settings">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Se<span>tări</span></div>
+  </div>
+  <div style="margin:0 14px 13px;">
+    <div class="settings-card">
+      <div class="sc-ttl">💱 Valută</div>
+      <div class="sc-desc">Alege valuta în care sunt exprimate sumele. Toate valorile vor fi afișate în valuta selectată, fără conversie.</div>
+      <div class="currency-toggle">
+        <div class="ct-opt" id="ct-eur" onclick="setCurrency('EUR')">
+          <div class="ct-sym">€</div>
+          <div class="ct-name">Euro</div>
+          <div class="ct-code">EUR</div>
+        </div>
+        <div class="ct-divider"></div>
+        <div class="ct-opt" id="ct-ron" onclick="setCurrency('RON')">
+          <div class="ct-sym">lei</div>
+          <div class="ct-name">Leu românesc</div>
+          <div class="ct-code">RON</div>
+        </div>
+      </div>
+      <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
+    </div>
+  </div>
+</div><!-- /settings -->
+
+  </div><!-- /scroll-area -->
+</div><!-- /app -->
+
+<div class="nav">
+  <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
+  <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
+  <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
+  <div class="nav-it" onclick="sw('settings',3)"><span class="nav-ico">⚙️</span><span class="nav-lbl">Setări</span></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mttl" id="ov-ttl">Confirmare</div>
+    <div class="mmsg" id="ov-msg"></div>
+    <div class="mbtns">
+      <button class="btn btn-del" id="ov-ok">Șterge</button>
+      <button class="btn btn-out" onclick="closeOv()">Anulează</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+let bonds    = JSON.parse(localStorage.getItem('bf3_bonds') || '[]');
+let goal     = parseFloat(localStorage.getItem('bf3_goal') || '0');
+let currency = localStorage.getItem('bf3_currency') || 'EUR';
+function persist() { localStorage.setItem('bf3_bonds', JSON.stringify(bonds)); }
+
+// ── CURRENCY ──
+function currSym()  { return currency === 'RON' ? 'lei' : '€'; }
+function currCode() { return currency === 'RON' ? 'RON' : 'EUR'; }
+function fmt(n) {
+  if (isNaN(n) || n === null) return currency === 'RON' ? '0 lei' : '€0';
+  const num = Math.round(n).toLocaleString('ro-RO');
+  return currency === 'RON' ? num + ' lei' : '€' + num;
+}
+function setCurrency(c) {
+  currency = c;
+  localStorage.setItem('bf3_currency', c);
+  updateCurrencyUI();
+  updateFormLabels();
+  renderDash(); renderBonds(); runSim();
+  if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
+}
+function updateCurrencyUI() {
+  document.getElementById('ct-eur').classList.toggle('active', currency === 'EUR');
+  document.getElementById('ct-ron').classList.toggle('active', currency === 'RON');
+  document.getElementById('ct-cur-lbl').textContent = currency === 'RON' ? 'Leu românesc (lei)' : 'Euro (€)';
+  document.body.classList.toggle('currency-ron', currency === 'RON');
+}
+function updateFormLabels() {
+  const sym = currSym();
+  document.querySelector('label[for-field="f-amt"]') && (document.querySelector('label[for-field="f-amt"]').textContent = `Suma investită (${sym})`);
+  // Update via ID on the amt label
+  const amtLabel = document.getElementById('f-amt-label');
+  if (amtLabel) amtLabel.textContent = `Suma investită (${sym})`;
+  const amtInp = document.getElementById('f-amt');
+  if (amtInp) amtInp.placeholder = currency === 'RON' ? 'ex: 25000' : 'ex: 5000';
+  const goalLabel = document.getElementById('goal-label');
+  if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
+  const goalInp = document.getElementById('goal-inp');
+  if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
+  // Update goal-inp-wrap pseudo-element via a CSS var trick
+  document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
+}
+
+// ── TABS ──
+function sw(tab, idx) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nav-it').forEach(n => n.classList.remove('on'));
+  document.getElementById('panel-' + tab).classList.add('on');
+  document.querySelectorAll('.nav-it')[idx].classList.add('on');
+  document.getElementById('scroll-area').scrollTop = 0;
+  if (tab === 'payments') renderPayments();
+  if (tab === 'dashboard') renderDash();
+  if (tab === 'bonds') renderBonds();
+  if (tab === 'settings') updateCurrencyUI();
+}
+
+// ── UTILS ──
+function fmtD(s) {
+  if (!s) return '—';
+  const d = (s instanceof Date) ? s : new Date(s + 'T00:00:00');
+  return d.toLocaleDateString('ro-RO', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+function today0() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+function daysDiff(dateStrOrDate) {
+  let d;
+  if (dateStrOrDate instanceof Date) { d = new Date(dateStrOrDate); }
+  else { d = new Date(dateStrOrDate + 'T00:00:00'); }
+  d.setHours(0,0,0,0);
+  return Math.ceil((d - today0()) / 86400000);
+}
+function isMatured(b)    { return new Date(b.mat   + 'T00:00:00') < today0(); }
+function isNotStarted(b) { return new Date(b.start + 'T00:00:00') > today0(); }
+function isActive(b)     { return !isMatured(b) && !isNotStarted(b); }
+function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 12); }
+function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
+
+// Fixed getPayDates logic
+function getPayDates(b) {
+  const start    = new Date(b.start + 'T00:00:00');
+  const maturity = new Date(b.mat   + 'T00:00:00');
+  const freq     = parseInt(b.freq);
+  const anchorDay= start.getDate();
+  const baseY    = start.getFullYear();
+  const baseM    = start.getMonth();
+  const dates    = [];
+  let step = 1;
+  while (true) {
+    const totalMonths = baseM + step * freq;
+    const y = baseY + Math.floor(totalMonths / 12);
+    const m = totalMonths % 12;
+    const maxDay = new Date(y, m + 1, 0).getDate();
+    const d = new Date(y, m, Math.min(anchorDay, maxDay));
+    if (d > maturity) break;
+    dates.push(d);
+    step++;
+  }
+  const lastMs = dates.length ? dates[dates.length - 1].getTime() : 0;
+  if (lastMs !== maturity.getTime()) dates.push(new Date(maturity));
+  return dates;
+}
+function nextPay(b)        { const t = today0(); return getPayDates(b).find(d => d >= t) || null; }
+function paysLeft(b)       { return getPayDates(b).filter(d => d >= today0()).length; }
+function totalReceived(b)  { return getPayDates(b).filter(d => d < today0()).length * couponVal(b); }
+function totalRemaining(b) { return paysLeft(b) * couponVal(b); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function monthName(d) { return d.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' }); }
+function sortedBonds() {
+  return [...bonds.filter(isMatured), ...bonds.filter(isNotStarted), ...bonds.filter(isActive)];
+}
+
+// ── GOAL ──
+function saveGoal() {
+  const v = parseFloat(document.getElementById('goal-inp').value);
+  goal = (!isNaN(v) && v > 0) ? v : 0;
+  if (goal) localStorage.setItem('bf3_goal', goal);
+  else localStorage.removeItem('bf3_goal');
+  renderDash();
+  runSim();
+}
+
+// ── SIMULATOR ──
+function runSim() {
+  const rate = parseFloat(document.getElementById('sim-rate').value);
+  const sv  = document.getElementById('sim-val');
+  const sl  = document.getElementById('sim-lbl');
+  const box = document.getElementById('sim-res-box');
+  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+
+  // Check if goal is already achieved — always show this, even without rate input
+  if (goal > 0 && curMo >= goal) {
+    box.classList.add('achieved');
+    sv.textContent = '🎉 Obiectiv atins!';
+    sl.textContent = `Câștigi deja ${fmt(curMo)}/lună față de ținta ${fmt(goal)}`;
+    return;
+  }
+  box.classList.remove('achieved');
+
+  if (!goal && isNaN(rate)) { sv.textContent='—'; sl.textContent='introdu rata cuponului și obiectivul'; return; }
+  if (!goal) { sv.textContent='—'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
+  if (isNaN(rate) || rate <= 0) { sv.textContent='—'; sl.textContent='introdu rata cuponului nou'; return; }
+
+  const gap = goal - curMo;
+  sv.textContent = fmt(gap / (rate / 100 / 12));
+  sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
+}
+
+// ── DASHBOARD ──
+function renderDash() {
+  const active   = bonds.filter(isActive);
+  const pending  = bonds.filter(isNotStarted);
+  const expired  = bonds.filter(isMatured);
+  const monthly  = active.reduce((s,b) => s + monthlyVal(b), 0);
+
+  // Status strip
+  document.getElementById('s-active').textContent  = active.length;
+  document.getElementById('s-monthly').textContent = fmt(monthly);
+  document.getElementById('s-pending').textContent = pending.length;
+  document.getElementById('s-expired').textContent = expired.length;
+
+  // ── NEXT COUPON across all active bonds ──
+  const nccEl = document.getElementById('ncc-body');
+  let allNextPays = [];
+  active.forEach(b => {
+    const np = nextPay(b);
+    if (np) allNextPays.push({ bond: b, date: np, amt: couponVal(b) });
+  });
+  allNextPays.sort((a,b) => a.date - b.date);
+
+  if (!allNextPays.length) {
+    nccEl.innerHTML = '<div class="ncc-empty">Nicio plată viitoare de la obligațiunile active.</div>';
+  } else {
+    // Group payments on the same earliest date
+    const earliest = allNextPays[0].date.getTime();
+    const sameDay  = allNextPays.filter(p => p.date.getTime() === earliest);
+    const totalAmt = sameDay.reduce((s,p) => s+p.amt, 0);
+    const dys      = daysDiff(allNextPays[0].date);
+    const names    = sameDay.map(p => esc(p.bond.name)).join(', ');
+    nccEl.innerHTML = `
+      <div class="ncc-body">
+        <div class="ncc-days-wrap">
+          <div class="ncc-days">${dys}</div>
+          <div class="ncc-days-lbl">ZILE RĂMASE</div>
+        </div>
+        <div class="ncc-right">
+          <div class="ncc-amt">${fmt(totalAmt)}</div>
+          <div class="ncc-from">${names}</div>
+        </div>
+      </div>
+      <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
+  }
+
+  // ── NEXT MATURITY (active bonds only, earliest maturity) ──
+  const mnEl = document.getElementById('mn-body');
+  const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
+  if (!activeSorted.length) {
+    mnEl.innerHTML = '<div class="mn-empty">Nicio obligațiune activă.</div>';
+  } else {
+    const first = activeSorted[0];
+    const matDate = new Date(first.mat + 'T00:00:00');
+    const dys = daysDiff(matDate);
+    mnEl.innerHTML = `
+      <div class="mn-body">
+        <div>
+          <div class="mn-name">${esc(first.name)}</div>
+          <div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div>
+        </div>
+        <div class="mn-right">
+          <div class="mn-days">${dys}</div>
+          <div class="mn-daysl">ZILE RĂMASE</div>
+          <div class="mn-date">${fmtD(matDate)}</div>
+        </div>
+      </div>`;
+  }
+
+  // Goal
+  document.getElementById('g-cur').textContent    = fmt(monthly);
+  document.getElementById('g-target').textContent = fmt(goal);
+  const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
+  document.getElementById('g-bar').style.width = pct + '%';
+  document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
+  if (goal > 0 && !document.getElementById('goal-inp').value)
+    document.getElementById('goal-inp').value = goal;
+
+  // This month
+  const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
+  let pays = [];
+  bonds.forEach(b => {
+    const val = couponVal(b);
+    getPayDates(b).forEach(d => {
+      if (d.getFullYear()===cy && d.getMonth()===cm) pays.push({bond:b.name,date:d,amt:val});
+    });
+  });
+  pays.sort((a,b)=>a.date-b.date);
+  const mTotal = pays.reduce((s,p)=>s+p.amt,0);
+  document.getElementById('mc-badge').textContent = pays.length + ' plăți';
+  document.getElementById('mc-total').textContent = fmt(mTotal);
+  document.getElementById('mc-month').textContent = monthName(now);
+  const bd = document.getElementById('mc-breakdown');
+  if (!pays.length) {
+    bd.innerHTML = '<div class="small" style="margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);">Nicio plată în această lună.</div>';
+  } else {
+    bd.innerHTML = '<div style="border-top:1px solid rgba(78,205,164,.15);margin-top:2px;padding-top:8px;">' +
+      pays.map(p=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;">
+        <div><div style="font-size:12px;color:var(--text);">${esc(p.bond)}</div><div style="font-size:10px;color:rgba(78,205,164,.55);">${fmtD(p.date)}</div></div>
+        <div style="font-size:13px;font-weight:600;color:var(--green);">${fmt(p.amt)}</div>
+      </div>`).join('') + '</div>';
+  }
+
+  runSim();
+}
+
+// ── BONDS ──
+function renderBonds() {
+  const el = document.getElementById('bonds-list');
+  if (!bonds.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">📄</div><p>Nicio obligațiune adăugată.<br>Apasă butonul de mai sus.</p></div>';
+    return;
+  }
+  el.innerHTML = sortedBonds().map(b => bondCard(b, bonds.indexOf(b))).join('');
+}
+
+function bondCard(b, ri) {
+  const mat  = isMatured(b); const fut = isNotStarted(b);
+  const next = nextPay(b);
+  const days = next ? daysDiff(next) : null;
+
+  let banner = '';
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate — o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă — start: ${fmtD(b.start)}</div>`;
+
+  let nextBlock = '';
+  if (!mat && !fut && next) {
+    nextBlock = `<div class="bcnext">
+      <div><div class="bcnl">Următoarea plată</div><div class="bcnd">${fmtD(next)}</div></div>
       <div style="text-align:right"><div class="bcndays">${days}</div><div class="bcndl">zile rămase</div></div>
     </div>`;
   }
