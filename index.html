@@ -67,61 +67,61 @@ body::before{
 position:relative;padding:52px 20px 28px;text-align:center;overflow:hidden;
 }
 .dash-hero::before{
-content:'';position:absolute;inset:0;
+content:’’;position:absolute;inset:0;
 background:radial-gradient(ellipse 100% 80% at 50% 0%,rgba(201,168,76,0.08) 0%,transparent 70%);
 pointer-events:none;
 }
-.hero-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:8px;font-weight:500;}
+.hero-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(–gold);opacity:.7;margin-bottom:8px;font-weight:500;}
 .hero-title{
-font-family:'Cormorant',serif;font-size:52px;font-weight:600;letter-spacing:.04em;line-height:1;
-background:linear-gradient(160deg,var(--gold-pale) 0%,var(--gold-l) 45%,var(--gold) 100%);
+font-family:‘Cormorant’,serif;font-size:52px;font-weight:600;letter-spacing:.04em;line-height:1;
+background:linear-gradient(160deg,var(–gold-pale) 0%,var(–gold-l) 45%,var(–gold) 100%);
 -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;
 }
-.hero-sub{font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
-.hero-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0;opacity:.5;}
+.hero-sub{font-size:11px;color:var(–muted);letter-spacing:.16em;text-transform:uppercase;}
+.hero-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(–gold),transparent);margin:14px auto 0;opacity:.5;}
 
 /* ── PANEL HEADER ── */
 .panel-hdr{padding:52px 20px 20px;}
-.panel-hdr-title{font-family:'Cormorant',serif;font-size:34px;font-weight:600;color:var(--text);letter-spacing:.02em;}
-.panel-hdr-title span{font-style:italic;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.panel-hdr-title{font-family:‘Cormorant’,serif;font-size:34px;font-weight:600;color:var(–text);letter-spacing:.02em;}
+.panel-hdr-title span{font-style:italic;background:linear-gradient(135deg,var(–gold-l),var(–gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
 /* ── NAV ── */
 .nav{
 position:fixed;bottom:0;left:50%;transform:translateX(-50%);
 width:100%;max-width:460px;
-background:rgba(6,8,14,0.95);border-top:1px solid var(--gborder);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+background:rgba(6,8,14,0.95);border-top:1px solid var(–gborder);
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
 display:flex;padding:10px 0 22px;z-index:100;
 }
 .nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:5px 0;transition:.2s;}
 .nav-ico{font-size:19px;transition:.2s;}
-.nav-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;font-weight:500;transition:.2s;}
-.nav-it.on .nav-lbl{color:var(--gold);}
+.nav-lbl{font-size:9px;color:var(–muted);letter-spacing:.06em;font-weight:500;transition:.2s;}
+.nav-it.on .nav-lbl{color:var(–gold);}
 .nav-it.on .nav-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.75));}
 
 /* ── STATUS STRIP (4 tiles) ── */
 .status-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 12px;}
 .sum-tile{
-background:var(--card);border:1px solid var(--gborder);border-radius:var(--rsm);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-padding:14px 12px;text-align:center;box-shadow:var(--shadow);
+background:var(–card);border:1px solid var(–gborder);border-radius:var(–rsm);
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+padding:14px 12px;text-align:center;box-shadow:var(–shadow);
 position:relative;overflow:hidden;
 }
-.sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
-.sum-tile.gold{border-color:var(--gold-border);}
-.sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
-.sum-tile.grn{border-color:var(--green-border);}
-.sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
-.sum-tile.red{border-color:var(--red-border);}
-.sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.sum-tile.blu{border-color:var(--blue-border);}
-.sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
-.stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+.sum-tile::after{content:’’;position:absolute;top:0;left:0;right:0;height:1px;}
+.sum-tile.gold{border-color:var(–gold-border);}
+.sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(–gold-l),transparent);}
+.sum-tile.grn{border-color:var(–green-border);}
+.sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(–green),transparent);}
+.sum-tile.red{border-color:var(–red-border);}
+.sum-tile.red::after{background:linear-gradient(90deg,transparent,var(–red),transparent);}
+.sum-tile.blu{border-color:var(–blue-border);}
+.sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(–blue),transparent);}
+.stl{font-size:9px;color:var(–muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 .stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
-.sum-tile.gold .stv{color:var(--gold-l);}
-.sum-tile.grn .stv{color:var(--green);}
-.sum-tile.red .stv{color:var(--red);}
-.sum-tile.blu .stv{color:var(--blue);}
+.sum-tile.gold .stv{color:var(–gold-l);}
+.sum-tile.grn .stv{color:var(–green);}
+.sum-tile.red .stv{color:var(–red);}
+.sum-tile.blu .stv{color:var(–blue);}
 .sts{font-size:10px;margin-top:2px;}
 .sum-tile.gold .sts{color:rgba(232,201,122,0.5);}
 .sum-tile.grn  .sts{color:rgba(78,205,164,0.5);}
@@ -132,219 +132,219 @@ position:relative;overflow:hidden;
 .next-coupon-card{
 margin:0 14px 12px;
 background:linear-gradient(145deg,rgba(201,168,76,.11),rgba(201,168,76,.02));
-border:1px solid var(--gold-border);border-radius:var(--r);
+border:1px solid var(–gold-border);border-radius:var(–r);
 padding:20px;
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+box-shadow:var(–shadow);position:relative;overflow:hidden;
 }
 .next-coupon-card::before{
-content:'';position:absolute;top:-20px;left:-20px;
+content:’’;position:absolute;top:-20px;left:-20px;
 width:110px;height:110px;border-radius:50%;
 background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%);pointer-events:none;
 }
-.nccttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--gold-l);margin-bottom:13px;letter-spacing:.02em;}
+.nccttl{font-family:‘Cormorant’,serif;font-size:15px;font-weight:600;color:var(–gold-l);margin-bottom:13px;letter-spacing:.02em;}
 .ncc-body{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
 .ncc-days-wrap{}
-.ncc-days{font-size:44px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-.03em;}
+.ncc-days{font-size:44px;font-weight:700;color:var(–gold);line-height:1;letter-spacing:-.03em;}
 .ncc-days-lbl{font-size:10px;color:rgba(201,168,76,.55);margin-top:3px;letter-spacing:.06em;}
 .ncc-right{text-align:right;}
-.ncc-amt{font-size:26px;font-weight:700;color:var(--gold-l);letter-spacing:-.02em;line-height:1;}
+.ncc-amt{font-size:26px;font-weight:700;color:var(–gold-l);letter-spacing:-.02em;line-height:1;}
 .ncc-from{font-size:11px;color:rgba(201,168,76,.55);margin-top:3px;}
-.ncc-date{font-size:11px;color:var(--dim);margin-top:8px;}
-.ncc-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
+.ncc-date{font-size:11px;color:var(–dim);margin-top:8px;}
+.ncc-empty{font-size:12px;color:var(–muted);text-align:center;padding:8px 0;}
 
 /* ── MATURITY CARD ── */
 .mat-next-card{
 margin:0 14px 12px;
 background:linear-gradient(145deg,rgba(126,184,247,.09),rgba(126,184,247,.02));
-border:1px solid var(--blue-border);border-radius:var(--r);
+border:1px solid var(–blue-border);border-radius:var(–r);
 padding:18px 20px;
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+box-shadow:var(–shadow);position:relative;overflow:hidden;
 }
 .mat-next-card::before{
-content:'';position:absolute;bottom:-25px;right:-25px;
+content:’’;position:absolute;bottom:-25px;right:-25px;
 width:100px;height:100px;border-radius:50%;
 background:radial-gradient(circle,rgba(126,184,247,.12),transparent 70%);pointer-events:none;
 }
-.mnttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--blue);margin-bottom:11px;letter-spacing:.02em;}
+.mnttl{font-family:‘Cormorant’,serif;font-size:15px;font-weight:600;color:var(–blue);margin-bottom:11px;letter-spacing:.02em;}
 .mn-body{display:flex;align-items:flex-end;justify-content:space-between;}
-.mn-name{font-size:17px;font-weight:600;color:var(--text);font-family:'Cormorant',serif;letter-spacing:.01em;}
-.mn-sub{font-size:11px;color:var(--dim);margin-top:3px;}
+.mn-name{font-size:17px;font-weight:600;color:var(–text);font-family:‘Cormorant’,serif;letter-spacing:.01em;}
+.mn-sub{font-size:11px;color:var(–dim);margin-top:3px;}
 .mn-right{text-align:right;}
-.mn-days{font-size:26px;font-weight:700;color:var(--blue);letter-spacing:-.02em;line-height:1;}
+.mn-days{font-size:26px;font-weight:700;color:var(–blue);letter-spacing:-.02em;line-height:1;}
 .mn-daysl{font-size:9px;color:rgba(126,184,247,.5);margin-top:3px;letter-spacing:.06em;}
 .mn-date{font-size:10px;color:rgba(126,184,247,.6);margin-top:2px;}
-.mn-empty{font-size:12px;color:var(--muted);text-align:center;padding:4px 0;}
+.mn-empty{font-size:12px;color:var(–muted);text-align:center;padding:4px 0;}
 
 /* ── MONTH CARD ── */
 .month-card{
 margin:0 14px 12px;
 background:linear-gradient(145deg,rgba(78,205,164,.09),rgba(78,205,164,.02));
-border:1px solid var(--green-border);border-radius:var(--r);
-padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+border:1px solid var(–green-border);border-radius:var(–r);
+padding:20px;backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+box-shadow:var(–shadow);position:relative;overflow:hidden;
 }
 .month-card::before{
-content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
+content:’’;position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
 background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-events:none;
 }
-.mcttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--green);margin-bottom:12px;letter-spacing:.02em;}
+.mcttl{font-family:‘Cormorant’,serif;font-size:15px;font-weight:600;color:var(–green);margin-bottom:12px;letter-spacing:.02em;}
 .mc-inner{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
-.mctotal{font-size:32px;font-weight:700;color:var(--green);letter-spacing:-.02em;line-height:1;}
+.mctotal{font-size:32px;font-weight:700;color:var(–green);letter-spacing:-.02em;line-height:1;}
 .mcsub{font-size:10px;color:rgba(78,205,164,.6);margin-top:4px;letter-spacing:.05em;}
-.mcbadge{display:inline-flex;align-items:center;gap:4px;background:var(--green-dim);border:1px solid var(--green-border);border-radius:50px;padding:5px 13px;font-size:12px;color:var(--green);font-weight:600;}
+.mcbadge{display:inline-flex;align-items:center;gap:4px;background:var(–green-dim);border:1px solid var(–green-border);border-radius:50px;padding:5px 13px;font-size:12px;color:var(–green);font-weight:600;}
 
 /* ── GOAL CARD ── */
 .goal-card{
 margin:0 14px 12px;
 background:linear-gradient(145deg,rgba(201,168,76,.09),rgba(201,168,76,.02));
-border:1px solid var(--gold-border);border-radius:var(--r);
-padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+border:1px solid var(–gold-border);border-radius:var(–r);
+padding:20px;backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+box-shadow:var(–shadow);position:relative;overflow:hidden;
 }
 .goal-card::before{
-content:'';position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;border-radius:50%;
+content:’’;position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;border-radius:50%;
 background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-events:none;
 }
-.gttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;}
+.gttl{font-family:‘Cormorant’,serif;font-size:15px;font-weight:600;color:var(–gold-l);margin-bottom:14px;letter-spacing:.02em;}
 .grow{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
-.gbig{font-size:30px;font-weight:700;color:var(--gold-l);line-height:1;letter-spacing:-.02em;}
-.gof{font-size:10px;color:var(--dim);margin-top:4px;}
-.gpct{font-size:14px;font-weight:700;color:var(--gold);}
+.gbig{font-size:30px;font-weight:700;color:var(–gold-l);line-height:1;letter-spacing:-.02em;}
+.gof{font-size:10px;color:var(–dim);margin-top:4px;}
+.gpct{font-size:14px;font-weight:700;color:var(–gold);}
 .barwrap{background:rgba(255,255,255,.06);border-radius:50px;height:6px;overflow:hidden;margin-bottom:14px;}
-.barfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .65s cubic-bezier(.4,0,.2,1);}
+.barfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(–gold),var(–gold-l));transition:width .65s cubic-bezier(.4,0,.2,1);}
 .goal-inp-wrap{position:relative;}
-.goal-inp-wrap::before{content:'€';position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:14px;font-weight:600;pointer-events:none;}
+.goal-inp-wrap::before{content:var(–cur-sym,‘€’);position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(–gold);font-size:14px;font-weight:600;pointer-events:none;}
 .goal-inp-wrap input{padding-left:28px !important;}
 
 /* ── SIM CARD ── */
 .sim-card{
 margin:0 14px 12px;
 background:linear-gradient(145deg,rgba(126,184,247,.08),rgba(126,184,247,.02));
-border:1px solid var(--blue-border);border-radius:var(--r);
-padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);
+border:1px solid var(–blue-border);border-radius:var(–r);
+padding:20px;backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+box-shadow:var(–shadow);
 }
-.sttl{font-family:'Cormorant',serif;font-size:15px;font-weight:600;color:var(--blue);margin-bottom:4px;letter-spacing:.02em;}
-.sdesc{font-size:11px;color:var(--dim);margin-bottom:14px;line-height:1.6;}
+.sttl{font-family:‘Cormorant’,serif;font-size:15px;font-weight:600;color:var(–blue);margin-bottom:4px;letter-spacing:.02em;}
+.sdesc{font-size:11px;color:var(–dim);margin-bottom:14px;line-height:1.6;}
 .sim-res{
-background:rgba(126,184,247,.07);border:1px solid var(--blue-border);
-border-radius:var(--rsm);padding:16px;text-align:center;
+background:rgba(126,184,247,.07);border:1px solid var(–blue-border);
+border-radius:var(–rsm);padding:16px;text-align:center;
 }
 .sim-res.achieved{
-background:rgba(78,205,164,.07);border-color:var(--green-border);
+background:rgba(78,205,164,.07);border-color:var(–green-border);
 }
-.srval{font-size:28px;font-weight:700;color:var(--blue);letter-spacing:-.01em;}
-.sim-res.achieved .srval{color:var(--green);}
-.srlbl{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5;}
+.srval{font-size:28px;font-weight:700;color:var(–blue);letter-spacing:-.01em;}
+.sim-res.achieved .srval{color:var(–green);}
+.srlbl{font-size:11px;color:var(–dim);margin-top:4px;line-height:1.5;}
 .sim-res.achieved .srlbl{color:rgba(78,205,164,.7);}
 
 /* ── FIELDS ── */
 .field{margin-bottom:12px;}
-.field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
+.field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(–dim);margin-bottom:5px;}
 .field input,.field select{
-width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gborder);border-radius:var(--rsm);
-padding:11px 14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:15px;
+width:100%;background:rgba(255,255,255,.04);border:1px solid var(–gborder);border-radius:var(–rsm);
+padding:11px 14px;color:var(–text);font-family:‘Outfit’,sans-serif;font-size:15px;
 outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
 -webkit-appearance:none;appearance:none;
 }
-.field input:focus,.field select:focus{border-color:var(--gold);background:rgba(255,255,255,.065);box-shadow:0 0 0 3px rgba(201,168,76,.08);}
+.field input:focus,.field select:focus{border-color:var(–gold);background:rgba(255,255,255,.065);box-shadow:0 0 0 3px rgba(201,168,76,.08);}
 .field select option{background:#0c0f1e;}
 
 /* ── BUTTONS ── */
-.btn{width:100%;padding:13px;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em;}
-.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold),#9c7020);background-size:200% 200%;background-position:0% 50%;color:#050810;box-shadow:0 4px 20px rgba(201,168,76,.25);}
+.btn{width:100%;padding:13px;border:none;border-radius:50px;font-family:‘Outfit’,sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em;}
+.btn-gold{background:linear-gradient(135deg,var(–gold-l),var(–gold),#9c7020);background-size:200% 200%;background-position:0% 50%;color:#050810;box-shadow:0 4px 20px rgba(201,168,76,.25);}
 .btn-gold:active{transform:scale(.97);box-shadow:0 2px 10px rgba(201,168,76,.15);}
-.btn-out{background:transparent;border:1px solid var(--gborder);color:var(--dim);}
-.btn-out:active{background:var(--ghover);}
+.btn-out{background:transparent;border:1px solid var(–gborder);color:var(–dim);}
+.btn-out:active{background:var(–ghover);}
 .btn-sm{width:auto;padding:8px 16px;font-size:12px;}
-.btn-del{background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
-.btn-edt{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
+.btn-del{background:var(–red-dim);border:1px solid var(–red-border);color:var(–red);font-family:‘Outfit’,sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
+.btn-edt{background:var(–gold-dim);border:1px solid var(–gold-border);color:var(–gold-l);font-family:‘Outfit’,sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
 .btn-del:active,.btn-edt:active{transform:scale(.96);}
 
 /* ── BOND CARD ── */
 .bc{
-background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:border-color .25s;
+background:var(–card);border:1px solid var(–gborder);border-radius:var(–r);
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+padding:18px;margin:0 14px 13px;box-shadow:var(–shadow);position:relative;overflow:hidden;transition:border-color .25s;
 }
-.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent);opacity:.5;}
-.bc.mat{border-color:var(--red-border);}
-.bc.mat::before{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.bc.fut{border-color:var(--blue-border);}
-.bc.fut::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.bc::before{content:’’;position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(–gold-l),transparent);opacity:.5;}
+.bc.mat{border-color:var(–red-border);}
+.bc.mat::before{background:linear-gradient(90deg,transparent,var(–red),transparent);}
+.bc.fut{border-color:var(–blue-border);}
+.bc.fut::before{background:linear-gradient(90deg,transparent,var(–blue),transparent);}
 
 .bchd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
-.bcname{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;}
+.bcname{font-family:‘Cormorant’,serif;font-size:20px;font-weight:600;color:var(–gold-l);line-height:1.2;letter-spacing:.01em;}
 .bc-rate-box{text-align:right;}
-.bcrv{font-size:22px;font-weight:700;color:var(--green);letter-spacing:-.01em;}
-.bcrl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+.bcrv{font-size:22px;font-weight:700;color:var(–green);letter-spacing:-.01em;}
+.bcrl{font-size:9px;color:var(–muted);letter-spacing:.08em;text-transform:uppercase;}
 
 .bcgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;}
-.bclbl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
-.bcval{font-size:13.5px;font-weight:500;color:var(--text);}
-.bcval.g{color:var(--gold-l);}
-.bcval.grn{color:var(--green);}
-.bcval.blu{color:var(--blue);}
-.bcval.red{color:var(--red);}
+.bclbl{font-size:9px;color:var(–muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.bcval{font-size:13.5px;font-weight:500;color:var(–text);}
+.bcval.g{color:var(–gold-l);}
+.bcval.grn{color:var(–green);}
+.bcval.blu{color:var(–blue);}
+.bcval.red{color:var(–red);}
 
-.divider-line{height:1px;background:var(--gborder);margin:0 0 13px;}
+.divider-line{height:1px;background:var(–gborder);margin:0 0 13px;}
 
 .bcnext{
 background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);
-border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;
+border-radius:var(–rsm);padding:12px 14px;margin-bottom:12px;
 display:flex;justify-content:space-between;align-items:center;
 }
-.bcnl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
-.bcnd toggleForm{font-size:14px;font-weight:600;color:var(--gold-l);}
-.bcndays{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-.01em;}
-.bcndl{font-size:9px;color:var(--muted);}
+.bcnl{font-size:9px;color:var(–muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.bcnd{font-size:14px;font-weight:600;color:var(–gold-l);}
+.bcndays{font-size:22px;font-weight:700;color:var(–gold);letter-spacing:-.01em;}
+.bcndl{font-size:9px;color:var(–muted);}
 
-.mat-banner{background:var(--red-dim);border:1px solid var(--red-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--red);text-align:center;margin-bottom:12px;font-weight:500;}
-.fut-banner{background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--blue);text-align:center;margin-bottom:12px;font-weight:500;}
+.mat-banner{background:var(–red-dim);border:1px solid var(–red-border);border-radius:var(–rsm);padding:10px 14px;font-size:12px;color:var(–red);text-align:center;margin-bottom:12px;font-weight:500;}
+.fut-banner{background:var(–blue-dim);border:1px solid var(–blue-border);border-radius:var(–rsm);padding:10px 14px;font-size:12px;color:var(–blue);text-align:center;margin-bottom:12px;font-weight:500;}
 .bcact{display:flex;gap:8px;}
 
 /* ── FORM ── */
 .formwrap{
 margin:0 14px 13px;
-background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+background:var(–card);border:1px solid var(–gborder);border-radius:var(–r);
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
 padding:0 18px;max-height:0;overflow:hidden;
 transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
 }
 .formwrap.open{max-height:1000px;opacity:1;padding:18px;}
-.fttl{font-family:'Cormorant',serif;font-size:20px;font-weight:600;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
+.fttl{font-family:‘Cormorant’,serif;font-size:20px;font-weight:600;color:var(–gold-l);margin-bottom:16px;letter-spacing:.01em;}
 .row2{display:flex;gap:9px;}
 .row2 .field{flex:1;}
 
 /* ── PAYMENTS ── */
 .pay-list-wrap{margin:0 14px;}
-.pay-card{background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:18px;box-shadow:var(--shadow);}
-.pay-month-hdr{display:flex;justify-content:space-between;align-items:center;padding:0 0 10px;margin-bottom:4px;border-bottom:1px solid var(--gold-border);}
-.pml{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
-.pmv{font-size:13px;font-weight:700;color:var(--gold-l);}
+.pay-card{background:var(–card);border:1px solid var(–gborder);border-radius:var(–r);backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);padding:18px;box-shadow:var(–shadow);}
+.pay-month-hdr{display:flex;justify-content:space-between;align-items:center;padding:0 0 10px;margin-bottom:4px;border-bottom:1px solid var(–gold-border);}
+.pml{font-size:10px;color:var(–gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+.pmv{font-size:13px;font-weight:700;color:var(–gold-l);}
 .pay-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.048);}
 .pay-row:last-child{border-bottom:none;}
-.pay-date{font-size:14px;font-weight:500;color:var(--text);}
-.pay-bond{font-size:11px;color:var(--muted);margin-top:2px;}
-.pay-days{font-size:10px;color:var(--gold);margin-top:2px;}
-.pay-amt{font-size:16px;font-weight:600;color:var(--green);}
-.pay-dtotal{display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px;border-top:1px solid var(--gold-border);margin-top:2px;}
-.pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
-.pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
+.pay-date{font-size:14px;font-weight:500;color:var(–text);}
+.pay-bond{font-size:11px;color:var(–muted);margin-top:2px;}
+.pay-days{font-size:10px;color:var(–gold);margin-top:2px;}
+.pay-amt{font-size:16px;font-weight:600;color:var(–green);}
+.pay-dtotal{display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px;border-top:1px solid var(–gold-border);margin-top:2px;}
+.pay-dtl{font-size:10px;color:var(–gold);font-weight:600;letter-spacing:.06em;}
+.pay-dtv{font-size:14px;font-weight:700;color:var(–gold-l);}
 
 /* ── EMPTY ── */
-.empty{text-align:center;padding:48px 16px;color:var(--muted);}
+.empty{text-align:center;padding:48px 16px;color:var(–muted);}
 .empty-ico{font-size:34px;margin-bottom:10px;}
 .empty p{font-size:13px;line-height:1.7;}
 
 /* ── TOAST ── */
 .toast{
 position:fixed;bottom:106px;left:50%;transform:translateX(-50%) translateY(12px);
-background:rgba(12,15,26,.97);border:1px solid var(--gborder);border-radius:50px;
-padding:10px 22px;font-size:12px;color:var(--text);z-index:200;opacity:0;transition:all .26s;
-white-space:nowrap;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);pointer-events:none;
+background:rgba(12,15,26,.97);border:1px solid var(–gborder);border-radius:50px;
+padding:10px 22px;font-size:12px;color:var(–text);z-index:200;opacity:0;transition:all .26s;
+white-space:nowrap;backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);pointer-events:none;
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
@@ -357,17 +357,53 @@ opacity:0;pointer-events:none;transition:opacity .24s;
 }
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{
-background:#0a0d1c;border:1px solid var(--gborder);border-radius:var(--r) var(--r) 0 0;
+background:#0a0d1c;border:1px solid var(–gborder);border-radius:var(–r) var(–r) 0 0;
 padding:24px 18px 36px;width:100%;max-width:460px;
 transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
 .overlay.open .modal{transform:translateY(0);}
-.mttl{font-family:'Cormorant',serif;font-size:22px;font-weight:600;color:var(--gold-l);margin-bottom:6px;}
-.mmsg{font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.55;}
+.mttl{font-family:‘Cormorant’,serif;font-size:22px;font-weight:600;color:var(–gold-l);margin-bottom:6px;}
+.mmsg{font-size:13px;color:var(–dim);margin-bottom:20px;line-height:1.55;}
 .mbtns{display:flex;gap:9px;}
 
 .pad14{padding:0 14px;}
-.small{font-size:11px;color:var(--muted);}
+.small{font-size:11px;color:var(–muted);}
+
+/* ── SETTINGS ── */
+.settings-card{
+background:var(–card);border:1px solid var(–gborder);border-radius:var(–r);
+backdrop-filter:var(–blur);-webkit-backdrop-filter:var(–blur);
+padding:22px;box-shadow:var(–shadow);
+}
+.sc-ttl{font-family:‘Cormorant’,serif;font-size:18px;font-weight:600;color:var(–gold-l);margin-bottom:8px;letter-spacing:.02em;}
+.sc-desc{font-size:12px;color:var(–dim);line-height:1.6;margin-bottom:20px;}
+.currency-toggle{
+display:grid;grid-template-columns:1fr auto 1fr;
+align-items:stretch;
+background:rgba(255,255,255,.03);
+border:1px solid var(–gborder);border-radius:var(–rsm);overflow:hidden;
+margin-bottom:14px;
+}
+.ct-opt{
+padding:18px 14px;text-align:center;cursor:pointer;
+transition:background .2s,border-color .2s;
+position:relative;
+}
+.ct-opt:active{transform:scale(.97);}
+.ct-opt.active{background:var(–gold-dim);}
+.ct-opt.active .ct-sym{color:var(–gold-l);}
+.ct-opt.active .ct-name{color:var(–text);}
+.ct-opt.active .ct-code{color:var(–gold);}
+.ct-opt.active::after{
+content:‘✓’;position:absolute;top:8px;right:10px;
+font-size:11px;color:var(–gold);font-weight:700;
+}
+.ct-sym{font-family:‘Cormorant’,serif;font-size:26px;font-weight:700;color:var(–muted);margin-bottom:4px;transition:color .2s;}
+.ct-name{font-size:11px;color:var(–muted);font-weight:500;transition:color .2s;}
+.ct-code{font-size:9px;color:var(–muted);letter-spacing:.12em;margin-top:2px;transition:color .2s;}
+.ct-divider{width:1px;background:var(–gborder);margin:12px 0;}
+.ct-note{font-size:11px;color:var(–muted);text-align:center;}
+.ct-note strong{color:var(–gold-l);}
 </style>
 
 </head>
@@ -452,7 +488,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     </div>
     <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
     <div class="field" style="margin:0;">
-      <label>Obiectiv lunar (€)</label>
+      <label id="goal-label">Obiectiv lunar (€)</label>
       <div class="goal-inp-wrap">
         <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
       </div>
@@ -498,7 +534,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       <div class="field"><label>Maturitate</label><input type="date" id="f-mat"></div>
     </div>
     <div class="field">
-      <label>Suma investită (€)</label>
+      <label id="f-amt-label">Suma investită (€)</label>
       <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
     </div>
     <div class="field">
@@ -534,6 +570,34 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   </div>
 </div><!-- /payments -->
 
+<!-- SETTINGS -->
+
+<div class="panel" id="panel-settings">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Se<span>tări</span></div>
+  </div>
+  <div style="margin:0 14px 13px;">
+    <div class="settings-card">
+      <div class="sc-ttl">💱 Valută</div>
+      <div class="sc-desc">Alege valuta în care sunt exprimate sumele. Toate valorile vor fi afișate în valuta selectată, fără conversie.</div>
+      <div class="currency-toggle">
+        <div class="ct-opt" id="ct-eur" onclick="setCurrency('EUR')">
+          <div class="ct-sym">€</div>
+          <div class="ct-name">Euro</div>
+          <div class="ct-code">EUR</div>
+        </div>
+        <div class="ct-divider"></div>
+        <div class="ct-opt" id="ct-ron" onclick="setCurrency('RON')">
+          <div class="ct-sym">lei</div>
+          <div class="ct-name">Leu românesc</div>
+          <div class="ct-code">RON</div>
+        </div>
+      </div>
+      <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
+    </div>
+  </div>
+</div><!-- /settings -->
+
   </div><!-- /scroll-area -->
 </div><!-- /app -->
 
@@ -541,6 +605,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
   <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
   <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
+  <div class="nav-it" onclick="sw('settings',3)"><span class="nav-ico">⚙️</span><span class="nav-lbl">Setări</span></div>
 </div>
 
 <div class="overlay" id="overlay">
@@ -558,9 +623,47 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 
 <script>
 // ── DATA ──
-let bonds = JSON.parse(localStorage.getItem('bf3_bonds') || '[]');
-let goal  = parseFloat(localStorage.getItem('bf3_goal') || '0');
+let bonds    = JSON.parse(localStorage.getItem('bf3_bonds') || '[]');
+let goal     = parseFloat(localStorage.getItem('bf3_goal') || '0');
+let currency = localStorage.getItem('bf3_currency') || 'EUR';
 function persist() { localStorage.setItem('bf3_bonds', JSON.stringify(bonds)); }
+
+// ── CURRENCY ──
+function currSym()  { return currency === 'RON' ? 'lei' : '€'; }
+function currCode() { return currency === 'RON' ? 'RON' : 'EUR'; }
+function fmt(n) {
+  if (isNaN(n) || n === null) return currency === 'RON' ? '0,00 lei' : '€0,00';
+  const num = n.toLocaleString('ro-RO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return currency === 'RON' ? num + ' lei' : '€' + num;
+}
+function setCurrency(c) {
+  currency = c;
+  localStorage.setItem('bf3_currency', c);
+  updateCurrencyUI();
+  updateFormLabels();
+  renderDash(); renderBonds(); runSim();
+  if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
+}
+function updateCurrencyUI() {
+  document.getElementById('ct-eur').classList.toggle('active', currency === 'EUR');
+  document.getElementById('ct-ron').classList.toggle('active', currency === 'RON');
+  document.getElementById('ct-cur-lbl').textContent = currency === 'RON' ? 'Leu românesc (lei)' : 'Euro (€)';
+}
+function updateFormLabels() {
+  const sym = currSym();
+  document.querySelector('label[for-field="f-amt"]') && (document.querySelector('label[for-field="f-amt"]').textContent = `Suma investită (${sym})`);
+  // Update via ID on the amt label
+  const amtLabel = document.getElementById('f-amt-label');
+  if (amtLabel) amtLabel.textContent = `Suma investită (${sym})`;
+  const amtInp = document.getElementById('f-amt');
+  if (amtInp) amtInp.placeholder = currency === 'RON' ? 'ex: 25000' : 'ex: 5000';
+  const goalLabel = document.getElementById('goal-label');
+  if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
+  const goalInp = document.getElementById('goal-inp');
+  if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
+  // Update goal-inp-wrap pseudo-element via a CSS var trick
+  document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
+}
 
 // ── TABS ──
 function sw(tab, idx) {
@@ -572,13 +675,10 @@ function sw(tab, idx) {
   if (tab === 'payments') renderPayments();
   if (tab === 'dashboard') renderDash();
   if (tab === 'bonds') renderBonds();
+  if (tab === 'settings') updateCurrencyUI();
 }
 
 // ── UTILS ──
-function eur(n) {
-  if (isNaN(n) || n === null) return '€0,00';
-  return '€' + n.toLocaleString('ro-RO', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
 function fmtD(s) {
   if (!s) return '—';
   const d = (s instanceof Date) ? s : new Date(s + 'T00:00:00');
@@ -653,7 +753,7 @@ function runSim() {
   if (goal > 0 && curMo >= goal) {
     box.classList.add('achieved');
     sv.textContent = '🎉 Obiectiv atins!';
-    sl.textContent = `Câștigi deja ${eur(curMo)}/lună față de ținta ${eur(goal)}`;
+    sl.textContent = `Câștigi deja ${fmt(curMo)}/lună față de ținta ${fmt(goal)}`;
     return;
   }
   box.classList.remove('achieved');
@@ -663,8 +763,8 @@ function runSim() {
   if (isNaN(rate) || rate <= 0) { sv.textContent='—'; sl.textContent='introdu rata cuponului nou'; return; }
 
   const gap = goal - curMo;
-  sv.textContent = eur(gap / (rate / 100 / 12));
-  sl.textContent = `de investit la ${rate}% pentru +${eur(gap)}/lună`;
+  sv.textContent = fmt(gap / (rate / 100 / 12));
+  sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
 }
 
 // ── DASHBOARD ──
@@ -676,7 +776,7 @@ function renderDash() {
 
   // Status strip
   document.getElementById('s-active').textContent  = active.length;
-  document.getElementById('s-monthly').textContent = eur(monthly);
+  document.getElementById('s-monthly').textContent = fmt(monthly);
   document.getElementById('s-pending').textContent = pending.length;
   document.getElementById('s-expired').textContent = expired.length;
 
@@ -705,7 +805,7 @@ function renderDash() {
           <div class="ncc-days-lbl">ZILE RĂMASE</div>
         </div>
         <div class="ncc-right">
-          <div class="ncc-amt">${eur(totalAmt)}</div>
+          <div class="ncc-amt">${fmt(totalAmt)}</div>
           <div class="ncc-from">${names}</div>
         </div>
       </div>
@@ -725,7 +825,7 @@ function renderDash() {
       <div class="mn-body">
         <div>
           <div class="mn-name">${esc(first.name)}</div>
-          <div class="mn-sub">${eur(first.amt)} · ${first.rate}%/an</div>
+          <div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div>
         </div>
         <div class="mn-right">
           <div class="mn-days">${dys}</div>
@@ -736,8 +836,8 @@ function renderDash() {
   }
 
   // Goal
-  document.getElementById('g-cur').textContent    = eur(monthly);
-  document.getElementById('g-target').textContent = eur(goal);
+  document.getElementById('g-cur').textContent    = fmt(monthly);
+  document.getElementById('g-target').textContent = fmt(goal);
   const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
   document.getElementById('g-bar').style.width = pct + '%';
   document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
@@ -756,7 +856,7 @@ function renderDash() {
   pays.sort((a,b)=>a.date-b.date);
   const mTotal = pays.reduce((s,p)=>s+p.amt,0);
   document.getElementById('mc-badge').textContent = pays.length + ' plăți';
-  document.getElementById('mc-total').textContent = eur(mTotal);
+  document.getElementById('mc-total').textContent = fmt(mTotal);
   document.getElementById('mc-month').textContent = monthName(now);
   const bd = document.getElementById('mc-breakdown');
   if (!pays.length) {
@@ -765,7 +865,7 @@ function renderDash() {
     bd.innerHTML = '<div style="border-top:1px solid rgba(78,205,164,.15);margin-top:2px;padding-top:8px;">' +
       pays.map(p=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;">
         <div><div style="font-size:12px;color:var(--text);">${esc(p.bond)}</div><div style="font-size:10px;color:rgba(78,205,164,.55);">${fmtD(p.date)}</div></div>
-        <div style="font-size:13px;font-weight:600;color:var(--green);">${eur(p.amt)}</div>
+        <div style="font-size:13px;font-weight:600;color:var(--green);">${fmt(p.amt)}</div>
       </div>`).join('') + '</div>';
   }
 
@@ -806,13 +906,13 @@ function bondCard(b, ri) {
       <div class="bc-rate-box"><div class="bcrv">${b.rate}%</div><div class="bcrl">cupon/an</div></div>
     </div>
     <div class="bcgrid">
-      <div class="bc-cell"><div class="bclbl">Sumă investită</div><div class="bcval g">${eur(b.amt)}</div></div>
-      <div class="bc-cell"><div class="bclbl">Câștig/lună</div><div class="bcval grn">${eur(monthlyVal(b))}</div></div>
-      <div class="bc-cell"><div class="bclbl">Valoare cupon</div><div class="bcval blu">${eur(couponVal(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Sumă investită</div><div class="bcval g">${fmt(b.amt)}</div></div>
+      <div class="bc-cell"><div class="bclbl">Câștig/lună</div><div class="bcval grn">${fmt(monthlyVal(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Valoare cupon</div><div class="bcval blu">${fmt(couponVal(b))}</div></div>
       <div class="bc-cell"><div class="bclbl">Interval</div><div class="bcval">${b.freq==='1'?'Lunar':'La '+b.freq+' luni'}</div></div>
       <div class="bc-cell"><div class="bclbl">Plăți rămase</div><div class="bcval">${paysLeft(b)}</div></div>
-      <div class="bc-cell"><div class="bclbl">Total rămas</div><div class="bcval g">${eur(totalRemaining(b))}</div></div>
-      <div class="bc-cell"><div class="bclbl">Primit până acum</div><div class="bcval grn">${eur(totalReceived(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Total rămas</div><div class="bcval g">${fmt(totalRemaining(b))}</div></div>
+      <div class="bc-cell"><div class="bclbl">Primit până acum</div><div class="bcval grn">${fmt(totalReceived(b))}</div></div>
       <div class="bc-cell"><div class="bclbl">Maturitate</div><div class="bcval">${fmtD(b.mat)}</div></div>
     </div>
     <div class="divider-line"></div>
@@ -846,7 +946,7 @@ function renderPayments() {
       inThisMonth=true;
       const mTotal=keys.filter(kk=>{const dd=grp[kk].date;return dd.getFullYear()===now.getFullYear()&&dd.getMonth()===now.getMonth();})
         .reduce((s,kk)=>s+grp[kk].items.reduce((ss,ii)=>ss+ii.amt,0),0);
-      html+=`<div class="pay-month-hdr"><div class="pml">Luna curentă</div><div class="pmv">${eur(mTotal)}</div></div>`;
+      html+=`<div class="pay-month-hdr"><div class="pml">Luna curentă</div><div class="pmv">${fmt(mTotal)}</div></div>`;
     }
     g.items.forEach((item,idx) => {
       html+=`<div class="pay-row">
@@ -854,12 +954,12 @@ function renderPayments() {
           ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
           <div class="pay-bond">${esc(item.bond)}</div>
         </div>
-        <div style="text-align:right"><div class="pay-amt">${eur(item.amt)}</div></div>
+        <div style="text-align:right"><div class="pay-amt">${fmt(item.amt)}</div></div>
       </div>`;
     });
     if (g.items.length>1) {
       const dt=g.items.reduce((s,i)=>s+i.amt,0);
-      html+=`<div class="pay-dtotal"><div class="pay-dtl">Total ${fmtD(k)}</div><div class="pay-dtv">${eur(dt)}</div></div>`;
+      html+=`<div class="pay-dtotal"><div class="pay-dtl">Total ${fmtD(k)}</div><div class="pay-dtv">${fmt(dt)}</div></div>`;
     }
   });
   el.innerHTML=html;
@@ -924,6 +1024,8 @@ function toast(msg){
 
 // ── INIT ──
 if(goal>0)document.getElementById('goal-inp').value=goal;
+updateCurrencyUI();
+updateFormLabels();
 renderDash();renderBonds();runSim();
 </script>
 
