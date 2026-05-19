@@ -113,11 +113,11 @@ position:relative;overflow:hidden;
 .sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
 .sum-tile.gold {border-color:var(--gold-border);}
 .sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
-.sum-tile.grn{border-color:var(--green-border);}
+.sum-tile.grn {border-color:var(--green-border);}
 .sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
-.sum-tile.red{border-color:var(--red-border);}
+.sum-tile.red {border-color:var(--red-border);}
 .sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.sum-tile.blu{border-color:var(--blue-border);}
+.sum-tile.blu {border-color:var(--blue-border);}
 .sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
 .stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
 .stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
@@ -216,11 +216,36 @@ background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-
 .gpct{font-size:14px;font-weight:700;color:var(--gold);}
 .barwrap{background:rgba(255,255,255,.06);border-radius:50px;height:6px;overflow:hidden;margin-bottom:14px;}
 .barfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .65s cubic-bezier(.4,0,.2,1);}
+
 .goal-inp-wrap{position:relative;}
 .goal-inp-wrap::before{content:var(--cur-sym,'€');position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:14px;font-weight:600;pointer-events:none;}
 .goal-inp-wrap input{padding-left:28px !important;}
 .currency-ron .goal-inp-wrap::before{display:none;}
 .currency-ron .goal-inp-wrap input{padding-left:14px !important;}
+
+/* Secțiune Supraviețuire */
+.survival-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--rsm);
+  padding: 12px;
+  margin-top: 12px;
+}
+.survival-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 12px;
+}
+.survival-item:first-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+.survival-lbl { color: var(--dim); max-width: 70%; line-height: 1.3;}
+.survival-val { font-weight: 700; color: var(--gold-l); text-align: right;}
+.survival-val.red-text { color: var(--red); }
 
 /* ── SIM CARD ── */
 .sim-res{
@@ -507,13 +532,43 @@ margin-bottom:14px;
       <div class="gpct" id="g-pct">0%</div>
     </div>
     <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
+    
     <div class="field" style="margin:0 0 12px;">
       <label id="goal-label">Obiectiv lunar (€)</label>
       <div class="goal-inp-wrap">
         <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
       </div>
     </div>
-    <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;">
+
+    <!-- CASETĂ INTEGRATĂ PENTRU TOTAL BANI ȘI CHELTUIELI -->
+    <div class="row2" style="margin-bottom: 12px;">
+      <div class="field" style="margin-bottom:0;">
+        <label id="total-funds-label">Total bani avuți (€)</label>
+        <div class="goal-inp-wrap" id="wrap-funds">
+          <input type="number" inputmode="decimal" id="survival-total-funds" placeholder="ex: 50000" oninput="calculateSurvival()">
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label id="monthly-expenses-label">Cheltuieli lunare (€)</label>
+        <div class="goal-inp-wrap" id="wrap-expenses">
+          <input type="number" inputmode="decimal" id="survival-expenses" placeholder="ex: 1000" oninput="calculateSurvival()">
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO SUPRAVIEȚUIRE -->
+    <div class="survival-box" id="survival-results-box" style="display:none;">
+      <div class="survival-item">
+        <div class="survival-lbl">🛡️ Dacă pierzi totalul investit în obligațiuni, banii îți ajung pentru:</div>
+        <div class="survival-val" id="survival-crash-val">— ani</div>
+      </div>
+      <div class="survival-item">
+        <div class="survival-lbl">💸 Fără investiții, trăind doar din tot capitalul tău, banii îți ajung:</div>
+        <div class="survival-val" id="survival-pure-val">— ani</div>
+      </div>
+    </div>
+
+    <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;margin-top:14px;">
       <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator -- cât să investești</div>
       <div class="field" style="margin-bottom:10px;">
         <label>Rata cuponului nou (%/an)</label>
@@ -524,7 +579,7 @@ margin-bottom:14px;
         <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
       </div>
     </div>
-    <div id="goal-achieved-box" style="display:none;border-top:1px solid rgba(78,205,164,.2);padding-top:14px;">
+    <div id="goal-achieved-box" style="display:none;border-top:1px solid rgba(78,205,164,.2);padding-top:14px;margin-top:14px;">
       <div class="sim-res achieved">
         <div class="srval">🎉 Obiectiv atins!</div>
         <div class="srlbl" id="goal-achieved-lbl"></div>
@@ -777,16 +832,21 @@ async function sbDelete(table, filter) {
 // ══════════════════════════════════════════════
 //  DATA
 // ══════════════════════════════════════════════
-let bonds    = [];
-let goal     = 0;
-let currency = 'EUR';
+let bonds         = [];
+let goal          = 0;
+let currency      = 'EUR';
+let survivalTotal = 0;
+let survivalSpent = 0;
 
 async function loadFromSupabase() {
   try {
-    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=goal,currency`);
+    // Încărcăm noile proprietăți din baza de date (dacă există deja)
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=goal,currency,survival_total,survival_spent`);
     if (prefs.length) {
-      goal     = parseFloat(prefs[0].goal) || 0;
-      currency = prefs[0].currency || 'EUR';
+      goal          = parseFloat(prefs[0].goal) || 0;
+      currency      = prefs[0].currency || 'EUR';
+      survivalTotal = parseFloat(prefs[0].survival_total) || 0;
+      survivalSpent = parseFloat(prefs[0].survival_spent) || 0;
     }
     const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
     bonds = rows.map(r => ({
@@ -803,33 +863,39 @@ async function loadFromSupabase() {
     toast('⚠️ Eroare la încărcarea datelor');
   }
   if (goal > 0) document.getElementById('goal-inp').value = goal;
+  if (survivalTotal > 0) document.getElementById('survival-total-funds').value = survivalTotal;
+  if (survivalSpent > 0) document.getElementById('survival-expenses').value = survivalSpent;
+  
   updateCurrencyUI();
   updateFormLabels();
   renderDash();
   renderBonds();
   runSim();
+  calculateSurvival();
 }
 
 async function savePrefsToSupabase() {
   try {
     const existent = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}`);
+    const payload = {
+      goal: goal,
+      currency: currency,
+      survival_total: survivalTotal,
+      survival_spent: survivalSpent,
+      updated_at: new Date().toISOString()
+    };
+    
     if (existent && existent.length > 0) {
       const r = await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
         method: 'PATCH',
         headers: { ...SB_HEADERS },
-        body: JSON.stringify({
-          goal: goal,
-          currency: currency,
-          updated_at: new Date().toISOString()
-        })
+        body: JSON.stringify(payload)
       });
       if (!r.ok) throw new Error(await r.text());
     } else {
       await sbUpsert('bf_preferences', {
         user_key: USER_KEY,
-        goal,
-        currency,
-        updated_at: new Date().toISOString()
+        ...payload
       });
     }
   } catch (e) {
@@ -882,6 +948,7 @@ function setCurrency(c) {
   renderDash();
   renderBonds();
   runSim();
+  calculateSurvival();
   if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
 }
 function updateCurrencyUI() {
@@ -900,6 +967,13 @@ function updateFormLabels() {
   if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
   const goalInp = document.getElementById('goal-inp');
   if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
+  
+  // Update etichete noi
+  const fundsLabel = document.getElementById('total-funds-label');
+  if (fundsLabel) fundsLabel.textContent = `Total bani avuți (${sym})`;
+  const expLabel = document.getElementById('monthly-expenses-label');
+  if (expLabel) expLabel.textContent = `Cheltuieli lunare (${sym})`;
+  
   document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
 }
 
@@ -975,7 +1049,7 @@ function sortedBonds() {
 }
 
 // ══════════════════════════════════════════════
-//  GOAL
+//  GOAL & SURVIVAL
 // ══════════════════════════════════════════════
 let goalSaveTimer;
 function saveGoal() {
@@ -985,6 +1059,59 @@ function saveGoal() {
   runSim();
   clearTimeout(goalSaveTimer);
   goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
+}
+
+function calculateSurvival() {
+  const fundsInp = parseFloat(document.getElementById('survival-total-funds').value);
+  const expensesInp = parseFloat(document.getElementById('survival-expenses').value);
+  
+  survivalTotal = (!isNaN(fundsInp) && fundsInp >= 0) ? fundsInp : 0;
+  survivalSpent = (!isNaN(expensesInp) && expensesInp > 0) ? expensesInp : 0;
+  
+  const box = document.getElementById('survival-results-box');
+  const crashEl = document.getElementById('survival-crash-val');
+  const pureEl = document.getElementById('survival-pure-val');
+  
+  if (survivalTotal === 0 && survivalSpent === 0) {
+    box.style.display = 'none';
+    return;
+  }
+  
+  box.style.display = 'block';
+  
+  if (survivalSpent === 0) {
+    crashEl.textContent = '— ani';
+    pureEl.textContent = '— ani';
+    return;
+  }
+  
+  // Totalul investit în obligațiuni active/în așteptare
+  const totalBondsAmt = bonds.filter(b => !isMatured(b)).reduce((s, b) => s + b.amt, 0);
+  
+  // Formula 1: (Total bani - Obligatiuni) / (Cheltuieli * 12) = ani ramasi
+  const leftCash = survivalTotal - totalBondsAmt;
+  if (leftCash <= 0) {
+    crashEl.innerHTML = '<span class="survival-val red-text">0 ani (banii sunt blocați/pierduți)</span>';
+  } else {
+    const yearsCrash = leftCash / (survivalSpent * 12);
+    crashEl.textContent = formatYears(yearsCrash);
+  }
+  
+  // Formula 2: Total bani / (Cheltuieli * 12) = ani ramasi fara investitii
+  const yearsPure = survivalTotal / (survivalSpent * 12);
+  pureEl.textContent = formatYears(yearsPure);
+  
+  clearTimeout(goalSaveTimer);
+  goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
+}
+
+function formatYears(y) {
+  if (y === 1) return '1 an';
+  if (y < 1) {
+    const luni = Math.round(y * 12);
+    return luni === 1 ? '1 lună' : `${luni} luni`;
+  }
+  return `${y.toFixed(1)} ani`;
 }
 
 // ══════════════════════════════════════════════
@@ -1114,6 +1241,7 @@ function renderDash() {
   }
 
   runSim();
+  calculateSurvival();
 }
 
 // ══════════════════════════════════════════════
@@ -1163,18 +1291,21 @@ function filterBonds() {
   clearBtn.classList.toggle('vis', searchQuery.length > 0);
 
   if (searchQuery.length > 0) {
-    // Ascunde butonul adaugă și sumarul
     addBtn.classList.add('search-hidden');
     summaryBar.classList.add('search-hidden');
     countEl.style.display = 'block';
   } else {
-    // Reapară butonul adaugă și sumarul
     addBtn.classList.remove('search-hidden');
     summaryBar.classList.remove('search-hidden');
     countEl.style.display = 'none';
   }
 
   renderBondsList();
+}
+
+function clearSearch() {
+  document.getElementById('bond-search').value = '';
+  filterBonds();
 }
 
 // ══════════════════════════════════════════════
@@ -1384,6 +1515,7 @@ async function saveBond() {
   renderBonds();
   renderDash();
   runSim();
+  calculateSurvival();
   await saveBondToSupabase(bond);
 }
 
@@ -1426,6 +1558,7 @@ function confirmDel(i) {
     const id = bonds[i].id;
     bonds.splice(i, 1);
     renderBonds(); renderDash(); runSim(); closeOv();
+    calculateSurvival();
     await deleteBondFromSupabase(id);
     toast('Ștearsă ✓');
   };
