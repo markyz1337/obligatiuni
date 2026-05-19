@@ -97,7 +97,6 @@ display:flex;padding:10px 0 22px;z-index:100;
 }
 .nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:5px 0;transition:.2s;}
 .nav-ico{font-size:19px;transition:.2s;}
-.nav-lbl{font-size:9px;color:var(--muted);letter-spacing:.06em;font-weight:500;transition:.2s;}
 .nav-it.on .nav-lbl{color:var(--gold);}
 .nav-it.on .nav-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.75));}
 
@@ -352,7 +351,6 @@ background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
 }
 .bsb-ttl{font-family:'DM Serif Display',serif;font-size:13px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;opacity:.8;}
 .bsb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.bsb-item{}
 .bsb-lbl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
 .bsb-val{font-size:19px;font-weight:700;letter-spacing:-.01em;}
 .bsb-val.gold{color:var(--gold-l);}
@@ -493,8 +491,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 <div id="app">
   <div class="scroll-area" id="scroll-area">
 
-<!-- DASHBOARD -->
-
 <div class="panel on" id="panel-dashboard">
   <div class="dash-hero">
     <div class="hero-eyebrow">Portofoliu personal</div>
@@ -521,35 +517,28 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       </div>
     </div>
 
-    <!-- CASETĂ INTEGRATĂ PENTRU TOTAL BANI ȘI CHELTUIELI -->
-    <div class="row2" style="margin-bottom: 12px;">
-      <div class="field" style="margin-bottom:0;">
-        <label id="total-funds-label">Total bani avuți (€)</label>
-        <div class="goal-inp-wrap" id="wrap-funds">
-          <input type="number" inputmode="decimal" id="survival-total-funds" placeholder="ex: 250000" oninput="calculateSurvival()">
-        </div>
-      </div>
-      <div class="field" style="margin-bottom:0;">
-        <label id="monthly-expenses-label">Cheltuieli lunare (€)</label>
-        <div class="goal-inp-wrap" id="wrap-expenses">
-          <input type="number" inputmode="decimal" id="survival-expenses" placeholder="ex: 500" oninput="calculateSurvival()">
-        </div>
+    <div class="field" style="margin-bottom:12px;">
+      <label id="total-funds-label">Total bani avuți (€)</label>
+      <div class="goal-inp-wrap" id="wrap-funds">
+        <input type="number" inputmode="decimal" id="survival-total-funds" placeholder="ex: 250000" oninput="calculateSurvival()">
       </div>
     </div>
 
-    <!-- INFO SUPRAVIEȚUIRE -->
+    <!-- câmpul survival-expenses e ascuns dar prezent pentru logică -->
+    <input type="hidden" id="survival-expenses">
+
     <div class="survival-box" id="survival-results-box" style="display:none;">
       <div class="survival-item">
         <div class="survival-lbl">⏱️ Durată supraviețuire în ritmul actual (cu câștiguri din obligațiuni):</div>
-        <div class="survival-val green-text" id="survival-current-pace-val">— ani</div>
+        <div class="survival-val green-text" id="survival-current-pace-val">-- ani</div>
       </div>
       <div class="survival-item">
         <div class="survival-lbl">🛡️ Dacă pierzi totalul investit în obligațiuni, restul banilor cash îți ajung:</div>
-        <div class="survival-val" id="survival-crash-val">— ani</div>
+        <div class="survival-val" id="survival-crash-val">-- ani</div>
       </div>
       <div class="survival-item">
         <div class="survival-lbl">💸 Fără investiții, trăind doar din tot capitalul tău brut, banii îți ajung:</div>
-        <div class="survival-val" id="survival-pure-val">— ani</div>
+        <div class="survival-val" id="survival-pure-val">-- ani</div>
       </div>
     </div>
 
@@ -614,22 +603,14 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     </div>
     <div id="mn-body"></div>
   </div>
-</div><!-- /dashboard -->
-
-<!-- BONDS -->
-
-<div class="panel" id="panel-bonds">
+</div><div class="panel" id="panel-bonds">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
   </div>
 
-  <!-- 1. BUTON ADAUGĂ -->
-
   <div class="pad14" style="margin-bottom:13px;" id="bonds-add-btn-wrap">
     <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
   </div>
-
-  <!-- FORM (expandable, sub buton) -->
 
   <div class="formwrap" id="formwrap">
     <div class="fttl" id="fttl">Obligațiune nouă</div>
@@ -649,7 +630,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       </div>
     </div>
     <div class="field">
-      <label id="f-amt-label">Suma investită (€)</label>
+      <label id="f-amt-label">Suma investită (${currSym()})</label>
       <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
     </div>
     <div class="field">
@@ -671,61 +652,47 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     </div>
   </div>
 
-  <!-- 2. SEARCH -->
-
   <div class="search-wrap">
     <input class="search-inp" type="text" id="bond-search" placeholder="Caută obligațiune..." oninput="filterBonds()" autocomplete="off">
     <button class="search-clear" id="search-clear-btn" onclick="clearSearch()">✕</button>
   </div>
   <div class="search-count" id="search-count" style="display:none;"></div>
 
-  <!-- 3. SUMAR PORTOFOLIU -->
-
   <div class="bonds-summary-bar" id="bonds-summary-bar">
     <div class="bsb-ttl">💼 Sumar portofoliu activ</div>
     <div class="bsb-grid">
       <div class="bsb-item">
         <div class="bsb-lbl">Total investit</div>
-        <div class="bsb-val gold" id="bsb-total">—</div>
-        <div class="bsb-sub" id="bsb-count">— obligațiuni</div>
+        <div class="bsb-val gold" id="bsb-total">--</div>
+        <div class="bsb-sub" id="bsb-count">-- obligațiuni</div>
       </div>
       <div class="bsb-item">
         <div class="bsb-lbl">Câștig lunar total</div>
-        <div class="bsb-val green" id="bsb-monthly">—</div>
-        <div class="bsb-sub" id="bsb-yearly">— / an</div>
+        <div class="bsb-val green" id="bsb-monthly">--</div>
+        <div class="bsb-sub" id="bsb-yearly">-- / an</div>
       </div>
       <div class="bsb-item">
         <div class="bsb-lbl">Active acum</div>
-        <div class="bsb-val gold" id="bsb-active-amt">—</div>
-        <div class="bsb-sub" id="bsb-active-cnt">— obligațiuni</div>
+        <div class="bsb-val gold" id="bsb-active-amt">--</div>
+        <div class="bsb-sub" id="bsb-active-cnt">-- obligațiuni</div>
       </div>
       <div class="bsb-item">
         <div class="bsb-lbl">În așteptare</div>
-        <div class="bsb-val blue" id="bsb-pending-amt">—</div>
-        <div class="bsb-sub" id="bsb-pending-cnt">— obligațiuni</div>
+        <div class="bsb-val blue" id="bsb-pending-amt">--</div>
+        <div class="bsb-sub" id="bsb-pending-cnt">-- obligațiuni</div>
       </div>
     </div>
   </div>
 
-  <!-- 4. LISTA OBLIGAȚIUNI -->
-
   <div id="bonds-list"></div>
-</div><!-- /bonds -->
-
-<!-- PAYMENTS -->
-
-<div class="panel" id="panel-payments">
+</div><div class="panel" id="panel-payments">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
   </div>
   <div class="pay-list-wrap">
     <div class="pay-card" id="pay-list"></div>
   </div>
-</div><!-- /payments -->
-
-<!-- SETTINGS -->
-
-<div class="panel" id="panel-settings">
+</div><div class="panel" id="panel-settings">
   <div class="panel-hdr" style="display:flex;align-items:center;gap:14px;">
     <button onclick="sw('dashboard',0)" style="background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);border-radius:50px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">← Înapoi</button>
     <div class="panel-hdr-title">Se<span>tări</span></div>
@@ -750,12 +717,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
     </div>
   </div>
-</div><!-- /settings -->
-
-  </div><!-- /scroll-area -->
-</div><!-- /app -->
-
-<div class="nav">
+</div></div></div><div class="nav">
   <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
   <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
   <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
@@ -788,6 +750,8 @@ const SB_HEADERS = {
   'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
   'Prefer':        'return=representation'
 };
+
+const EXTERNAL_GOAL_API_URL = 'https://fndjrfieitieqzafhyzz.supabase.co/rest/v1/fd_settings?select=*&apikey=sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
 
 async function sbGet(table, filter = '') {
   const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
@@ -822,17 +786,43 @@ let goal          = 0;
 let currency      = 'EUR';
 let survivalTotal = 0;
 let survivalSpent = 0;
-const CURRENT_AGE = 23; // Vârsta utilizatorului născut pe 27 Octombrie 2002
+const CURRENT_AGE = 23;
 
 async function loadFromSupabase() {
   try {
-    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=goal,currency,survival_total,survival_spent`);
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent`);
     if (prefs.length) {
-      goal          = parseFloat(prefs[0].goal) || 0;
       currency      = prefs[0].currency || 'EUR';
-      survivalTotal = parseFloat(prefs[0].survival_total) || 0;
-      survivalSpent = parseFloat(prefs[0].survival_spent) || 0;
+      // survival_spent din DB nu mai e folosit — îl preluăm din goal
     }
+    
+    try {
+      const extResponse = await fetch(EXTERNAL_GOAL_API_URL);
+      if (extResponse.ok) {
+        const extData = await extResponse.json();
+        const snapshotObj = extData.find(item => item.key === 'metrics_snapshot');
+        if (snapshotObj && snapshotObj.value) {
+          const parsedVal = JSON.parse(snapshotObj.value);
+          if (parsedVal) {
+            if (parsedVal.media_lunara_ron) {
+              const cleanGoal = parseFloat(parsedVal.media_lunara_ron.replace(/[^\d]/g, ''));
+              if (!isNaN(cleanGoal) && cleanGoal > 0) {
+                goal = cleanGoal;
+              }
+            }
+            if (parsedVal.total_active_ron) {
+              const cleanFunds = parseFloat(parsedVal.total_active_ron.replace(/[^\d]/g, ''));
+              if (!isNaN(cleanFunds) && cleanFunds >= 0) {
+                survivalTotal = cleanFunds;
+              }
+            }
+          }
+        }
+      }
+    } catch (extError) {
+      console.error('Eroare la preluarea datelor din API extern:', extError);
+    }
+
     const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
     bonds = rows.map(r => ({
       id:    r.id,
@@ -843,13 +833,14 @@ async function loadFromSupabase() {
       rate:  parseFloat(r.rate),
       freq:  String(r.freq)
     }));
+    await saveTotalInvestitRON(); 
   } catch (e) {
     console.error('Load error:', e);
     toast('⚠️ Eroare la încărcarea datelor');
   }
+  
   if (goal > 0) document.getElementById('goal-inp').value = goal;
   if (survivalTotal > 0) document.getElementById('survival-total-funds').value = survivalTotal;
-  if (survivalSpent > 0) document.getElementById('survival-expenses').value = survivalSpent;
   
   updateCurrencyUI();
   updateFormLabels();
@@ -861,31 +852,35 @@ async function loadFromSupabase() {
 
 async function savePrefsToSupabase() {
   try {
-    const existent = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}`);
-    const payload = {
-      goal: goal,
-      currency: currency,
-      survival_total: survivalTotal,
-      survival_spent: survivalSpent,
-      updated_at: new Date().toISOString()
-    };
-    
-    if (existent && existent.length > 0) {
-      const r = await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
-        method: 'PATCH',
-        headers: { ...SB_HEADERS },
-        body: JSON.stringify(payload)
-      });
-      if (!r.ok) throw new Error(await r.text());
-    } else {
-      await sbUpsert('bf_preferences', {
-        user_key: USER_KEY,
-        ...payload
-      });
-    }
+    const f = parseFloat(document.getElementById('survival-total-funds').value);
+    const survivalTotalVal = (!isNaN(f) && f >= 0) ? f : 0;
+    await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS },
+      body: JSON.stringify({
+        currency: currency,
+        survival_total: survivalTotalVal,
+        updated_at: new Date().toISOString()
+      })
+    });
+  } catch(e) {
+    console.error('Eroare la salvarea preferințelor:', e);
+  }
+}
+
+async function saveTotalInvestitRON() {
+  const relevant = [...bonds.filter(isActive), ...bonds.filter(isNotStarted)];
+  const total = relevant.reduce((s, b) => s + b.amt, 0);
+  const valoare = Math.round(total);
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS },
+      body: JSON.stringify({ total_investit_ron: valoare, updated_at: new Date().toISOString() })
+    });
+    if (!r.ok) throw new Error(await r.text());
   } catch (e) {
-    console.error('Prefs save error:', e);
-    toast('⚠️ Eroare la salvarea în baza de date');
+    console.error('Eroare salvare total investit:', e);
   }
 }
 
@@ -952,12 +947,8 @@ function updateFormLabels() {
   if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
   const goalInp = document.getElementById('goal-inp');
   if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
-  
   const fundsLabel = document.getElementById('total-funds-label');
   if (fundsLabel) fundsLabel.textContent = `Total bani avuți (${sym})`;
-  const expLabel = document.getElementById('monthly-expenses-label');
-  if (expLabel) expLabel.textContent = `Cheltuieli lunare (${sym})`;
-  
   document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
 }
 
@@ -1047,34 +1038,25 @@ function saveGoal() {
 
 function calculateSurvival() {
   const fundsInp = parseFloat(document.getElementById('survival-total-funds').value);
-  const expensesInp = parseFloat(document.getElementById('survival-expenses').value);
-  
   survivalTotal = (!isNaN(fundsInp) && fundsInp >= 0) ? fundsInp : 0;
-  survivalSpent = (!isNaN(expensesInp) && expensesInp > 0) ? expensesInp : 0;
+
+  // survivalSpent = întotdeauna din goal (obiectiv lunar), fără câmp manual
+  survivalSpent = goal > 0 ? goal : 0;
   
   const box = document.getElementById('survival-results-box');
   const paceEl = document.getElementById('survival-current-pace-val');
   const crashEl = document.getElementById('survival-crash-val');
   const pureEl = document.getElementById('survival-pure-val');
   
-  if (survivalTotal === 0 && survivalSpent === 0) {
+  if (survivalTotal === 0 || survivalSpent === 0) {
     box.style.display = 'none';
     return;
   }
   
   box.style.display = 'block';
   
-  if (survivalSpent === 0) {
-    paceEl.textContent = '— ani';
-    crashEl.textContent = '— ani';
-    pureEl.textContent = '— ani';
-    return;
-  }
-  
-  // Câștigul lunar total din obligațiunile tale active în acest moment
   const curMonthlyYield = bonds.filter(isActive).reduce((s, b) => s + monthlyVal(b), 0);
   
-  // Scenariul 1: Supraviețuire în ritmul actual (cu câștiguri din obligațiuni)
   if (curMonthlyYield >= survivalSpent) {
     paceEl.innerHTML = '<span style="color:var(--green)">∞ Nemărginit (Câștigul acoperă cheltuielile!)</span>';
   } else {
@@ -1083,10 +1065,7 @@ function calculateSurvival() {
     paceEl.textContent = formatYearsAndAge(yearsPace);
   }
   
-  // Totalul blocat/investit în obligațiuni active/în așteptare
   const totalBondsAmt = bonds.filter(b => !isMatured(b)).reduce((s, b) => s + b.amt, 0);
-  
-  // Scenariul 2: Dacă pierzi totalul investit în obligațiuni (Trăiești doar din restul banilor cash)
   const leftCash = survivalTotal - totalBondsAmt;
   if (leftCash <= 0) {
     crashEl.innerHTML = '<span class="survival-val red-text">0 ani (toți banii tăi sunt investiți)</span>';
@@ -1095,7 +1074,6 @@ function calculateSurvival() {
     crashEl.textContent = formatYearsAndAge(yearsCrash);
   }
   
-  // Scenariul 3: Fără investiții, trăind doar din tot capitalul tău brut
   const yearsPure = survivalTotal / (survivalSpent * 12);
   pureEl.textContent = formatYearsAndAge(yearsPure);
   
@@ -1108,11 +1086,9 @@ function formatYearsAndAge(y) {
   const aniRamasi = Math.floor(totalMonthsRemaining / 12);
   const luniRamase = totalMonthsRemaining % 12;
   
-  // Calculare vârstă finală
   const finalAgeYears = CURRENT_AGE + aniRamasi;
   const finalAgeMonths = luniRamase; 
   
-  // Construire string pentru durata rămasă
   let durataStr = '';
   if (aniRamasi > 0) {
     durataStr += `${aniRamasi} an${aniRamasi === 1 ? '' : 'i'}`;
@@ -1123,7 +1099,6 @@ function formatYearsAndAge(y) {
   }
   if (durataStr === '') durataStr = '0 luni';
 
-  // Construire string pentru vârsta maximă atinstă
   let varstaStr = `până la ${finalAgeYears} ani`;
   if (finalAgeMonths > 0) {
     varstaStr += ` și ${finalAgeMonths} lun${finalAgeMonths === 1 ? 'ă' : 'i'}`;
@@ -1183,7 +1158,6 @@ function renderDash() {
     expiredBadge.style.display = 'none';
   }
 
-  // Next coupon
   const nccEl = document.getElementById('ncc-body');
   let allNextPays = [];
   active.forEach(b => {
@@ -1210,7 +1184,6 @@ function renderDash() {
       <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
   }
 
-  // Next maturity
   const mnEl = document.getElementById('mn-body');
   const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
   if (!activeSorted.length) {
@@ -1226,14 +1199,12 @@ function renderDash() {
       </div>`;
   }
 
-  // Goal bar
   document.getElementById('g-cur').textContent    = fmt(monthly);
   document.getElementById('g-target').textContent = fmt(goal);
   const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
   document.getElementById('g-bar').style.width = pct + '%';
   document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
 
-  // This month
   const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
   let pays = [];
   bonds.forEach(b => {
@@ -1321,13 +1292,14 @@ function filterBonds() {
   renderBondsList();
 }
 
-// ══════════════════════════════════════════════
-//  BONDS LIST & GENERAL OPERATIONS
-// ══════════════════════════════════════════════
 function clearSearch() {
   document.getElementById('bond-search').value = '';
   filterBonds();
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadFromSupabase();
+});
 
 function renderBonds() {
   renderBondsSummary();
@@ -1535,6 +1507,7 @@ async function saveBond() {
   runSim();
   calculateSurvival();
   await saveBondToSupabase(bond);
+  await saveTotalInvestitRON();
 }
 
 function formatDateInput(input) {
@@ -1570,38 +1543,33 @@ function editBond(i) {
 //  DELETE
 // ══════════════════════════════════════════════
 function confirmDel(i) {
-  document.getElementById('ov-ttl').textContent = 'Ștergi obligațiunea?';
-  document.getElementById('ov-msg').textContent = `"${bonds[i].name}" va fi ștearsă definitiv.`;
-  document.getElementById('ov-ok').onclick = async () => {
-    const id = bonds[i].id;
+  const b = bonds[i];
+  document.getElementById('ov-ttl').textContent = 'Șterge obligațiunea';
+  document.getElementById('ov-msg').textContent = `Sigur vrei să ștergi "${b.name}"?`;
+  document.getElementById('ov-ok').onclick = async function() {
+    await deleteBondFromSupabase(b.id);
+    await saveTotalInvestitRON();
     bonds.splice(i, 1);
-    renderBonds(); renderDash(); runSim(); closeOv();
+    closeOv();
+    renderBonds();
+    renderDash();
+    runSim();
     calculateSurvival();
-    await deleteBondFromSupabase(id);
-    toast('Ștearsă ✓');
+    toast('🗑️ Obligațiune ștearsă');
   };
   document.getElementById('overlay').classList.add('open');
 }
+
 function closeOv() { document.getElementById('overlay').classList.remove('open'); }
-document.getElementById('overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closeOv(); });
 
 // ══════════════════════════════════════════════
 //  TOAST
 // ══════════════════════════════════════════════
-let toastT;
 function toast(msg) {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastT);
-  toastT = setTimeout(() => el.classList.remove('show'), 2800);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
 }
-
-// ══════════════════════════════════════════════
-//  INIT
-// ══════════════════════════════════════════════
-loadFromSupabase();
 </script>
-
 </body>
 </html>
