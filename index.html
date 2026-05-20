@@ -548,7 +548,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   100% { transform: rotate(360deg); }
 }
 
-/* Stare loading — pulsează subtil */
+/* Stare loading -- pulsează subtil */
 .fab-refresh.loading {
   background: linear-gradient(145deg, rgba(201,168,76,0.28), rgba(201,168,76,0.10));
   border-color: rgba(201,168,76,.45);
@@ -1759,8 +1759,8 @@ function confirmDel(i) {
   document.getElementById('ov-msg').textContent = `Sigur vrei să ștergi "${b.name}"?`;
   document.getElementById('ov-ok').onclick = async function() {
     await deleteBondFromSupabase(b.id);
-    await saveTotalInvestitRON();
     bonds.splice(i, 1);
+    await saveTotalInvestitRON();
     closeOv();
     renderBonds();
     renderDash();
