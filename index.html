@@ -956,7 +956,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <!-- 1. RATA CUPONULUI -->
     <div class="field">
       <label>Rata cuponului (%/an)</label>
-<input type="text" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01"
+<input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01"
   enterkeyhint="next"
   oninput="updateAutofillHint()"
   onkeydown="formEnter(event,'f-rate')">
@@ -965,7 +965,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <div class="field">
       <label id="f-amt-label">Suma investită (lei)</label>
       <div class="amt-field-wrap">
-<input type="text" inputmode="decimal" id="f-amt" placeholder="ex: 25000"
+<input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 25000"
   enterkeyhint="next"
   onkeydown="formEnter(event,'f-amt')">
 
@@ -977,7 +977,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <div class="row2">
       <div class="field">
         <label>Data start</label>
-<input type="text" inputmode="decimal" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
+<input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
   enterkeyhint="next"
   oninput="formatDateInput(this)"
   onkeydown="formEnter(event,'f-start')">
@@ -985,7 +985,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       </div>
       <div class="field">
         <label>Maturitate</label>
-<input type="text" inputmode="decimal" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
+<input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
   enterkeyhint="next"
   oninput="formatDateInput(this)"
   onkeydown="formEnter(event,'f-mat')">
@@ -995,7 +995,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <div class="field">
       <label>Denumire</label>
 
-<input type="text" inputmode="decimal" id="f-name" placeholder="ex: FIDELIS 2027"
+<input type="text" id="f-name" placeholder="ex: FIDELIS 2027"
   enterkeyhint="done"
   onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
 
