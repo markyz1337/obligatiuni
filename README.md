@@ -1,1 +1,1786 @@
-# obligatiuni
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script>
+document.addEventListener('touchmove', function(e){ if(e.touches.length>1) e.preventDefault(); }, {passive:false});
+document.addEventListener('gesturestart', function(e){ e.preventDefault(); }, {passive:false});
+</script>
+<title>BondFlow</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a84c;
+  --gold-l: #e8c97a;
+  --gold-pale: #f5e4a8;
+  --gold-dim: rgba(201,168,76,0.12);
+  --gold-border: rgba(201,168,76,0.24);
+  --bg: #06080e;
+  --card: rgba(255,255,255,0.036);
+  --glass: rgba(255,255,255,0.048);
+  --gborder: rgba(255,255,255,0.085);
+  --ghover: rgba(255,255,255,0.075);
+  --text: #ece8de;
+  --dim: rgba(236,232,222,0.48);
+  --muted: rgba(236,232,222,0.24);
+  --green: #4ecda4;
+  --green-dim: rgba(78,205,164,0.10);
+  --green-border: rgba(78,205,164,0.22);
+  --red: #e07070;
+  --red-dim: rgba(224,112,112,0.10);
+  --red-border: rgba(224,112,112,0.24);
+  --blue: #7eb8f7;
+  --blue-dim: rgba(126,184,247,0.10);
+  --blue-border: rgba(126,184,247,0.22);
+  --purple: #b794f4;
+  --r: 22px;
+  --rsm: 14px;
+  --blur: blur(28px);
+  --shadow: 0 12px 48px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overscroll-behavior:none;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 60% at 5% -5%,rgba(201,168,76,0.07) 0%,transparent 60%),
+    radial-gradient(ellipse 65% 55% at 95% 105%,rgba(126,184,247,0.05) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 50% at 50% 50%,rgba(78,205,164,0.025) 0%,transparent 65%);
+}
+
+#app{position:relative;z-index:1;width:100%;max-width:460px;margin:0 auto;height:100vh;display:flex;flex-direction:column;}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 86px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.scroll-area::-webkit-scrollbar{display:none}
+
+.panel{display:none;animation:fu .3s ease;}
+.panel.on{display:block;}
+@keyframes fu{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO ── */
+.dash-hero{
+position:relative;padding:52px 20px 28px;text-align:center;overflow:hidden;
+}
+.dash-hero::before{
+content:'';position:absolute;inset:0;
+background:radial-gradient(ellipse 100% 80% at 50% 0%,rgba(201,168,76,0.08) 0%,transparent 70%);
+pointer-events:none;
+}
+.hero-eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);opacity:.7;margin-bottom:8px;font-weight:500;}
+.hero-title{
+font-family:'DM Serif Display',serif;font-size:52px;letter-spacing:.04em;line-height:1;
+background:linear-gradient(160deg,var(--gold-pale) 0%,var(--gold-l) 45%,var(--gold) 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;
+cursor:pointer;
+}
+.hero-sub{font-size:11px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;}
+.hero-line{width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0;opacity:.5;}
+
+/* ── PANEL HEADER ── */
+.panel-hdr{padding:52px 20px 20px;}
+.panel-hdr-title{font-family:'DM Serif Display',serif;font-size:34px;color:var(--text);letter-spacing:.02em;}
+.panel-hdr-title span{font-style:italic;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* ── NAV ── */
+.nav{
+position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+width:100%;max-width:460px;
+background:rgba(6,8,14,0.95);border-top:1px solid var(--gborder);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+display:flex;padding:10px 0 22px;z-index:100;
+}
+.nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:5px 0;transition:.2s;}
+.nav-ico{font-size:19px;transition:.2s;}
+.nav-it.on .nav-lbl{color:var(--gold);}
+.nav-it.on .nav-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.75));}
+
+/* ── STATUS STRIP ── */
+.status-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 12px;}
+.sum-tile{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--rsm);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:14px 12px;text-align:center;box-shadow:var(--shadow);
+position:relative;overflow:hidden;
+}
+.sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
+.sum-tile.gold {border-color:var(--gold-border);}
+.sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
+.sum-tile.grn {border-color:var(--green-border);}
+.sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.sum-tile.red {border-color:var(--red-border);}
+.sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.sum-tile.blu {border-color:var(--blue-border);}
+.sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
+.stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
+.sum-tile.gold .stv{color:var(--gold-l);}
+.sum-tile.grn .stv{color:var(--green);}
+.sum-tile.red .stv{color:var(--red);}
+.sum-tile.blu .stv{color:var(--blue);}
+.sts{font-size:10px;margin-top:2px;}
+.sum-tile.gold .sts{color:rgba(232,201,122,0.5);}
+.sum-tile.grn  .sts{color:rgba(78,205,164,0.5);}
+.sum-tile.red  .sts{color:rgba(224,112,112,0.5);}
+.sum-tile.blu  .sts{color:rgba(126,184,247,0.5);}
+
+/* ── NEXT COUPON CARD ── */
+.next-coupon-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(201,168,76,.11),rgba(201,168,76,.02));
+border:1px solid var(--gold-border);border-radius:var(--r);
+padding:20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.next-coupon-card::before{
+content:'';position:absolute;top:-20px;left:-20px;
+width:110px;height:110px;border-radius:50%;
+background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%);pointer-events:none;
+}
+.nccttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:13px;letter-spacing:.02em;}
+.ncc-body{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
+.ncc-days{font-size:44px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-.03em;}
+.ncc-days-lbl{font-size:10px;color:rgba(201,168,76,.55);margin-top:3px;letter-spacing:.06em;}
+.ncc-right{text-align:right;}
+.ncc-amt{font-size:26px;font-weight:700;color:var(--gold-l);letter-spacing:-.02em;line-height:1;}
+.ncc-from{font-size:11px;color:rgba(201,168,76,.55);margin-top:3px;}
+.ncc-date{font-size:11px;color:var(--dim);margin-top:8px;}
+.ncc-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
+
+/* ── MATURITY CARD ── */
+.mat-next-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(224,112,112,.09),rgba(224,112,112,.02));
+border:1px solid var(--red-border);border-radius:var(--r);
+padding:18px 20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.mat-next-card::before{
+content:'';position:absolute;bottom:-25px;right:-25px;
+width:100px;height:100px;border-radius:50%;
+background:radial-gradient(circle,rgba(224,112,112,.12),transparent 70%);pointer-events:none;
+}
+.mnttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--red);margin-bottom:11px;letter-spacing:.02em;}
+.mn-body{display:flex;align-items:flex-end;justify-content:space-between;}
+.mn-name{font-size:17px;color:var(--text);font-family:'DM Serif Display',serif;letter-spacing:.01em;}
+.mn-sub{font-size:11px;color:var(--dim);margin-top:3px;}
+.mn-right{text-align:right;}
+.mn-days{font-size:26px;font-weight:700;color:var(--red);letter-spacing:-.02em;line-height:1;}
+.mn-daysl{font-size:9px;color:rgba(224,112,112,.5);margin-top:3px;letter-spacing:.06em;}
+.mn-date{font-size:10px;color:rgba(224,112,112,.6);margin-top:2px;}
+.mn-empty{font-size:12px;color:var(--muted);text-align:center;padding:4px 0;}
+
+/* ── MONTH CARD ── */
+.month-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(78,205,164,.09),rgba(78,205,164,.02));
+border:1px solid var(--green-border);border-radius:var(--r);
+padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.month-card::before{
+content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;
+background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-events:none;
+}
+.mcttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--green);margin-bottom:12px;letter-spacing:.02em;}
+.mc-inner{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.mctotal{font-size:32px;font-weight:700;color:var(--green);letter-spacing:-.02em;line-height:1;}
+.mcsub{font-size:10px;color:rgba(78,205,164,.6);margin-top:4px;letter-spacing:.05em;}
+.mcbadge{display:inline-flex;align-items:center;gap:4px;background:var(--green-dim);border:1px solid var(--green-border);border-radius:50px;padding:5px 13px;font-size:12px;color:var(--green);font-weight:600;}
+
+/* ── GOAL CARD ── */
+.goal-card{
+margin:0 14px 12px;
+background:linear-gradient(145deg,rgba(201,168,76,.09),rgba(201,168,76,.02));
+border:1px solid var(--gold-border);border-radius:var(--r);
+padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.goal-card::before{
+content:'';position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;border-radius:50%;
+background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-events:none;
+}
+.gttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;}
+.grow{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
+.gbig{font-size:30px;font-weight:700;color:var(--gold-l);line-height:1;letter-spacing:-.02em;}
+.gof{font-size:10px;color:var(--dim);margin-top:4px;}
+.gpct{font-size:14px;font-weight:700;color:var(--gold);}
+.barwrap{background:rgba(255,255,255,.06);border-radius:50px;height:6px;overflow:hidden;margin-bottom:14px;}
+.barfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .65s cubic-bezier(.4,0,.2,1);}
+
+.goal-inp-wrap{position:relative;}
+.goal-inp-wrap::before{content:var(--cur-sym,'€');position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:14px;font-weight:600;pointer-events:none;}
+.goal-inp-wrap input{padding-left:28px !important;}
+.currency-ron .goal-inp-wrap::before{display:none;}
+.currency-ron .goal-inp-wrap input{padding-left:14px !important;}
+
+/* Secțiune Supraviețuire */
+.survival-box {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--rsm);
+  padding: 12px;
+  margin-top: 12px;
+}
+.survival-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 12px;
+}
+.survival-item:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+.survival-lbl { color: var(--dim); max-width: 60%; line-height: 1.3;}
+.survival-val { font-weight: 700; color: var(--gold-l); text-align: right; max-width: 40%; }
+.survival-val.red-text { color: var(--red); }
+.survival-val.green-text { color: var(--green); }
+
+/* ── SIM CARD ── */
+.sim-res{
+background:rgba(126,184,247,.07);border:1px solid var(--blue-border);
+border-radius:var(--rsm);padding:16px;text-align:center;
+}
+.sim-res.achieved{background:rgba(78,205,164,.07);border-color:var(--green-border);}
+.srval{font-size:28px;font-weight:700;color:var(--blue);letter-spacing:-.01em;}
+.sim-res.achieved .srval{color:var(--green);}
+.srlbl{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5;}
+.sim-res.achieved .srlbl{color:rgba(78,205,164,.7);}
+
+/* ── FIELDS ── */
+.field{margin-bottom:12px;}
+.field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
+.field input,.field select{
+width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gborder);border-radius:var(--rsm);
+padding:11px 14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:16px;
+outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
+-webkit-appearance:none;appearance:none;
+}
+.field input:focus,.field select:focus{border-color:var(--gold);background:rgba(255,255,255,.065);box-shadow:0 0 0 3px rgba(201,168,76,.08);}
+.field select option{background:#0c0f1e;}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:13px;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;letter-spacing:.02em;}
+.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold),#9c7020);background-size:200% 200%;background-position:0% 50%;color:#050810;box-shadow:0 4px 20px rgba(201,168,76,.25);}
+.btn-gold:active{transform:scale(.97);box-shadow:0 2px 10px rgba(201,168,76,.15);}
+.btn-out{background:transparent;border:1px solid var(--gborder);color:var(--dim);}
+.btn-out:active{background:var(--ghover);}
+.btn-del{background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
+.btn-edt{background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;padding:8px 14px;border-radius:50px;cursor:pointer;transition:.2s;}
+.btn-del:active,.btn-edt:active{transform:scale(.96);}
+
+/* ── BOND CARD ── */
+.bc{
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:border-color .25s;
+}
+.bc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent);opacity:.5;}
+.bc.mat{border-color:var(--red-border);}
+.bc.mat::before{background:linear-gradient(90deg,transparent,var(--red),transparent);}
+.bc.fut{border-color:var(--blue-border);}
+.bc.fut::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+
+.bchd{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;}
+.bcname{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);line-height:1.2;letter-spacing:.01em;}
+.bc-rate-box{text-align:right;}
+.bcrv{font-size:22px;font-weight:700;color:var(--green);letter-spacing:-.01em;}
+.bcrl{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+
+.bcgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;}
+.bclbl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.bcval{font-size:13.5px;font-weight:500;color:var(--text);}
+.bcval.g{color:var(--gold-l);}
+.bcval.grn{color:var(--green);}
+.bcval.blu{color:var(--blue);}
+.bcval.red{color:var(--red);}
+
+.divider-line{height:1px;background:var(--gborder);margin:0 0 13px;}
+
+.bcnext{
+background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);
+border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;
+display:flex;justify-content:space-between;align-items:center;
+}
+.bcnl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
+.bcndays{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-.01em;}
+.bcndl{font-size:9px;color:var(--muted);}
+
+.mat-banner{background:var(--red-dim);border:1px solid var(--red-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--red);text-align:center;margin-bottom:12px;font-weight:500;}
+.fut-banner{background:var(--blue-dim);border:1px solid var(--blue-border);border-radius:var(--rsm);padding:10px 14px;font-size:12px;color:var(--blue);text-align:center;margin-bottom:12px;font-weight:500;}
+.bcact{display:flex;gap:8px;}
+
+/* ── FORM ── */
+.formwrap{
+margin:0 14px 13px;
+background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+padding:0 18px;max-height:0;overflow:hidden;
+transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
+}
+.formwrap.open{max-height:1000px;opacity:1;padding:18px;}
+.fttl{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
+.row2{display:flex;gap:9px;}
+.row2 .field{flex:1;}
+
+/* ── BONDS SUMMARY BAR ── */
+.bonds-summary-bar{
+margin:0 14px 14px;
+background:linear-gradient(145deg,rgba(201,168,76,.10),rgba(201,168,76,.02));
+border:1px solid var(--gold-border);
+border-radius:var(--r);
+padding:18px 20px;
+backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+box-shadow:var(--shadow);
+position:relative;overflow:hidden;
+transition:opacity .22s, transform .22s;
+}
+.bonds-summary-bar::before{
+content:'';position:absolute;top:0;left:0;right:0;height:1px;
+background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
+}
+.bsb-ttl{font-family:'DM Serif Display',serif;font-size:13px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;opacity:.8;}
+.bsb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.bsb-lbl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
+.bsb-val{font-size:19px;font-weight:700;letter-spacing:-.01em;}
+.bsb-val.gold{color:var(--gold-l);}
+.bsb-val.green{color:var(--green);}
+.bsb-val.blue{color:var(--blue);}
+.bsb-sub{font-size:10px;color:var(--muted);margin-top:2px;}
+
+/* ── SEARCH BAR ── */
+.search-wrap{
+margin:0 14px 12px;
+position:relative;
+}
+.search-wrap::before{
+content:'🔍';
+position:absolute;left:14px;top:50%;transform:translateY(-50%);
+font-size:14px;pointer-events:none;
+filter:grayscale(1) opacity(.45);
+}
+.search-inp{
+width:100%;
+background:rgba(255,255,255,.04);
+border:1px solid var(--gborder);
+border-radius:50px;
+padding:11px 14px 11px 40px;
+color:var(--text);
+font-family:'Outfit',sans-serif;
+font-size:14px;
+outline:none;
+transition:border-color .2s,background .2s,box-shadow .2s;
+-webkit-appearance:none;appearance:none;
+}
+.search-inp:focus{
+border-color:var(--gold);
+background:rgba(255,255,255,.065);
+box-shadow:0 0 0 3px rgba(201,168,76,.08);
+}
+.search-inp::placeholder{color:var(--muted);}
+.search-clear{
+position:absolute;right:14px;top:50%;transform:translateY(-50%);
+background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;
+padding:4px;line-height:1;display:none;
+}
+.search-clear.vis{display:block;}
+.search-count{
+font-size:10px;color:var(--muted);text-align:center;
+padding:0 0 8px;letter-spacing:.06em;
+}
+
+/* ── Search hide targets ── */
+#bonds-add-btn-wrap,
+#bonds-summary-bar {
+transition: opacity .22s, max-height .28s cubic-bezier(.4,0,.2,1), margin .28s;
+overflow: hidden;
+}
+#bonds-add-btn-wrap.search-hidden,
+#bonds-summary-bar.search-hidden {
+opacity: 0;
+max-height: 0 !important;
+margin-top: 0 !important;
+margin-bottom: 0 !important;
+pointer-events: none;
+}
+#bonds-add-btn-wrap {
+max-height: 80px;
+}
+
+/* ── PAYMENTS ── */
+.pay-list-wrap{margin:0 14px;}
+.pay-card{background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:18px;box-shadow:var(--shadow);}
+.pay-month-hdr{display:flex;justify-content:space-between;align-items:center;padding:0 0 10px;margin-bottom:4px;border-bottom:1px solid var(--gold-border);}
+.pml{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
+.pmv{font-size:13px;font-weight:700;color:var(--gold-l);}
+.pay-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.048);}
+.pay-row:last-child{border-bottom:none;}
+.pay-date{font-size:14px;font-weight:500;color:var(--text);}
+.pay-bond{font-size:11px;color:var(--muted);margin-top:2px;}
+.pay-days{font-size:10px;color:var(--gold);margin-top:2px;}
+.pay-amt{font-size:16px;font-weight:600;color:var(--green);}
+.pay-dtotal{display:flex;justify-content:space-between;align-items:center;padding:8px 0 4px;border-top:1px solid var(--gold-border);margin-top:2px;}
+.pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
+.pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
+
+/* ── MATURITY ROW ── */
+.pay-row-mat{border-bottom:1px solid rgba(224,112,112,.12) !important;}
+.mat-badge{display:inline-block;background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:50px;padding:2px 7px;vertical-align:middle;margin-left:5px;}
+.pay-amt-mat{color:var(--red) !important;}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:48px 16px;color:var(--muted);}
+.empty-ico{font-size:34px;margin-bottom:10px;}
+.empty p{font-size:13px;line-height:1.7;}
+
+/* ── TOAST ── */
+.toast{
+position:fixed;bottom:106px;left:50%;transform:translateX(-50%) translateY(12px);
+background:rgba(12,15,26,.97);border:1px solid var(--gborder);border-radius:50px;
+padding:10px 22px;font-size:12px;color:var(--text);z-index:200;opacity:0;transition:all .26s;
+white-space:nowrap;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── OVERLAY ── */
+.overlay{
+position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.78);
+backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+display:flex;align-items:flex-end;justify-content:center;
+opacity:0;pointer-events:none;transition:opacity .24s;
+}
+.overlay.open{opacity:1;pointer-events:all;}
+.modal{
+background:#0a0d1c;border:1px solid var(--gborder);border-radius:var(--r) var(--r) 0 0;
+padding:24px 18px 36px;width:100%;max-width:460px;
+transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
+}
+.overlay.open .modal{transform:translateY(0);}
+
+.mttl { font-size: 18px; font-weight:600; margin-bottom:8px; color:var(--text); }
+.mmsg { font-size: 14px; color:var(--dim); margin-bottom:20px; }
+.mbtns { display:flex; gap:10px; }
+.mbtns .btn { flex:1; }
+
+/* Settings custom positioning toggle */
+.settings-card { background: var(--card); border: 1px solid var(--gborder); border-radius: var(--r); padding: 20px; }
+.sc-ttl { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gold-l); margin-bottom: 6px; }
+.sc-desc { font-size: 12px; color: var(--dim); margin-bottom: 16px; line-height: 1.4; }
+.currency-toggle { display: flex; background: rgba(0,0,0,0.2); border: 1px solid var(--gborder); border-radius: var(--rsm); overflow: hidden; margin-bottom: 12px; }
+.ct-opt { flex: 1; padding: 12px; text-align: center; cursor: pointer; transition: background 0.2s; }
+.ct-opt.active { background: var(--gold-dim); border: 1px solid var(--gold-border); }
+.ct-sym { font-size: 18px; font-weight: 700; color: var(--gold); }
+.ct-name { font-size: 11px; color: var(--text); margin-top: 2px; }
+.ct-code { font-size: 9px; color: var(--muted); }
+.ct-divider { width: 1px; background: var(--gborder); }
+.ct-note { font-size: 11px; color: var(--muted); }
+
+/* ── FAB REFRESH ── */
+.fab-refresh {
+  position: fixed;
+  bottom: 102px;
+  right: calc(50% - 218px);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06));
+  border: 1px solid var(--gold-border);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  box-shadow: 0 4px 24px rgba(0,0,0,.45), 0 0 0 1px rgba(201,168,76,.08) inset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  /* Vizibil implicit */
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  transition: opacity .32s cubic-bezier(.4,0,.2,1),
+              transform .32s cubic-bezier(.4,0,.2,1),
+              background .2s,
+              box-shadow .2s;
+  pointer-events: all;
+}
+
+/* Pe ecrane mici (sub 460px lătime), ancorare la dreapta ecranului */
+@media (max-width: 460px) {
+  .fab-refresh {
+    right: 16px;
+  }
+}
+
+.fab-refresh.fab-hidden {
+  opacity: 0;
+  transform: scale(0.72) translateY(8px);
+  pointer-events: none;
+}
+
+.fab-refresh:active {
+  transform: scale(0.88) translateY(0);
+  box-shadow: 0 2px 12px rgba(0,0,0,.35), 0 0 0 1px rgba(201,168,76,.1) inset;
+}
+
+.fab-refresh-ico {
+  font-size: 20px;
+  line-height: 1;
+  display: block;
+  transition: transform .55s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
+}
+
+.fab-refresh.spinning .fab-refresh-ico {
+  animation: fab-spin .65s cubic-bezier(.4,0,.2,1);
+}
+
+@keyframes fab-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Stare loading -- pulsează subtil */
+.fab-refresh.loading {
+  background: linear-gradient(145deg, rgba(201,168,76,0.28), rgba(201,168,76,0.10));
+  border-color: rgba(201,168,76,.45);
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="scroll-area" id="scroll-area">
+
+<div class="panel on" id="panel-dashboard">
+  <div class="dash-hero">
+    <div class="hero-eyebrow">Portofoliu personal</div>
+    <div class="hero-title" onclick="sw('settings',99)">BondFlow</div>
+    <div class="hero-sub">Obligațiuni de Stat</div>
+    <div class="hero-line"></div>
+  </div>
+
+  <div class="goal-card">
+    <div class="gttl">🎯 Obiectiv lunar</div>
+    <div class="grow">
+      <div>
+        <div class="gbig" id="g-cur">€0</div>
+        <div class="gof">din <span id="g-target">€0</span> ↳ țintă</div>
+      </div>
+      <div class="gpct" id="g-pct">0%</div>
+    </div>
+    <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
+    
+    <div class="field" style="margin:0 0 12px;">
+      <label id="goal-label">Obiectiv lunar (€)</label>
+      <div class="goal-inp-wrap">
+        <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:12px;">
+      <label id="total-funds-label">Total bani avuți (€)</label>
+      <div class="goal-inp-wrap" id="wrap-funds">
+        <input type="number" inputmode="decimal" id="survival-total-funds" placeholder="ex: 250000" oninput="calculateSurvival()">
+      </div>
+    </div>
+
+    <!-- câmpul survival-expenses e ascuns dar prezent pentru logică -->
+    <input type="hidden" id="survival-expenses">
+
+    <div class="survival-box" id="survival-results-box" style="display:none;">
+      <div class="survival-item">
+        <div class="survival-lbl">⏱️ Durată supraviețuire în ritmul actual (cu câștiguri din obligațiuni):</div>
+        <div class="survival-val green-text" id="survival-current-pace-val">-- ani</div>
+      </div>
+      <div class="survival-item">
+        <div class="survival-lbl">🛡️ Dacă pierzi totalul investit în obligațiuni, restul banilor cash îți ajung:</div>
+        <div class="survival-val" id="survival-crash-val">-- ani</div>
+      </div>
+      <div class="survival-item">
+        <div class="survival-lbl">💸 Fără investiții, trăind doar din tot capitalul tău brut, banii îți ajung:</div>
+        <div class="survival-val" id="survival-pure-val">-- ani</div>
+      </div>
+    </div>
+
+    <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;margin-top:14px;">
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator -- cât să investești</div>
+      <div class="field" style="margin-bottom:10px;">
+        <label>Rata cuponului nou (%/an)</label>
+        <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
+      </div>
+      <div class="sim-res" id="sim-res-box" style="display:none;">
+        <div class="srval" id="sim-val">&mdash;</div>
+        <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
+      </div>
+    </div>
+    <div id="goal-achieved-box" style="display:none;border-top:1px solid rgba(78,205,164,.2);padding-top:14px;margin-top:14px;">
+      <div class="sim-res achieved">
+        <div class="srval">🎉 Obiectiv atins!</div>
+        <div class="srlbl" id="goal-achieved-lbl"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="next-coupon-card">
+    <div class="nccttl">🏷️ Următorul cupon</div>
+    <div id="ncc-body"></div>
+  </div>
+
+  <div class="status-strip">
+    <div class="sum-tile blu">
+      <div class="stl">În așteptare</div>
+      <div class="stv" id="s-pending">0</div>
+      <div class="sts">neîncepute</div>
+    </div>
+    <div class="sum-tile grn">
+      <div class="stl">Active</div>
+      <div class="stv" id="s-active">0</div>
+      <div class="sts">obligațiuni</div>
+    </div>
+  </div>
+
+  <div class="month-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <div class="mcttl" style="margin-bottom:0;">📅 Luna aceasta</div>
+      <div class="mcbadge" id="mc-badge">0 plăți</div>
+    </div>
+    <div class="mc-inner">
+      <div>
+        <div class="mctotal" id="mc-total">€0</div>
+        <div class="mcsub">de primit în <span id="mc-month">--</span></div>
+      </div>
+    </div>
+    <div id="mc-breakdown"></div>
+  </div>
+
+  <div class="mat-next-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;">
+      <div class="mnttl" style="margin-bottom:0;">⏰ Prima obligațiune la maturitate</div>
+      <div id="expired-badge" style="display:none;align-items:center;gap:4px;background:var(--red-dim);border:1px solid var(--red-border);border-radius:50px;padding:3px 8px;flex-shrink:0;margin-left:10px;">
+        <span style="font-size:10px;color:rgba(224,112,112,.6);">expirate</span>
+        <span style="font-size:10px;font-weight:700;color:var(--red);" id="s-expired">0</span>
+      </div>
+    </div>
+    <div id="mn-body"></div>
+  </div>
+</div><div class="panel" id="panel-bonds">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
+  </div>
+
+  <div class="pad14" style="margin-bottom:13px;" id="bonds-add-btn-wrap">
+    <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
+  </div>
+
+  <div class="formwrap" id="formwrap">
+    <div class="fttl" id="fttl">Obligațiune nouă</div>
+    <input type="hidden" id="eid">
+    <div class="field">
+      <label>Denumire</label>
+      <input type="text" id="f-name" placeholder="ex: FIDELIS 2027">
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label>Data start</label>
+        <input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
+      </div>
+      <div class="field">
+        <label>Maturitate</label>
+        <input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
+      </div>
+    </div>
+    <div class="field">
+      <label id="f-amt-label">Suma investită (${currSym()})</label>
+      <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
+    </div>
+    <div class="field">
+      <label>Rata cuponului (%/an)</label>
+      <input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01">
+    </div>
+    <div class="field">
+      <label>Interval plată cupon</label>
+      <select id="f-freq">
+        <option value="6">La 6 luni</option>
+        <option value="3">La 3 luni</option>
+        <option value="12">La 12 luni</option>
+        <option value="1">Lunar</option>
+      </select>
+    </div>
+    <div class="row2">
+      <button class="btn btn-gold" onclick="saveBond()">Salvează</button>
+      <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
+    </div>
+  </div>
+
+  <div class="search-wrap">
+    <input class="search-inp" type="text" id="bond-search" placeholder="Caută obligațiune..." oninput="filterBonds()" autocomplete="off">
+    <button class="search-clear" id="search-clear-btn" onclick="clearSearch()">✕</button>
+  </div>
+  <div class="search-count" id="search-count" style="display:none;"></div>
+
+  <div class="bonds-summary-bar" id="bonds-summary-bar">
+    <div class="bsb-ttl">💼 Sumar portofoliu activ</div>
+    <div class="bsb-grid">
+      <div class="bsb-item">
+        <div class="bsb-lbl">Total investit</div>
+        <div class="bsb-val gold" id="bsb-total">--</div>
+        <div class="bsb-sub" id="bsb-count">-- obligațiuni</div>
+      </div>
+      <div class="bsb-item">
+        <div class="bsb-lbl">Câștig lunar total</div>
+        <div class="bsb-val green" id="bsb-monthly">--</div>
+        <div class="bsb-sub" id="bsb-yearly">-- / an</div>
+      </div>
+      <div class="bsb-item">
+        <div class="bsb-lbl">Active acum</div>
+        <div class="bsb-val gold" id="bsb-active-amt">--</div>
+        <div class="bsb-sub" id="bsb-active-cnt">-- obligațiuni</div>
+      </div>
+      <div class="bsb-item">
+        <div class="bsb-lbl">În așteptare</div>
+        <div class="bsb-val blue" id="bsb-pending-amt">--</div>
+        <div class="bsb-sub" id="bsb-pending-cnt">-- obligațiuni</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="bonds-list"></div>
+</div><div class="panel" id="panel-payments">
+  <div class="panel-hdr">
+    <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
+  </div>
+  <div class="pay-list-wrap">
+    <div class="pay-card" id="pay-list"></div>
+  </div>
+</div><div class="panel" id="panel-settings">
+  <div class="panel-hdr" style="display:flex;align-items:center;gap:14px;">
+    <button onclick="sw('dashboard',0)" style="background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);border-radius:50px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">← Înapoi</button>
+    <div class="panel-hdr-title">Se<span>tări</span></div>
+  </div>
+  <div style="margin:0 14px 13px;">
+    <div class="settings-card">
+      <div class="sc-ttl">💱 Valută</div>
+      <div class="sc-desc">Alege valuta în care sunt exprimate sumele. Toate valorile vor fi afișate în valuta selectată, fără conversie.</div>
+      <div class="currency-toggle">
+        <div class="ct-opt" id="ct-eur" onclick="setCurrency('EUR')">
+          <div class="ct-sym">€</div>
+          <div class="ct-name">Euro</div>
+          <div class="ct-code">EUR</div>
+        </div>
+        <div class="ct-divider"></div>
+        <div class="ct-opt" id="ct-ron" onclick="setCurrency('RON')">
+          <div class="ct-sym">lei</div>
+          <div class="ct-name">Leu românesc</div>
+          <div class="ct-code">RON</div>
+        </div>
+      </div>
+      <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
+    </div>
+  </div>
+</div></div></div>
+
+<!-- ── FAB REFRESH ── -->
+<button class="fab-refresh" id="fab-refresh" onclick="handleFabRefresh()" title="Actualizează datele" aria-label="Actualizează datele">
+  <span class="fab-refresh-ico" id="fab-ico">🔄</span>
+</button>
+
+<div class="nav">
+  <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
+  <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
+  <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="mttl" id="ov-ttl">Confirmare</div>
+    <div class="mmsg" id="ov-msg"></div>
+    <div class="mbtns">
+      <button class="btn btn-del" id="ov-ok">Șterge</button>
+      <button class="btn btn-out" onclick="closeOv()">Anulează</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════
+//  SUPABASE CONFIG
+// ══════════════════════════════════════════════
+const SUPABASE_URL      = 'https://gbqmgromjwqdnlwrejnb.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_RjWheWI2qN_ES0qOKYmcNQ_iJfgdzz0';
+const USER_KEY          = 'personal-main';
+
+const SB_HEADERS = {
+  'Content-Type':  'application/json',
+  'apikey':        SUPABASE_ANON_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+  'Prefer':        'return=representation'
+};
+
+const EXTERNAL_GOAL_API_URL = 'https://fndjrfieitieqzafhyzz.supabase.co/rest/v1/fd_settings?select=*&apikey=sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
+
+async function sbGet(table, filter = '') {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
+    headers: { ...SB_HEADERS }
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbUpsert(table, body) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates,return=representation' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return r.json();
+}
+async function sbDelete(table, filter) {
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
+    method: 'DELETE',
+    headers: SB_HEADERS
+  });
+  if (!r.ok) throw new Error(await r.text());
+  return true;
+}
+
+// ══════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════
+let bonds         = [];
+let goal          = 0;
+let currency      = 'EUR';
+let survivalTotal = 0;
+let survivalSpent = 0;
+const CURRENT_AGE = 23;
+
+async function loadFromSupabase() {
+  try {
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent`);
+    if (prefs.length) {
+      currency      = prefs[0].currency || 'EUR';
+    }
+    
+    try {
+      const extResponse = await fetch(EXTERNAL_GOAL_API_URL);
+      if (extResponse.ok) {
+        const extData = await extResponse.json();
+        const snapshotObj = extData.find(item => item.key === 'metrics_snapshot');
+        if (snapshotObj && snapshotObj.value) {
+          const parsedVal = JSON.parse(snapshotObj.value);
+          if (parsedVal) {
+            if (parsedVal.media_lunara_ron) {
+              const cleanGoal = parseFloat(parsedVal.media_lunara_ron.replace(/[^\d]/g, ''));
+              if (!isNaN(cleanGoal) && cleanGoal > 0) {
+                goal = cleanGoal;
+              }
+            }
+            if (parsedVal.total_active_ron) {
+              const cleanFunds = parseFloat(parsedVal.total_active_ron.replace(/[^\d]/g, ''));
+              if (!isNaN(cleanFunds) && cleanFunds >= 0) {
+                survivalTotal = cleanFunds;
+              }
+            }
+          }
+        }
+      }
+    } catch (extError) {
+      console.error('Eroare la preluarea datelor din API extern:', extError);
+    }
+
+    const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
+    bonds = rows.map(r => ({
+      id:    r.id,
+      name:  r.name,
+      start: r.start_date,
+      mat:   r.mat_date,
+      amt:   parseFloat(r.amount),
+      rate:  parseFloat(r.rate),
+      freq:  String(r.freq)
+    }));
+    await saveTotalInvestitRON(); 
+  } catch (e) {
+    console.error('Load error:', e);
+    toast('⚠️ Eroare la încărcarea datelor');
+  }
+  
+  if (goal > 0) document.getElementById('goal-inp').value = goal;
+  if (survivalTotal > 0) document.getElementById('survival-total-funds').value = survivalTotal;
+  
+  updateCurrencyUI();
+  updateFormLabels();
+  renderDash();
+  renderBonds();
+  runSim();
+  calculateSurvival();
+}
+
+async function savePrefsToSupabase() {
+  try {
+    const f = parseFloat(document.getElementById('survival-total-funds').value);
+    const survivalTotalVal = (!isNaN(f) && f >= 0) ? f : 0;
+    await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS },
+      body: JSON.stringify({
+        currency: currency,
+        survival_total: survivalTotalVal,
+        updated_at: new Date().toISOString()
+      })
+    });
+  } catch(e) {
+    console.error('Eroare la salvarea preferințelor:', e);
+  }
+}
+
+async function saveTotalInvestitRON() {
+  const relevant = [...bonds.filter(isActive), ...bonds.filter(isNotStarted)];
+  const total = relevant.reduce((s, b) => s + b.amt, 0);
+  const valoare = Math.round(total);
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/bf_preferences?user_key=eq.${USER_KEY}`, {
+      method: 'PATCH',
+      headers: { ...SB_HEADERS },
+      body: JSON.stringify({ total_investit_ron: valoare, updated_at: new Date().toISOString() })
+    });
+    if (!r.ok) throw new Error(await r.text());
+  } catch (e) {
+    console.error('Eroare salvare total investit:', e);
+  }
+}
+
+async function saveBondToSupabase(b) {
+  try {
+    await sbUpsert('bf_bonds', {
+      id:         b.id,
+      user_key:   USER_KEY,
+      name:       b.name,
+      start_date: b.start,
+      mat_date:   b.mat,
+      amount:     b.amt,
+      rate:       b.rate,
+      freq:       parseInt(b.freq),
+      updated_at: new Date().toISOString()
+    });
+  } catch (e) {
+    console.error('Bond save error:', e);
+    toast('⚠️ Eroare la salvare');
+  }
+}
+
+async function deleteBondFromSupabase(id) {
+  try {
+    await sbDelete('bf_bonds', `id=eq.${id}&user_key=eq.${USER_KEY}`);
+  } catch (e) {
+    console.error('Bond delete error:', e);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  FAB REFRESH
+// ══════════════════════════════════════════════
+let fabRefreshLocked = false;
+let fabScrollTimer   = null;
+let fabVisible       = true;
+
+const fabEl  = document.getElementById('fab-refresh');
+const fabIco = document.getElementById('fab-ico');
+const scrollEl = document.getElementById('scroll-area');
+
+/* Ascunde FAB-ul când utilizatorul scrollează, reapare după oprire */
+scrollEl.addEventListener('scroll', () => {
+  if (fabVisible) {
+    fabVisible = false;
+    fabEl.classList.add('fab-hidden');
+  }
+  clearTimeout(fabScrollTimer);
+  fabScrollTimer = setTimeout(() => {
+    fabVisible = true;
+    fabEl.classList.remove('fab-hidden');
+  }, 800); // reapare la 800ms după ce s-a oprit scroll-ul
+}, { passive: true });
+
+async function handleFabRefresh() {
+  /* Protecție anti-spam: ignoră apăsările rapide consecutive */
+  if (fabRefreshLocked) return;
+  fabRefreshLocked = true;
+
+  /* Animație vizuală */
+  fabEl.classList.add('spinning', 'loading');
+
+  /* Salvăm valorile introduse de user ÎNAINTE de reload,
+     ca să nu le pierdem dacă refresh-ul înlocuiește datele din API */
+  const userGoalInput  = document.getElementById('goal-inp').value;
+  const userFundsInput = document.getElementById('survival-total-funds').value;
+  const userSimRate    = document.getElementById('sim-rate').value;
+
+  try {
+    /* Reîncarcă DOAR datele din surse externe (API + Supabase bonds) */
+    await refreshRemoteDataOnly();
+    toast('✅ Date actualizate');
+  } catch (e) {
+    console.error('Refresh error:', e);
+    toast('⚠️ Eroare la actualizare');
+  }
+
+  /* Restaurăm inputurile utilizatorului dacă nu au fost suprascrise de API */
+  if (userGoalInput && !goal) {
+    document.getElementById('goal-inp').value = userGoalInput;
+  }
+  if (userFundsInput && !survivalTotal) {
+    document.getElementById('survival-total-funds').value = userFundsInput;
+  }
+  if (userSimRate) {
+    document.getElementById('sim-rate').value = userSimRate;
+  }
+
+  /* Oprire animație după minim 650ms (cât durează spin-ul) */
+  setTimeout(() => {
+    fabEl.classList.remove('spinning', 'loading');
+    fabRefreshLocked = false;
+  }, 700);
+}
+
+/* Preia doar datele remote fără a reseta inputurile utilizatorului */
+async function refreshRemoteDataOnly() {
+  /* 1. Preia preferințe */
+  try {
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent`);
+    if (prefs.length) {
+      currency = prefs[0].currency || 'EUR';
+    }
+  } catch(e) { console.error('Prefs refresh error:', e); }
+
+  /* 2. Preia datele din API extern (obiectiv + total fonduri) */
+  try {
+    const extResponse = await fetch(EXTERNAL_GOAL_API_URL);
+    if (extResponse.ok) {
+      const extData = await extResponse.json();
+      const snapshotObj = extData.find(item => item.key === 'metrics_snapshot');
+      if (snapshotObj && snapshotObj.value) {
+        const parsedVal = JSON.parse(snapshotObj.value);
+        if (parsedVal) {
+          if (parsedVal.media_lunara_ron) {
+            const cleanGoal = parseFloat(parsedVal.media_lunara_ron.replace(/[^\d]/g, ''));
+            if (!isNaN(cleanGoal) && cleanGoal > 0) {
+              goal = cleanGoal;
+              document.getElementById('goal-inp').value = goal;
+            }
+          }
+          if (parsedVal.total_active_ron) {
+            const cleanFunds = parseFloat(parsedVal.total_active_ron.replace(/[^\d]/g, ''));
+            if (!isNaN(cleanFunds) && cleanFunds >= 0) {
+              survivalTotal = cleanFunds;
+              document.getElementById('survival-total-funds').value = survivalTotal;
+            }
+          }
+        }
+      }
+    }
+  } catch (extError) {
+    console.error('Eroare la reîncărcarea datelor externe:', extError);
+  }
+
+  /* 3. Preia obligațiunile (NU suprascrie ce e în formular dacă e deschis) */
+  try {
+    const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
+    bonds = rows.map(r => ({
+      id:    r.id,
+      name:  r.name,
+      start: r.start_date,
+      mat:   r.mat_date,
+      amt:   parseFloat(r.amount),
+      rate:  parseFloat(r.rate),
+      freq:  String(r.freq)
+    }));
+  } catch (e) {
+    console.error('Bonds refresh error:', e);
+    throw e;
+  }
+
+  /* 4. Re-render tot */
+  updateCurrencyUI();
+  updateFormLabels();
+  renderDash();
+  renderBonds();
+  runSim();
+  calculateSurvival();
+
+  /* Actualizează și tab-ul de plăți dacă e activ */
+  if (document.getElementById('panel-payments').classList.contains('on')) {
+    renderPayments();
+  }
+}
+
+// ══════════════════════════════════════════════
+//  CURRENCY
+// ══════════════════════════════════════════════
+function currSym() { return currency === 'RON' ? 'lei' : '€'; }
+function fmt(n) {
+  if (isNaN(n) || n === null) return currency === 'RON' ? '0 lei' : '€0';
+  const num = Math.round(n).toLocaleString('ro-RO');
+  return currency === 'RON' ? num + ' lei' : '€' + num;
+}
+function setCurrency(c) {
+  currency = c;
+  updateCurrencyUI();
+  updateFormLabels();
+  savePrefsToSupabase();
+  renderDash();
+  renderBonds();
+  runSim();
+  calculateSurvival();
+  if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
+}
+function updateCurrencyUI() {
+  document.getElementById('ct-eur').classList.toggle('active', currency === 'EUR');
+  document.getElementById('ct-ron').classList.toggle('active', currency === 'RON');
+  document.getElementById('ct-cur-lbl').textContent = currency === 'RON' ? 'Leu românesc (lei)' : 'Euro (€)';
+  document.body.classList.toggle('currency-ron', currency === 'RON');
+}
+function updateFormLabels() {
+  const sym = currSym();
+  const amtLabel = document.getElementById('f-amt-label');
+  if (amtLabel) amtLabel.textContent = `Suma investită (${sym})`;
+  const amtInp = document.getElementById('f-amt');
+  if (amtInp) amtInp.placeholder = currency === 'RON' ? 'ex: 25000' : 'ex: 5000';
+  const goalLabel = document.getElementById('goal-label');
+  if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
+  const goalInp = document.getElementById('goal-inp');
+  if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
+  const fundsLabel = document.getElementById('total-funds-label');
+  if (fundsLabel) fundsLabel.textContent = `Total bani avuți (${sym})`;
+  document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
+}
+
+// ══════════════════════════════════════════════
+//  TABS
+// ══════════════════════════════════════════════
+function sw(tab, idx) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.nav-it').forEach(n => n.classList.remove('on'));
+  document.getElementById('panel-' + tab).classList.add('on');
+  if (idx !== 99) document.querySelectorAll('.nav-it')[idx].classList.add('on');
+  document.getElementById('scroll-area').scrollTop = 0;
+  if (tab === 'payments')  renderPayments();
+  if (tab === 'dashboard') renderDash();
+  if (tab === 'bonds')     renderBonds();
+  if (tab === 'settings')  updateCurrencyUI();
+}
+
+// ══════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════
+function fmtD(s) {
+  if (!s) return '--';
+  const d = (s instanceof Date) ? s : new Date(s + 'T00:00:00');
+  return d.toLocaleDateString('ro-RO', { day:'2-digit', month:'short', year:'numeric' });
+}
+function today0() { const d = new Date(); d.setHours(0,0,0,0); return d; }
+function daysDiff(dateStrOrDate) {
+  let d = dateStrOrDate instanceof Date ? new Date(dateStrOrDate) : new Date(dateStrOrDate + 'T00:00:00');
+  d.setHours(0,0,0,0);
+  return Math.ceil((d - today0()) / 86400000);
+}
+function isMatured(b)    { return new Date(b.mat   + 'T00:00:00') < today0(); }
+function isNotStarted(b) { return new Date(b.start + 'T00:00:00') > today0(); }
+function isActive(b)     { return !isMatured(b) && !isNotStarted(b); }
+function couponVal(b)    { return b.amt * (b.rate / 100) * (parseInt(b.freq) / 12); }
+function monthlyVal(b)   { return b.amt * (b.rate / 100) / 12; }
+
+function getPayDates(b) {
+  const start    = new Date(b.start + 'T00:00:00');
+  const maturity = new Date(b.mat   + 'T00:00:00');
+  const freq     = parseInt(b.freq);
+  const anchorDay = start.getDate();
+  const baseY = start.getFullYear();
+  const baseM = start.getMonth();
+  const dates = [];
+  let step = 1;
+  while (true) {
+    const totalMonths = baseM + step * freq;
+    const y = baseY + Math.floor(totalMonths / 12);
+    const m = totalMonths % 12;
+    const maxDay = new Date(y, m + 1, 0).getDate();
+    const d = new Date(y, m, Math.min(anchorDay, maxDay));
+    if (d > maturity) break;
+    dates.push(d);
+    step++;
+  }
+  const lastMs = dates.length ? dates[dates.length-1].getTime() : 0;
+  if (lastMs !== maturity.getTime()) dates.push(new Date(maturity));
+  return dates;
+}
+function nextPay(b)        { const t = today0(); return getPayDates(b).find(d => d >= t) || null; }
+function paysLeft(b)       { return getPayDates(b).filter(d => d >= today0()).length; }
+function totalReceived(b)  { return getPayDates(b).filter(d => d < today0()).length * couponVal(b); }
+function totalRemaining(b) { return paysLeft(b) * couponVal(b); }
+function dateToKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function monthName(d) { return d.toLocaleDateString('ro-RO', { month:'long', year:'numeric' }); }
+function sortedBonds() {
+  return [...bonds.filter(isMatured), ...bonds.filter(isNotStarted), ...bonds.filter(isActive)];
+}
+
+// ══════════════════════════════════════════════
+//  GOAL & SURVIVAL
+// ══════════════════════════════════════════════
+let goalSaveTimer;
+function saveGoal() {
+  const v = parseFloat(document.getElementById('goal-inp').value);
+  goal = (!isNaN(v) && v > 0) ? v : 0;
+  renderDash();
+  runSim();
+  clearTimeout(goalSaveTimer);
+  goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
+}
+
+function calculateSurvival() {
+  const fundsInp = parseFloat(document.getElementById('survival-total-funds').value);
+  survivalTotal = (!isNaN(fundsInp) && fundsInp >= 0) ? fundsInp : 0;
+
+  survivalSpent = goal > 0 ? goal : 0;
+  
+  const box = document.getElementById('survival-results-box');
+  const paceEl = document.getElementById('survival-current-pace-val');
+  const crashEl = document.getElementById('survival-crash-val');
+  const pureEl = document.getElementById('survival-pure-val');
+  
+  if (survivalTotal === 0 || survivalSpent === 0) {
+    box.style.display = 'none';
+    return;
+  }
+  
+  box.style.display = 'block';
+  
+  const curMonthlyYield = bonds.filter(isActive).reduce((s, b) => s + monthlyVal(b), 0);
+  
+  if (curMonthlyYield >= survivalSpent) {
+    paceEl.innerHTML = '<span style="color:var(--green)">∞ Nemărginit (Câștigul acoperă cheltuielile!)</span>';
+  } else {
+    const lossMonthly = survivalSpent - curMonthlyYield;
+    const yearsPace = survivalTotal / (lossMonthly * 12);
+    paceEl.textContent = formatYearsAndAge(yearsPace);
+  }
+  
+  const totalBondsAmt = bonds.filter(b => !isMatured(b)).reduce((s, b) => s + b.amt, 0);
+  const leftCash = survivalTotal - totalBondsAmt;
+  if (leftCash <= 0) {
+    crashEl.innerHTML = '<span class="survival-val red-text">0 ani (toți banii tăi sunt investiți)</span>';
+  } else {
+    const yearsCrash = leftCash / (survivalSpent * 12);
+    crashEl.textContent = formatYearsAndAge(yearsCrash);
+  }
+  
+  const yearsPure = survivalTotal / (survivalSpent * 12);
+  pureEl.textContent = formatYearsAndAge(yearsPure);
+  
+  clearTimeout(goalSaveTimer);
+  goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
+}
+
+function formatYearsAndAge(y) {
+  const totalMonthsRemaining = Math.round(y * 12);
+  const aniRamasi = Math.floor(totalMonthsRemaining / 12);
+  const luniRamase = totalMonthsRemaining % 12;
+  
+  const finalAgeYears = CURRENT_AGE + aniRamasi;
+  const finalAgeMonths = luniRamase; 
+  
+  let durataStr = '';
+  if (aniRamasi > 0) {
+    durataStr += `${aniRamasi} an${aniRamasi === 1 ? '' : 'i'}`;
+  }
+  if (luniRamase > 0) {
+    if (durataStr !== '') durataStr += ' și ';
+    durataStr += `${luniRamase} lun${luniRamase === 1 ? 'ă' : 'i'}`;
+  }
+  if (durataStr === '') durataStr = '0 luni';
+
+  let varstaStr = `până la ${finalAgeYears} ani`;
+  if (finalAgeMonths > 0) {
+    varstaStr += ` și ${finalAgeMonths} lun${finalAgeMonths === 1 ? 'ă' : 'i'}`;
+  }
+
+  return `${durataStr} (${varstaStr})`;
+}
+
+// ══════════════════════════════════════════════
+//  SIMULATOR
+// ══════════════════════════════════════════════
+function runSim() {
+  const rate = parseFloat(document.getElementById('sim-rate').value);
+  const sv   = document.getElementById('sim-val');
+  const sl   = document.getElementById('sim-lbl');
+  const box  = document.getElementById('sim-res-box');
+  const simSection  = document.getElementById('sim-section');
+  const achievedBox = document.getElementById('goal-achieved-box');
+  const achievedLbl = document.getElementById('goal-achieved-lbl');
+  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+
+  if (goal > 0 && curMo >= goal) {
+    simSection.style.display  = 'none';
+    achievedBox.style.display = 'block';
+    achievedLbl.textContent   = `Câștigi deja ${fmt(curMo)}/lună față de ținta ${fmt(goal)}`;
+    return;
+  }
+  simSection.style.display  = 'block';
+  achievedBox.style.display = 'none';
+  box.classList.remove('achieved');
+
+  if (isNaN(rate) || rate <= 0) { box.style.display = 'none'; return; }
+  box.style.display = '';
+  const gap = goal > 0 ? goal - curMo : 0;
+  if (!goal) { sv.textContent='--'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
+  sv.textContent = fmt(gap / (rate / 100 / 12));
+  sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
+}
+
+// ══════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════
+function renderDash() {
+  const active  = bonds.filter(isActive);
+  const pending = bonds.filter(isNotStarted);
+  const expired = bonds.filter(isMatured);
+  const monthly = active.reduce((s,b) => s + monthlyVal(b), 0);
+
+  document.getElementById('s-active').textContent  = active.length;
+  document.getElementById('s-pending').textContent = pending.length;
+
+  const expiredBadge = document.getElementById('expired-badge');
+  if (expired.length > 0) {
+    document.getElementById('s-expired').textContent = expired.length;
+    expiredBadge.style.display = 'inline-flex';
+  } else {
+    expiredBadge.style.display = 'none';
+  }
+
+  const nccEl = document.getElementById('ncc-body');
+  let allNextPays = [];
+  active.forEach(b => {
+    const np = nextPay(b);
+    if (np) allNextPays.push({ bond:b, date:np, amt:couponVal(b) });
+  });
+  allNextPays.sort((a,b) => a.date - b.date);
+  if (!allNextPays.length) {
+    nccEl.innerHTML = '<div class="ncc-empty">Nicio plată viitoare de la obligațiunile active.</div>';
+  } else {
+    const earliest = allNextPays[0].date.getTime();
+    const sameDay  = allNextPays.filter(p => p.date.getTime() === earliest);
+    const totalAmt = sameDay.reduce((s,p) => s + p.amt, 0);
+    const dys      = daysDiff(allNextPays[0].date);
+    const names    = sameDay.map(p => esc(p.bond.name)).join(', ');
+    nccEl.innerHTML = `
+      <div class="ncc-body">
+        <div><div class="ncc-days">${dys}</div><div class="ncc-days-lbl">ZILE RĂMASE</div></div>
+        <div class="ncc-right">
+          <div class="ncc-amt">${fmt(totalAmt)}</div>
+          <div class="ncc-from">${names}</div>
+        </div>
+      </div>
+      <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
+  }
+
+  const mnEl = document.getElementById('mn-body');
+  const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
+  if (!activeSorted.length) {
+    mnEl.innerHTML = '<div class="mn-empty">Nicio obligațiune activă.</div>';
+  } else {
+    const first   = activeSorted[0];
+    const matDate = new Date(first.mat + 'T00:00:00');
+    const dys     = daysDiff(matDate);
+    mnEl.innerHTML = `
+      <div class="mn-body">
+        <div><div class="mn-name">${esc(first.name)}</div><div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div></div>
+        <div class="mn-right"><div class="mn-days">${dys}</div><div class="mn-daysl">ZILE RĂMASE</div><div class="mn-date">${fmtD(matDate)}</div></div>
+      </div>`;
+  }
+
+  document.getElementById('g-cur').textContent    = fmt(monthly);
+  document.getElementById('g-target').textContent = fmt(goal);
+  const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
+  document.getElementById('g-bar').style.width = pct + '%';
+  document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
+
+  const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
+  let pays = [];
+  bonds.forEach(b => {
+    const val = couponVal(b);
+    getPayDates(b).forEach(d => {
+      if (d.getFullYear()===cy && d.getMonth()===cm) pays.push({bond:b.name, date:d, amt:val});
+    });
+  });
+  pays.sort((a,b) => a.date - b.date);
+  const mTotal = pays.reduce((s,p) => s+p.amt, 0);
+  document.getElementById('mc-badge').textContent = pays.length + ' plăți';
+  document.getElementById('mc-total').textContent = fmt(mTotal);
+  document.getElementById('mc-month').textContent = monthName(now);
+  const bd = document.getElementById('mc-breakdown');
+  if (!pays.length) {
+    bd.innerHTML = '<div class="small" style="margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);">Nicio plată în această lună.</div>';
+  } else {
+    bd.innerHTML = '<div style="border-top:1px solid rgba(78,205,164,.15);margin-top:2px;padding-top:8px;">' +
+      pays.map(p=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;">
+        <div><div style="font-size:12px;color:var(--text);">${esc(p.bond)}</div><div style="font-size:10px;color:rgba(78,205,164,.55);">${fmtD(p.date)}</div></div>
+        <div style="font-size:13px;font-weight:600;color:var(--green);">${fmt(p.amt)}</div>
+      </div>`).join('') + '</div>';
+  }
+
+  runSim();
+  calculateSurvival();
+}
+
+// ══════════════════════════════════════════════
+//  BONDS SUMMARY BAR
+// ══════════════════════════════════════════════
+function renderBondsSummary() {
+  const active  = bonds.filter(isActive);
+  const pending = bonds.filter(isNotStarted);
+  const relevant = [...active, ...pending];
+
+  const totalAmt   = relevant.reduce((s,b) => s + b.amt, 0);
+  const totalCount = relevant.length;
+  const activeAmt  = active.reduce((s,b) => s + b.amt, 0);
+  const pendingAmt = pending.reduce((s,b) => s + b.amt, 0);
+  const monthlyAll = active.reduce((s,b) => s + monthlyVal(b), 0);
+  const yearlyAll  = monthlyAll * 12;
+
+  const bar = document.getElementById('bonds-summary-bar');
+  if (totalCount === 0) {
+    bar.style.display = 'none';
+    return;
+  }
+  bar.style.display = '';
+
+  document.getElementById('bsb-total').textContent      = fmt(totalAmt);
+  document.getElementById('bsb-count').textContent      = `${totalCount} obligațiun${totalCount===1?'e':'i'}`;
+  document.getElementById('bsb-monthly').textContent    = fmt(monthlyAll);
+  document.getElementById('bsb-yearly').textContent     = fmt(yearlyAll) + ' / an';
+  document.getElementById('bsb-active-amt').textContent = fmt(activeAmt);
+  document.getElementById('bsb-active-cnt').textContent = `${active.length} active`;
+  document.getElementById('bsb-pending-amt').textContent= fmt(pendingAmt);
+  document.getElementById('bsb-pending-cnt').textContent= `${pending.length} în așteptare`;
+}
+
+// ══════════════════════════════════════════════
+//  SEARCH
+// ══════════════════════════════════════════════
+let searchQuery = '';
+
+function filterBonds() {
+  searchQuery = document.getElementById('bond-search').value.trim().toLowerCase();
+  const clearBtn  = document.getElementById('search-clear-btn');
+  const countEl   = document.getElementById('search-count');
+  const addBtn    = document.getElementById('bonds-add-btn-wrap');
+  const summaryBar= document.getElementById('bonds-summary-bar');
+
+  clearBtn.classList.toggle('vis', searchQuery.length > 0);
+
+  if (searchQuery.length > 0) {
+    addBtn.classList.add('search-hidden');
+    summaryBar.classList.add('search-hidden');
+    countEl.style.display = 'block';
+  } else {
+    addBtn.classList.remove('search-hidden');
+    summaryBar.classList.remove('search-hidden');
+    countEl.style.display = 'none';
+  }
+
+  renderBondsList();
+}
+
+function clearSearch() {
+  document.getElementById('bond-search').value = '';
+  filterBonds();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadFromSupabase();
+});
+
+function renderBonds() {
+  renderBondsSummary();
+  renderBondsList();
+}
+
+function renderBondsList() {
+  const el = document.getElementById('bonds-list');
+  const countEl = document.getElementById('search-count');
+
+  if (!bonds.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-ico">📄</div><p>Nicio obligațiune adăugată.<br>Apasă butonul de mai sus.</p></div>';
+    countEl.style.display = 'none';
+    return;
+  }
+
+  let filtered = sortedBonds();
+  if (searchQuery) {
+    filtered = filtered.filter(b => b.name.toLowerCase().includes(searchQuery));
+    countEl.style.display = 'block';
+    if (filtered.length === 0) {
+      countEl.textContent = `Niciun rezultat pentru "${searchQuery}"`;
+    } else {
+      countEl.textContent = `${filtered.length} din ${bonds.length} obligațiun${filtered.length===1?'e':'i'}`;
+    }
+  } else {
+    countEl.style.display = 'none';
+  }
+
+  if (!filtered.length) {
+    el.innerHTML = `<div class="empty"><div class="empty-ico">🔍</div><p>Nicio obligațiune găsită.<br>Încearcă alt termen de căutare.</p></div>`;
+    return;
+  }
+
+  el.innerHTML = filtered.map(b => bondCard(b, bonds.indexOf(b))).join('');
+}
+
+function bondCard(b, ri) {
+  const mat  = isMatured(b); const fut = isNotStarted(b);
+  const next = nextPay(b);
+  const days = next ? daysDiff(next) : null;
+  let banner = '';
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate -- o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă -- start: ${fmtD(b.start)}</div>`;
+  let nextBlock = '';
+  if (!mat && !fut && next) {
+    nextBlock = `<div class="bcnext">
+      <div><div class="bcnl">Următoarea plată</div><div class="bcnd">${fmtD(next)}</div></div>
+      <div style="text-align:right"><div class="bcndays">${days}</div><div class="bcndl">zile rămase</div></div>
+    </div>`;
+  }
+  return `<div class="bc ${mat?'mat':(fut?'fut':'')}">
+    ${banner}
+    <div class="bchd">
+      <div class="bcname">${esc(b.name)}</div>
+      <div class="bc-rate-box"><div class="bcrv">${b.rate}%</div><div class="bcrl">cupon/an</div></div>
+    </div>
+    <div class="bcgrid">
+      <div><div class="bclbl">Sumă investită</div><div class="bcval g">${fmt(b.amt)}</div></div>
+      <div><div class="bclbl">Câștig/lună</div><div class="bcval grn">${fmt(monthlyVal(b))}</div></div>
+      <div><div class="bclbl">Valoare cupon</div><div class="bcval blu">${fmt(couponVal(b))}</div></div>
+      <div><div class="bclbl">Interval</div><div class="bcval">${b.freq==='1'?'Lunar':'La '+b.freq+' luni'}</div></div>
+      <div><div class="bclbl">Plăți rămase</div><div class="bcval">${paysLeft(b)}</div></div>
+      <div><div class="bclbl">Total rămas</div><div class="bcval g">${fmt(totalRemaining(b))}</div></div>
+      <div><div class="bclbl">Primit până acum</div><div class="bcval grn">${fmt(totalReceived(b))}</div></div>
+      <div><div class="bclbl">Maturitate</div><div class="bcval">${fmtD(b.mat)}</div></div>
+    </div>
+    <div class="divider-line"></div>
+    ${nextBlock}
+    <div class="bcact">
+      <button class="btn-edt" onclick="editBond(${ri})">✏️ Editează</button>
+      <button class="btn-del" onclick="confirmDel(${ri})">🗑️ Șterge</button>
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+//  PAYMENTS
+// ══════════════════════════════════════════════
+function renderPayments() {
+  const el = document.getElementById('pay-list');
+  const t  = today0();
+  let all  = [];
+  bonds.forEach(b => {
+    const val   = couponVal(b);
+    const dates = getPayDates(b);
+    const lastDate = dates.length ? dates[dates.length-1] : null;
+    dates.forEach(d => {
+      if (d >= t) {
+        const isMat = lastDate && dateToKey(d) === dateToKey(lastDate);
+        all.push({date:d, bond:b.name, amt:val, isMat});
+      }
+    });
+  });
+  if (!all.length) {
+    el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>';
+    return;
+  }
+  all.sort((a,b) => a.date - b.date);
+  const grp = {};
+  all.forEach(p => { const k=dateToKey(p.date); if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
+  const now = new Date(); let inThisMonth=false; const keys=Object.keys(grp).sort();
+  let html='';
+  keys.forEach(k => {
+    const g=grp[k]; const d=g.date; const dys=daysDiff(k);
+    const isThisM=d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
+    if (isThisM && !inThisMonth) {
+      inThisMonth=true;
+      const mTotal=keys.filter(kk=>{const dd=grp[kk].date;return dd.getFullYear()===now.getFullYear()&&dd.getMonth()===now.getMonth();})
+        .reduce((s,kk)=>s+grp[kk].items.reduce((ss,ii)=>ss+ii.amt,0),0);
+      html+=`<div class="pay-month-hdr"><div class="pml">Luna curentă</div><div class="pmv">${fmt(mTotal)}</div></div>`;
+    }
+    g.items.forEach((item,idx) => {
+      const matRow = item.isMat ? ' pay-row-mat' : '';
+      if (item.isMat) {
+        html+=`<div class="pay-row${matRow}" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;">
+          <div>
+            ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
+            <div class="pay-bond">${esc(item.bond)}</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center;"><span class="mat-badge">maturitate</span></div>
+          <div style="text-align:right"><div class="pay-amt pay-amt-mat">${fmt(item.amt)}</div></div>
+        </div>`;
+      } else {
+        html+=`<div class="pay-row">
+          <div>
+            ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
+            <div class="pay-bond">${esc(item.bond)}</div>
+          </div>
+          <div style="text-align:right"><div class="pay-amt">${fmt(item.amt)}</div></div>
+        </div>`;
+      }
+    });
+    if (g.items.length>1) {
+      const dt=g.items.reduce((s,i)=>s+i.amt,0);
+      html+=`<div class="pay-dtotal"><div class="pay-dtl">Total ${fmtD(k)}</div><div class="pay-dtv">${fmt(dt)}</div></div>`;
+    }
+  });
+  el.innerHTML=html;
+}
+
+// ══════════════════════════════════════════════
+//  FORM
+// ══════════════════════════════════════════════
+let formOpen=false;
+function toggleForm() {
+  formOpen=!formOpen;
+  const w=document.getElementById('formwrap');
+  if(formOpen){w.classList.add('open');document.getElementById('fttl').textContent='Obligațiune nouă';clearForm();setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),60);}
+  else w.classList.remove('open');
+}
+function cancelForm() { formOpen=false; document.getElementById('formwrap').classList.remove('open'); clearForm(); }
+function clearForm() {
+  ['f-name','f-start','f-mat','f-amt','f-rate'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-freq').value='6';
+  document.getElementById('eid').value='';
+}
+
+function importDateFormat(str) {
+  if (!str) return '';
+  const parti = str.split('-');
+  if (parti.length === 3 && parti[2].length === 4) {
+    return `${parti[2]}-${parti[1]}-${parti[0]}`;
+  }
+  return str;
+}
+
+function exportDateFormat(str) {
+  if (!str) return '';
+  const parti = str.split('-');
+  if (parti.length === 3 && parti[0].length === 4) {
+    return `${parti[2]}-${parti[1]}-${parti[0]}`;
+  }
+  return str;
+}
+
+async function saveBond() {
+  const name  = document.getElementById('f-name').value.trim();
+  const start = importDateFormat(document.getElementById('f-start').value.trim());
+  const mat   = importDateFormat(document.getElementById('f-mat').value.trim());
+  const amt   = parseFloat(document.getElementById('f-amt').value);
+  const rate  = parseFloat(document.getElementById('f-rate').value);
+  const freq  = document.getElementById('f-freq').value;
+  const eid   = document.getElementById('eid').value;
+
+  if (!name||!start||!mat||isNaN(amt)||isNaN(rate)) { toast('⚠️ Completează toate câmpurile'); return; }
+  if (start.length !== 10 || mat.length !== 10) {
+    toast('⚠️ Format dată incorect! Folosește ZZ-LL-AAAA');
+    return;
+  }
+  if (new Date(mat) <= new Date(start)) { toast('Maturitatea trebuie să fie după data de start'); return; }
+
+  const bond = { id: eid || Date.now().toString(), name, start, mat, amt, rate, freq };
+
+  if (eid) {
+    const idx = bonds.findIndex(b => b.id === eid);
+    if (idx !== -1) bonds[idx] = bond;
+  } else {
+    bonds.push(bond);
+  }
+
+  cancelForm();
+  renderBonds();
+  renderDash();
+  runSim();
+  calculateSurvival();
+  await saveBondToSupabase(bond);
+  await saveTotalInvestitRON();
+}
+
+function formatDateInput(input) {
+  let v = input.value.replace(/\D/g, '');
+  if (v.length > 2 && v.length <= 4) {
+    input.value = v.slice(0, 2) + '-' + v.slice(2);
+  } else if (v.length > 4) {
+    input.value = v.slice(0, 2) + '-' + v.slice(2, 4) + '-' + v.slice(4, 8);
+  } else {
+    input.value = v;
+  }
+}
+
+// ══════════════════════════════════════════════
+//  EDIT
+// ══════════════════════════════════════════════
+function editBond(i) {
+  const b = bonds[i];
+  document.getElementById('eid').value      = b.id;
+  document.getElementById('f-name').value   = b.name;
+  document.getElementById('f-start').value  = exportDateFormat(b.start);
+  document.getElementById('f-mat').value    = exportDateFormat(b.mat);
+  document.getElementById('f-amt').value    = b.amt;
+  document.getElementById('f-rate').value   = b.rate;
+  document.getElementById('f-freq').value   = b.freq;
+  document.getElementById('fttl').textContent = 'Editează obligațiunea';
+  document.getElementById('formwrap').classList.add('open');
+  formOpen = true;
+  setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
+}
+
+// ══════════════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════════════
+function confirmDel(i) {
+  const b = bonds[i];
+  document.getElementById('ov-ttl').textContent = 'Șterge obligațiunea';
+  document.getElementById('ov-msg').textContent = `Sigur vrei să ștergi "${b.name}"?`;
+  document.getElementById('ov-ok').onclick = async function() {
+    await deleteBondFromSupabase(b.id);
+    bonds.splice(i, 1);
+    await saveTotalInvestitRON();
+    closeOv();
+    renderBonds();
+    renderDash();
+    runSim();
+    calculateSurvival();
+    toast('🗑️ Obligațiune ștearsă');
+  };
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeOv() { document.getElementById('overlay').classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
