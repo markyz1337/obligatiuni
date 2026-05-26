@@ -195,39 +195,263 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
 .mcsub{font-size:10px;color:rgba(78,205,164,.6);margin-top:4px;letter-spacing:.05em;}
 .mcbadge{display:inline-flex;align-items:center;gap:4px;background:var(--green-dim);border:1px solid var(--green-border);border-radius:50px;padding:5px 13px;font-size:12px;color:var(--green);font-weight:600;}
 
-/* ── GOAL CARD ── */
-.goal-card{
-margin:0 14px 12px;
-background:linear-gradient(145deg,rgba(201,168,76,.09),rgba(201,168,76,.02));
-border:1px solid var(--gold-border);border-radius:var(--r);
-padding:20px;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+/* ══════════════════════════════════════════
+   🎯 GOAL CARD
+══════════════════════════════════════════ */
+.goal-card {
+  margin: 0 14px 12px;
+  border-radius: var(--r);
+  padding: 20px;
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
+  background: linear-gradient(145deg, rgba(201,168,76,.09), rgba(201,168,76,.02));
+  border: 1px solid var(--gold-border);
 }
-.goal-card::before{
-content:'';position:absolute;bottom:-40px;right:-40px;width:130px;height:130px;border-radius:50%;
-background:radial-gradient(circle,rgba(201,168,76,.08),transparent 70%);pointer-events:none;
+.goal-card::before {
+  content: '';
+  position: absolute;
+  bottom: -40px; right: -40px;
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 0.5s ease;
+  background: radial-gradient(circle, rgba(201,168,76,.08), transparent 70%);
 }
-.gttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;}
-.grow{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:10px;}
-.gbig{font-size:30px;font-weight:700;color:var(--gold-l);line-height:1;letter-spacing:-.02em;}
-.gof{font-size:10px;color:var(--dim);margin-top:4px;}
-.gpct{font-size:14px;font-weight:700;color:var(--gold);}
-.barwrap{background:rgba(255,255,255,.06);border-radius:50px;height:6px;overflow:hidden;margin-bottom:14px;}
-.barfill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--gold),var(--gold-l));transition:width .65s cubic-bezier(.4,0,.2,1);}
+.goal-card.state-achieved {
+  background: linear-gradient(145deg, rgba(78,205,164,.13), rgba(78,205,164,.03));
+  border-color: var(--green-border);
+  box-shadow: 0 12px 48px rgba(0,0,0,.55), 0 0 0 1px rgba(78,205,164,.08) inset;
+}
+.goal-card.state-achieved::before {
+  background: radial-gradient(circle, rgba(78,205,164,.12), transparent 70%);
+}
+.goal-card.state-deficit {
+  background: linear-gradient(145deg, rgba(224,112,112,.12), rgba(224,112,112,.03));
+  border-color: var(--red-border);
+  box-shadow: 0 12px 48px rgba(0,0,0,.55), 0 0 0 1px rgba(224,112,112,.08) inset;
+}
+.goal-card.state-deficit::before {
+  background: radial-gradient(circle, rgba(224,112,112,.12), transparent 70%);
+}
 
-.goal-inp-wrap{position:relative;}
-.goal-inp-wrap::before{content:var(--cur-sym,'€');position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:14px;font-weight:600;pointer-events:none;}
-.goal-inp-wrap input{padding-left:28px !important;}
-.currency-ron .goal-inp-wrap::before{display:none;}
-.currency-ron .goal-inp-wrap input{padding-left:14px !important;}
+.goal-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  transition: background 0.5s ease;
+  background: linear-gradient(90deg, transparent, var(--gold-l), transparent);
+}
+.goal-card.state-achieved::after {
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+}
+.goal-card.state-deficit::after {
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+}
 
-/* Secțiune Supraviețuire */
+.gttl {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  color: var(--gold-l);
+  margin-bottom: 16px;
+  letter-spacing: .02em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: color 0.4s;
+}
+.goal-card.state-achieved .gttl { color: var(--green); }
+.goal-card.state-deficit .gttl { color: var(--red); }
+
+.goal-main-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  gap: 8px;
+}
+.goal-earned-lbl {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  transition: color 0.4s;
+}
+.goal-card.state-achieved .goal-earned-lbl { color: rgba(78,205,164,.6); }
+.goal-card.state-deficit .goal-earned-lbl { color: rgba(224,112,112,.6); }
+
+.gbig {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--gold-l);
+  transition: color 0.4s;
+}
+.goal-card.state-achieved .gbig { color: var(--green); }
+.goal-card.state-deficit .gbig { color: var(--red); }
+
+.goal-target-block { text-align: right; }
+.goal-target-lbl {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.goal-target-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+  transition: color 0.4s;
+}
+.goal-card.state-achieved .goal-target-val { color: var(--green); opacity: .75; }
+.goal-card.state-deficit .goal-target-val { color: var(--red); opacity: .75; }
+
+.barwrap {
+  background: rgba(255,255,255,.06);
+  border-radius: 50px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+.barfill {
+  height: 100%;
+  border-radius: 50px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-l));
+  transition: width .65s cubic-bezier(.4,0,.2,1), background 0.5s ease;
+}
+.goal-card.state-achieved .barfill {
+  background: linear-gradient(90deg, var(--green), #7effd4);
+}
+.goal-card.state-deficit .barfill {
+  background: linear-gradient(90deg, var(--red), #ff9e9e);
+}
+
+.goal-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.gpct {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  transition: color 0.4s;
+}
+.goal-card.state-achieved .gpct { color: var(--green); }
+.goal-card.state-deficit .gpct { color: var(--red); }
+
+.goal-diff-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.4s;
+}
+.goal-diff-badge.deficit {
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+  color: var(--red);
+}
+.goal-diff-badge.surplus {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+}
+.goal-diff-badge.neutral {
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  color: var(--gold-l);
+}
+
+.goal-protection-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: var(--rsm);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  gap: 10px;
+}
+.gpr-left { flex: 1; }
+.gpr-lbl {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.gpr-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-l);
+}
+.gpr-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.protection-minus, .protection-plus {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--gborder);
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, border-color .2s;
+  font-family: 'Outfit', sans-serif;
+  line-height: 1;
+  user-select: none;
+}
+.protection-minus:active, .protection-plus:active {
+  background: var(--gold-dim);
+  border-color: var(--gold-border);
+}
+.protection-pct-inp {
+  width: 52px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--gold-border);
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: var(--gold-l);
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  outline: none;
+}
+.protection-pct-inp:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
+}
+
 .survival-box {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--rsm);
   padding: 12px;
-  margin-top: 12px;
+  margin-top: 2px;
 }
 .survival-item {
   display: flex;
@@ -328,10 +552,43 @@ backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
 padding:0 18px;max-height:0;overflow:hidden;
 transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
 }
-.formwrap.open{max-height:1000px;opacity:1;padding:18px;}
+.formwrap.open{max-height:1200px;opacity:1;padding:18px;}
 .fttl{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
 .row2{display:flex;gap:9px;}
 .row2 .field{flex:1;}
+
+.amt-field-wrap {
+  position: relative;
+}
+.amt-field-wrap input {
+  padding-right: 44px !important;
+}
+.amt-autofill-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  color: var(--gold-l);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, transform .2s;
+  flex-shrink: 0;
+}
+.amt-autofill-btn:active {
+  background: rgba(201,168,76,.25);
+  transform: translateY(-50%) scale(.9);
+}
+.amt-autofill-btn:hover {
+  background: rgba(201,168,76,.2);
+}
 
 /* ── BONDS SUMMARY BAR ── */
 .bonds-summary-bar{
@@ -399,7 +656,6 @@ font-size:10px;color:var(--muted);text-align:center;
 padding:0 0 8px;letter-spacing:.06em;
 }
 
-/* ── Search hide targets ── */
 #bonds-add-btn-wrap,
 #bonds-summary-bar {
 transition: opacity .22s, max-height .28s cubic-bezier(.4,0,.2,1), margin .28s;
@@ -433,7 +689,6 @@ max-height: 80px;
 .pay-dtl{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.06em;}
 .pay-dtv{font-size:14px;font-weight:700;color:var(--gold-l);}
 
-/* ── MATURITY ROW ── */
 .pay-row-mat{border-bottom:1px solid rgba(224,112,112,.12) !important;}
 .mat-badge{display:inline-block;background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:50px;padding:2px 7px;vertical-align:middle;margin-left:5px;}
 .pay-amt-mat{color:var(--red) !important;}
@@ -466,13 +721,12 @@ padding:24px 18px 36px;width:100%;max-width:460px;
 transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
 .overlay.open .modal{transform:translateY(0);}
-
 .mttl { font-size: 18px; font-weight:600; margin-bottom:8px; color:var(--text); }
 .mmsg { font-size: 14px; color:var(--dim); margin-bottom:20px; }
 .mbtns { display:flex; gap:10px; }
 .mbtns .btn { flex:1; }
 
-/* Settings custom positioning toggle */
+/* Settings */
 .settings-card { background: var(--card); border: 1px solid var(--gborder); border-radius: var(--r); padding: 20px; }
 .sc-ttl { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gold-l); margin-bottom: 6px; }
 .sc-desc { font-size: 12px; color: var(--dim); margin-bottom: 16px; line-height: 1.4; }
@@ -503,7 +757,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   align-items: center;
   justify-content: center;
   z-index: 99;
-  /* Vizibil implicit */
   opacity: 1;
   transform: scale(1) translateY(0);
   transition: opacity .32s cubic-bezier(.4,0,.2,1),
@@ -513,11 +766,8 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   pointer-events: all;
 }
 
-/* Pe ecrane mici (sub 460px lătime), ancorare la dreapta ecranului */
 @media (max-width: 460px) {
-  .fab-refresh {
-    right: 16px;
-  }
+  .fab-refresh { right: 16px; }
 }
 
 .fab-refresh.fab-hidden {
@@ -525,12 +775,10 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   transform: scale(0.72) translateY(8px);
   pointer-events: none;
 }
-
 .fab-refresh:active {
   transform: scale(0.88) translateY(0);
   box-shadow: 0 2px 12px rgba(0,0,0,.35), 0 0 0 1px rgba(201,168,76,.1) inset;
 }
-
 .fab-refresh-ico {
   font-size: 20px;
   line-height: 1;
@@ -538,17 +786,13 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   transition: transform .55s cubic-bezier(.4,0,.2,1);
   will-change: transform;
 }
-
 .fab-refresh.spinning .fab-refresh-ico {
   animation: fab-spin .65s cubic-bezier(.4,0,.2,1);
 }
-
 @keyframes fab-spin {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-/* Stare loading -- pulsează subtil */
 .fab-refresh.loading {
   background: linear-gradient(145deg, rgba(201,168,76,0.28), rgba(201,168,76,0.10));
   border-color: rgba(201,168,76,.45);
@@ -561,6 +805,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 <div id="app">
   <div class="scroll-area" id="scroll-area">
 
+<!-- ══════════════════════════════════════════ DASHBOARD ══════ -->
 <div class="panel on" id="panel-dashboard">
   <div class="dash-hero">
     <div class="hero-eyebrow">Portofoliu personal</div>
@@ -569,32 +814,51 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <div class="hero-line"></div>
   </div>
 
-  <div class="goal-card">
-    <div class="gttl">🎯 Obiectiv lunar</div>
-    <div class="grow">
-      <div>
-        <div class="gbig" id="g-cur">€0</div>
-        <div class="gof">din <span id="g-target">€0</span> ↳ țintă</div>
-      </div>
-      <div class="gpct" id="g-pct">0%</div>
+  <!-- 🎯 GOAL CARD -->
+  <div class="goal-card" id="goal-card">
+    <div class="gttl">
+      <span id="goal-card-ico">🎯</span>&nbsp;Obiectiv lunar
+      <span id="goal-status-badge" style="font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;"></span>
     </div>
+
+    <div class="goal-main-row">
+      <div class="goal-earned-block">
+        <div class="goal-earned-lbl">CÂȘTIG LUNAR CURENT</div>
+        <div class="gbig" id="g-cur">0 lei</div>
+      </div>
+      <div class="goal-target-block">
+        <div class="goal-target-lbl">OBIECTIV CU BUFFER</div>
+        <div class="goal-target-val" id="g-target">0 lei</div>
+      </div>
+    </div>
+
     <div class="barwrap"><div class="barfill" id="g-bar" style="width:0%"></div></div>
-    
-    <div class="field" style="margin:0 0 12px;">
-      <label id="goal-label">Obiectiv lunar (€)</label>
-      <div class="goal-inp-wrap">
-        <input type="number" inputmode="decimal" id="goal-inp" placeholder="ex: 570" oninput="saveGoal()">
+    <div class="goal-meta-row">
+      <div class="gpct" id="g-pct">0%</div>
+      <div class="goal-diff-badge neutral" id="goal-diff-badge">— echilibru</div>
+    </div>
+
+    <!-- Protecție % -->
+    <div class="goal-protection-row">
+      <div class="gpr-left">
+        <div class="gpr-lbl">🛡️ Protecție buffer (%)</div>
+        <div class="gpr-val" id="gpr-val-display">+0% → cheltuieli: <span id="gpr-base-expense">0 lei</span></div>
+      </div>
+      <div class="gpr-right">
+        <button class="protection-minus" onclick="changeProtection(-1)">−</button>
+        <input type="number" class="protection-pct-inp" id="protection-pct" value="0" min="0" max="100" oninput="onProtectionInput()">
+        <button class="protection-plus" onclick="changeProtection(1)">+</button>
       </div>
     </div>
 
+    <!-- Total fonduri -->
     <div class="field" style="margin-bottom:12px;">
-      <label id="total-funds-label">Total bani avuți (€)</label>
-      <div class="goal-inp-wrap" id="wrap-funds">
-        <input type="number" inputmode="decimal" id="survival-total-funds" placeholder="ex: 250000" oninput="calculateSurvival()">
+      <label id="total-funds-label">Total bani avuți (lei)</label>
+      <div style="position:relative;">
+        <input type="number" inputmode="decimal" id="survival-total-funds" placeholder="ex: 250000" oninput="calculateSurvival()" style="width:100%;">
       </div>
     </div>
 
-    <!-- câmpul survival-expenses e ascuns dar prezent pentru logică -->
     <input type="hidden" id="survival-expenses">
 
     <div class="survival-box" id="survival-results-box" style="display:none;">
@@ -612,8 +876,9 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       </div>
     </div>
 
+    <!-- Simulator -->
     <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;margin-top:14px;">
-      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator -- cât să investești</div>
+      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator — cât să investești</div>
       <div class="field" style="margin-bottom:10px;">
         <label>Rata cuponului nou (%/an)</label>
         <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
@@ -656,7 +921,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     </div>
     <div class="mc-inner">
       <div>
-        <div class="mctotal" id="mc-total">€0</div>
+        <div class="mctotal" id="mc-total">0 lei</div>
         <div class="mcsub">de primit în <span id="mc-month">--</span></div>
       </div>
     </div>
@@ -673,49 +938,79 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     </div>
     <div id="mn-body"></div>
   </div>
-</div><div class="panel" id="panel-bonds">
+</div>
+
+<!-- ══════════════════════════════════════════ BONDS ══════ -->
+<div class="panel" id="panel-bonds">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Obligațiunile <span>mele</span></div>
   </div>
 
   <div class="pad14" style="margin-bottom:13px;" id="bonds-add-btn-wrap">
-    <button class="btn btn-gold" onclick="toggleForm()">+ Adaugă obligațiune</button>
+    <button class="btn btn-gold" style="margin:0 14px;width:calc(100% - 28px);" onclick="toggleForm()">+ Adaugă obligațiune</button>
   </div>
 
   <div class="formwrap" id="formwrap">
     <div class="fttl" id="fttl">Obligațiune nouă</div>
     <input type="hidden" id="eid">
+    <!-- 1. RATA CUPONULUI -->
     <div class="field">
-      <label>Denumire</label>
-      <input type="text" id="f-name" placeholder="ex: FIDELIS 2027">
+      <label>Rata cuponului (%/an)</label>
+<input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01"
+  enterkeyhint="next"
+  oninput="updateAutofillHint()"
+  onkeydown="formEnter(event,'f-rate')">
     </div>
+    <!-- 2. SUMA INVESTITĂ -->
+    <div class="field">
+      <label id="f-amt-label">Suma investită (lei)</label>
+      <div class="amt-field-wrap">
+<input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 25000"
+  enterkeyhint="next"
+  onkeydown="formEnter(event,'f-amt')">
+
+        <button class="amt-autofill-btn" onclick="autofillAmount()" title="Completează automat suma necesară pentru obiectiv">↙</button>
+      </div>
+      <div id="autofill-hint" style="font-size:10px;color:rgba(201,168,76,.55);margin-top:5px;display:none;padding-left:2px;"></div>
+    </div>
+    <!-- 3. DATA START / MATURITATE -->
     <div class="row2">
       <div class="field">
         <label>Data start</label>
-        <input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
+<input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
+  enterkeyhint="next"
+  oninput="formatDateInput(this)"
+  onkeydown="formEnter(event,'f-start')">
+
       </div>
       <div class="field">
         <label>Maturitate</label>
-        <input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA" oninput="formatDateInput(this)">
+<input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
+  enterkeyhint="next"
+  oninput="formatDateInput(this)"
+  onkeydown="formEnter(event,'f-mat')">
       </div>
     </div>
+    <!-- 4. DENUMIRE — Enter închide tastatura -->
     <div class="field">
-      <label id="f-amt-label">Suma investită (${currSym()})</label>
-      <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 5000">
+      <label>Denumire</label>
+
+<input type="text" id="f-name" placeholder="ex: FIDELIS 2027"
+  enterkeyhint="done"
+  onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
+
     </div>
-    <div class="field">
-      <label>Rata cuponului (%/an)</label>
-      <input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01">
-    </div>
+    <!-- 5. INTERVAL PLATĂ -->
     <div class="field">
       <label>Interval plată cupon</label>
-      <select id="f-freq">
+      <select id="f-freq" onkeydown="formEnter(event,'f-freq')">
         <option value="6">La 6 luni</option>
         <option value="3">La 3 luni</option>
         <option value="12">La 12 luni</option>
         <option value="1">Lunar</option>
       </select>
     </div>
+
     <div class="row2">
       <button class="btn btn-gold" onclick="saveBond()">Salvează</button>
       <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
@@ -755,14 +1050,20 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   </div>
 
   <div id="bonds-list"></div>
-</div><div class="panel" id="panel-payments">
+</div>
+
+<!-- ══════════════════════════════════════════ PAYMENTS ══════ -->
+<div class="panel" id="panel-payments">
   <div class="panel-hdr">
     <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
   </div>
   <div class="pay-list-wrap">
     <div class="pay-card" id="pay-list"></div>
   </div>
-</div><div class="panel" id="panel-settings">
+</div>
+
+<!-- ══════════════════════════════════════════ SETTINGS ══════ -->
+<div class="panel" id="panel-settings">
   <div class="panel-hdr" style="display:flex;align-items:center;gap:14px;">
     <button onclick="sw('dashboard',0)" style="background:var(--gold-dim);border:1px solid var(--gold-border);color:var(--gold-l);border-radius:50px;padding:7px 16px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">← Înapoi</button>
     <div class="panel-hdr-title">Se<span>tări</span></div>
@@ -772,22 +1073,25 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       <div class="sc-ttl">💱 Valută</div>
       <div class="sc-desc">Alege valuta în care sunt exprimate sumele. Toate valorile vor fi afișate în valuta selectată, fără conversie.</div>
       <div class="currency-toggle">
-        <div class="ct-opt" id="ct-eur" onclick="setCurrency('EUR')">
-          <div class="ct-sym">€</div>
-          <div class="ct-name">Euro</div>
-          <div class="ct-code">EUR</div>
-        </div>
-        <div class="ct-divider"></div>
         <div class="ct-opt" id="ct-ron" onclick="setCurrency('RON')">
           <div class="ct-sym">lei</div>
           <div class="ct-name">Leu românesc</div>
           <div class="ct-code">RON</div>
         </div>
+        <div class="ct-divider"></div>
+        <div class="ct-opt" id="ct-eur" onclick="setCurrency('EUR')">
+          <div class="ct-sym">€</div>
+          <div class="ct-name">Euro</div>
+          <div class="ct-code">EUR</div>
+        </div>
       </div>
-      <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Euro (€)</strong></div>
+      <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Leu românesc (lei)</strong></div>
     </div>
   </div>
-</div></div></div>
+</div>
+
+</div><!-- end scroll-area -->
+</div><!-- end app -->
 
 <!-- ── FAB REFRESH ── -->
 <button class="fab-refresh" id="fab-refresh" onclick="handleFabRefresh()" title="Actualizează datele" aria-label="Actualizează datele">
@@ -859,19 +1163,27 @@ async function sbDelete(table, filter) {
 //  DATA
 // ══════════════════════════════════════════════
 let bonds         = [];
-let goal          = 0;
-let currency      = 'EUR';
+let baseExpense   = 0;   // cheltuielile lunare brute din API extern (fără buffer)
+let protectionPct = 0;   // procentul de buffer setat de user (0-100)
+let currency      = 'RON'; // default RON
 let survivalTotal = 0;
 let survivalSpent = 0;
 const CURRENT_AGE = 23;
 
+// Obiectivul efectiv = baseExpense * (1 + protectionPct/100)
+function effectiveGoal() {
+  if (baseExpense <= 0) return 0;
+  return baseExpense * (1 + protectionPct / 100);
+}
+
 async function loadFromSupabase() {
   try {
-    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent`);
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent,protection_pct`);
     if (prefs.length) {
-      currency      = prefs[0].currency || 'EUR';
+      currency      = prefs[0].currency || 'RON';
+      protectionPct = parseFloat(prefs[0].protection_pct) || 0;
     }
-    
+
     try {
       const extResponse = await fetch(EXTERNAL_GOAL_API_URL);
       if (extResponse.ok) {
@@ -882,15 +1194,11 @@ async function loadFromSupabase() {
           if (parsedVal) {
             if (parsedVal.media_lunara_ron) {
               const cleanGoal = parseFloat(parsedVal.media_lunara_ron.replace(/[^\d]/g, ''));
-              if (!isNaN(cleanGoal) && cleanGoal > 0) {
-                goal = cleanGoal;
-              }
+              if (!isNaN(cleanGoal) && cleanGoal > 0) baseExpense = cleanGoal;
             }
             if (parsedVal.total_active_ron) {
               const cleanFunds = parseFloat(parsedVal.total_active_ron.replace(/[^\d]/g, ''));
-              if (!isNaN(cleanFunds) && cleanFunds >= 0) {
-                survivalTotal = cleanFunds;
-              }
+              if (!isNaN(cleanFunds) && cleanFunds >= 0) survivalTotal = cleanFunds;
             }
           }
         }
@@ -909,15 +1217,15 @@ async function loadFromSupabase() {
       rate:  parseFloat(r.rate),
       freq:  String(r.freq)
     }));
-    await saveTotalInvestitRON(); 
+    await saveTotalInvestitRON();
   } catch (e) {
     console.error('Load error:', e);
     toast('⚠️ Eroare la încărcarea datelor');
   }
-  
-  if (goal > 0) document.getElementById('goal-inp').value = goal;
+
+  document.getElementById('protection-pct').value = protectionPct;
   if (survivalTotal > 0) document.getElementById('survival-total-funds').value = survivalTotal;
-  
+
   updateCurrencyUI();
   updateFormLabels();
   renderDash();
@@ -934,9 +1242,10 @@ async function savePrefsToSupabase() {
       method: 'PATCH',
       headers: { ...SB_HEADERS },
       body: JSON.stringify({
-        currency: currency,
-        survival_total: survivalTotalVal,
-        updated_at: new Date().toISOString()
+        currency:        currency,
+        survival_total:  survivalTotalVal,
+        protection_pct:  protectionPct,
+        updated_at:      new Date().toISOString()
       })
     });
   } catch(e) {
@@ -994,11 +1303,10 @@ let fabRefreshLocked = false;
 let fabScrollTimer   = null;
 let fabVisible       = true;
 
-const fabEl  = document.getElementById('fab-refresh');
-const fabIco = document.getElementById('fab-ico');
+const fabEl    = document.getElementById('fab-refresh');
+const fabIco   = document.getElementById('fab-ico');
 const scrollEl = document.getElementById('scroll-area');
 
-/* Ascunde FAB-ul când utilizatorul scrollează, reapare după oprire */
 scrollEl.addEventListener('scroll', () => {
   if (fabVisible) {
     fabVisible = false;
@@ -1008,25 +1316,18 @@ scrollEl.addEventListener('scroll', () => {
   fabScrollTimer = setTimeout(() => {
     fabVisible = true;
     fabEl.classList.remove('fab-hidden');
-  }, 800); // reapare la 800ms după ce s-a oprit scroll-ul
+  }, 800);
 }, { passive: true });
 
 async function handleFabRefresh() {
-  /* Protecție anti-spam: ignoră apăsările rapide consecutive */
   if (fabRefreshLocked) return;
   fabRefreshLocked = true;
-
-  /* Animație vizuală */
   fabEl.classList.add('spinning', 'loading');
 
-  /* Salvăm valorile introduse de user ÎNAINTE de reload,
-     ca să nu le pierdem dacă refresh-ul înlocuiește datele din API */
-  const userGoalInput  = document.getElementById('goal-inp').value;
   const userFundsInput = document.getElementById('survival-total-funds').value;
   const userSimRate    = document.getElementById('sim-rate').value;
 
   try {
-    /* Reîncarcă DOAR datele din surse externe (API + Supabase bonds) */
     await refreshRemoteDataOnly();
     toast('✅ Date actualizate');
   } catch (e) {
@@ -1034,35 +1335,26 @@ async function handleFabRefresh() {
     toast('⚠️ Eroare la actualizare');
   }
 
-  /* Restaurăm inputurile utilizatorului dacă nu au fost suprascrise de API */
-  if (userGoalInput && !goal) {
-    document.getElementById('goal-inp').value = userGoalInput;
-  }
   if (userFundsInput && !survivalTotal) {
     document.getElementById('survival-total-funds').value = userFundsInput;
   }
-  if (userSimRate) {
-    document.getElementById('sim-rate').value = userSimRate;
-  }
+  if (userSimRate) document.getElementById('sim-rate').value = userSimRate;
 
-  /* Oprire animație după minim 650ms (cât durează spin-ul) */
   setTimeout(() => {
     fabEl.classList.remove('spinning', 'loading');
     fabRefreshLocked = false;
   }, 700);
 }
 
-/* Preia doar datele remote fără a reseta inputurile utilizatorului */
 async function refreshRemoteDataOnly() {
-  /* 1. Preia preferințe */
   try {
-    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent`);
+    const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent,protection_pct`);
     if (prefs.length) {
-      currency = prefs[0].currency || 'EUR';
+      currency      = prefs[0].currency || 'RON';
+      protectionPct = parseFloat(prefs[0].protection_pct) || protectionPct;
     }
   } catch(e) { console.error('Prefs refresh error:', e); }
 
-  /* 2. Preia datele din API extern (obiectiv + total fonduri) */
   try {
     const extResponse = await fetch(EXTERNAL_GOAL_API_URL);
     if (extResponse.ok) {
@@ -1073,10 +1365,7 @@ async function refreshRemoteDataOnly() {
         if (parsedVal) {
           if (parsedVal.media_lunara_ron) {
             const cleanGoal = parseFloat(parsedVal.media_lunara_ron.replace(/[^\d]/g, ''));
-            if (!isNaN(cleanGoal) && cleanGoal > 0) {
-              goal = cleanGoal;
-              document.getElementById('goal-inp').value = goal;
-            }
+            if (!isNaN(cleanGoal) && cleanGoal > 0) baseExpense = cleanGoal;
           }
           if (parsedVal.total_active_ron) {
             const cleanFunds = parseFloat(parsedVal.total_active_ron.replace(/[^\d]/g, ''));
@@ -1092,7 +1381,6 @@ async function refreshRemoteDataOnly() {
     console.error('Eroare la reîncărcarea datelor externe:', extError);
   }
 
-  /* 3. Preia obligațiunile (NU suprascrie ce e în formular dacă e deschis) */
   try {
     const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
     bonds = rows.map(r => ({
@@ -1109,7 +1397,7 @@ async function refreshRemoteDataOnly() {
     throw e;
   }
 
-  /* 4. Re-render tot */
+  document.getElementById('protection-pct').value = protectionPct;
   updateCurrencyUI();
   updateFormLabels();
   renderDash();
@@ -1117,14 +1405,112 @@ async function refreshRemoteDataOnly() {
   runSim();
   calculateSurvival();
 
-  /* Actualizează și tab-ul de plăți dacă e activ */
   if (document.getElementById('panel-payments').classList.contains('on')) {
     renderPayments();
   }
 }
 
 // ══════════════════════════════════════════════
-//  CURRENCY
+//  FORM ENTER KEY NAVIGATION
+//  Ordinea câmpurilor: f-rate → f-name → f-start → f-mat → f-amt → f-freq → save
+// ══════════════════════════════════════════════
+const FORM_ORDER = ['f-rate', 'f-amt', 'f-start', 'f-mat', 'f-name', 'f-freq'];
+
+
+function formEnter(event, currentId) {
+  if (event.key !== 'Enter') return;
+  event.preventDefault();
+
+  const currentIdx = FORM_ORDER.indexOf(currentId);
+
+  // Caută primul câmp necompletat după cel curent
+  for (let i = currentIdx + 1; i < FORM_ORDER.length; i++) {
+    const el = document.getElementById(FORM_ORDER[i]);
+    if (el && !el.value.toString().trim()) {
+      el.focus();
+      return;
+    }
+  }
+
+  // Caută primul câmp necompletat de la început
+  for (let i = 0; i < currentIdx; i++) {
+    const el = document.getElementById(FORM_ORDER[i]);
+    if (el && !el.value.toString().trim()) {
+      el.focus();
+      return;
+    }
+  }
+
+  // Totul completat → mergi la următorul sau salvează
+  if (currentIdx + 1 < FORM_ORDER.length) {
+    document.getElementById(FORM_ORDER[currentIdx + 1]).focus();
+  } else {
+    saveBond();
+  }
+}
+
+
+// ══════════════════════════════════════════════
+//  PROTECTION / BUFFER
+// ══════════════════════════════════════════════
+let protSaveTimer;
+
+function changeProtection(delta) {
+  let val = parseFloat(document.getElementById('protection-pct').value) || 0;
+  val = Math.max(0, Math.min(100, val + delta));
+  document.getElementById('protection-pct').value = val;
+  onProtectionInput();
+}
+
+function onProtectionInput() {
+  const val = parseFloat(document.getElementById('protection-pct').value);
+  protectionPct = (!isNaN(val) && val >= 0) ? Math.min(100, val) : 0;
+  renderDash();
+  runSim();
+  // calculateSurvival() va folosi baseExpense, nu effectiveGoal()
+  calculateSurvival();
+  updateAutofillHint();
+  clearTimeout(protSaveTimer);
+  protSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
+}
+
+// ══════════════════════════════════════════════
+//  AUTOFILL AMOUNT
+// ══════════════════════════════════════════════
+function updateAutofillHint() {
+  const hintEl = document.getElementById('autofill-hint');
+  const rate = parseFloat(document.getElementById('f-rate').value);
+  const goal = effectiveGoal();
+  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+  const gap = goal > 0 ? goal - curMo : 0;
+
+  if (gap <= 0 || isNaN(rate) || rate <= 0) {
+    hintEl.style.display = 'none';
+    return;
+  }
+
+  const needed = gap / (rate / 100 / 12);
+  hintEl.textContent = `↙ Completează automat: ${fmt(needed)} (pentru +${fmt(gap)}/lună la ${rate}%)`;
+  hintEl.style.display = 'block';
+}
+
+function autofillAmount() {
+  const rate = parseFloat(document.getElementById('f-rate').value);
+  const goal = effectiveGoal();
+  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+  const gap = goal > 0 ? goal - curMo : 0;
+
+  if (goal <= 0) { toast('⚠️ Niciun obiectiv disponibil din API'); return; }
+  if (isNaN(rate) || rate <= 0) { toast('⚠️ Introdu mai întâi rata cuponului'); return; }
+  if (gap <= 0) { toast('🎉 Obiectivul e deja atins!'); return; }
+
+  const needed = gap / (rate / 100 / 12);
+  document.getElementById('f-amt').value = Math.ceil(needed);
+  toast(`✅ Sumă completată: ${fmt(Math.ceil(needed))}`);
+}
+
+// ══════════════════════════════════════════════
+//  CURRENCY — default RON
 // ══════════════════════════════════════════════
 function currSym() { return currency === 'RON' ? 'lei' : '€'; }
 function fmt(n) {
@@ -1155,13 +1541,8 @@ function updateFormLabels() {
   if (amtLabel) amtLabel.textContent = `Suma investită (${sym})`;
   const amtInp = document.getElementById('f-amt');
   if (amtInp) amtInp.placeholder = currency === 'RON' ? 'ex: 25000' : 'ex: 5000';
-  const goalLabel = document.getElementById('goal-label');
-  if (goalLabel) goalLabel.textContent = `Obiectiv lunar (${sym})`;
-  const goalInp = document.getElementById('goal-inp');
-  if (goalInp) goalInp.placeholder = currency === 'RON' ? 'ex: 2800' : 'ex: 570';
   const fundsLabel = document.getElementById('total-funds-label');
   if (fundsLabel) fundsLabel.textContent = `Total bani avuți (${sym})`;
-  document.documentElement.style.setProperty('--cur-sym', `"${sym === 'lei' ? 'lei' : '€'}"`);
 }
 
 // ══════════════════════════════════════════════
@@ -1236,74 +1617,64 @@ function sortedBonds() {
 }
 
 // ══════════════════════════════════════════════
-//  GOAL & SURVIVAL
+//  SURVIVAL — calculele folosesc baseExpense (FĂRĂ buffer)
 // ══════════════════════════════════════════════
-let goalSaveTimer;
-function saveGoal() {
-  const v = parseFloat(document.getElementById('goal-inp').value);
-  goal = (!isNaN(v) && v > 0) ? v : 0;
-  renderDash();
-  runSim();
-  clearTimeout(goalSaveTimer);
-  goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
-}
-
 function calculateSurvival() {
   const fundsInp = parseFloat(document.getElementById('survival-total-funds').value);
   survivalTotal = (!isNaN(fundsInp) && fundsInp >= 0) ? fundsInp : 0;
 
-  survivalSpent = goal > 0 ? goal : 0;
-  
-  const box = document.getElementById('survival-results-box');
-  const paceEl = document.getElementById('survival-current-pace-val');
-  const crashEl = document.getElementById('survival-crash-val');
-  const pureEl = document.getElementById('survival-pure-val');
-  
+  // !! Folosim baseExpense (cheltuielile reale), NU effectiveGoal() !!
+  // Bufferul NU afectează calculele de supraviețuire
+  const rawExpense = baseExpense > 0 ? baseExpense : 0;
+  survivalSpent = rawExpense;
+
+  const box      = document.getElementById('survival-results-box');
+  const paceEl   = document.getElementById('survival-current-pace-val');
+  const crashEl  = document.getElementById('survival-crash-val');
+  const pureEl   = document.getElementById('survival-pure-val');
+
   if (survivalTotal === 0 || survivalSpent === 0) {
     box.style.display = 'none';
     return;
   }
-  
+
   box.style.display = 'block';
-  
+
   const curMonthlyYield = bonds.filter(isActive).reduce((s, b) => s + monthlyVal(b), 0);
-  
+
   if (curMonthlyYield >= survivalSpent) {
     paceEl.innerHTML = '<span style="color:var(--green)">∞ Nemărginit (Câștigul acoperă cheltuielile!)</span>';
   } else {
     const lossMonthly = survivalSpent - curMonthlyYield;
-    const yearsPace = survivalTotal / (lossMonthly * 12);
+    const yearsPace   = survivalTotal / (lossMonthly * 12);
     paceEl.textContent = formatYearsAndAge(yearsPace);
   }
-  
+
   const totalBondsAmt = bonds.filter(b => !isMatured(b)).reduce((s, b) => s + b.amt, 0);
-  const leftCash = survivalTotal - totalBondsAmt;
+  const leftCash      = survivalTotal - totalBondsAmt;
   if (leftCash <= 0) {
     crashEl.innerHTML = '<span class="survival-val red-text">0 ani (toți banii tăi sunt investiți)</span>';
   } else {
     const yearsCrash = leftCash / (survivalSpent * 12);
     crashEl.textContent = formatYearsAndAge(yearsCrash);
   }
-  
+
   const yearsPure = survivalTotal / (survivalSpent * 12);
   pureEl.textContent = formatYearsAndAge(yearsPure);
-  
-  clearTimeout(goalSaveTimer);
-  goalSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
+
+  clearTimeout(protSaveTimer);
+  protSaveTimer = setTimeout(() => savePrefsToSupabase(), 800);
 }
 
 function formatYearsAndAge(y) {
   const totalMonthsRemaining = Math.round(y * 12);
-  const aniRamasi = Math.floor(totalMonthsRemaining / 12);
-  const luniRamase = totalMonthsRemaining % 12;
-  
-  const finalAgeYears = CURRENT_AGE + aniRamasi;
-  const finalAgeMonths = luniRamase; 
-  
+  const aniRamasi   = Math.floor(totalMonthsRemaining / 12);
+  const luniRamase  = totalMonthsRemaining % 12;
+  const finalAgeYears  = CURRENT_AGE + aniRamasi;
+  const finalAgeMonths = luniRamase;
+
   let durataStr = '';
-  if (aniRamasi > 0) {
-    durataStr += `${aniRamasi} an${aniRamasi === 1 ? '' : 'i'}`;
-  }
+  if (aniRamasi > 0) durataStr += `${aniRamasi} an${aniRamasi === 1 ? '' : 'i'}`;
   if (luniRamase > 0) {
     if (durataStr !== '') durataStr += ' și ';
     durataStr += `${luniRamase} lun${luniRamase === 1 ? 'ă' : 'i'}`;
@@ -1311,9 +1682,7 @@ function formatYearsAndAge(y) {
   if (durataStr === '') durataStr = '0 luni';
 
   let varstaStr = `până la ${finalAgeYears} ani`;
-  if (finalAgeMonths > 0) {
-    varstaStr += ` și ${finalAgeMonths} lun${finalAgeMonths === 1 ? 'ă' : 'i'}`;
-  }
+  if (finalAgeMonths > 0) varstaStr += ` și ${finalAgeMonths} lun${finalAgeMonths === 1 ? 'ă' : 'i'}`;
 
   return `${durataStr} (${varstaStr})`;
 }
@@ -1330,6 +1699,7 @@ function runSim() {
   const achievedBox = document.getElementById('goal-achieved-box');
   const achievedLbl = document.getElementById('goal-achieved-lbl');
   const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+  const goal  = effectiveGoal();
 
   if (goal > 0 && curMo >= goal) {
     simSection.style.display  = 'none';
@@ -1344,7 +1714,7 @@ function runSim() {
   if (isNaN(rate) || rate <= 0) { box.style.display = 'none'; return; }
   box.style.display = '';
   const gap = goal > 0 ? goal - curMo : 0;
-  if (!goal) { sv.textContent='--'; sl.textContent='setează mai întâi obiectivul lunar'; return; }
+  if (!goal) { sv.textContent='--'; sl.textContent='obiectivul se preia automat din API'; return; }
   sv.textContent = fmt(gap / (rate / 100 / 12));
   sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
 }
@@ -1357,6 +1727,7 @@ function renderDash() {
   const pending = bonds.filter(isNotStarted);
   const expired = bonds.filter(isMatured);
   const monthly = active.reduce((s,b) => s + monthlyVal(b), 0);
+  const goal    = effectiveGoal();
 
   document.getElementById('s-active').textContent  = active.length;
   document.getElementById('s-pending').textContent = pending.length;
@@ -1369,6 +1740,70 @@ function renderDash() {
     expiredBadge.style.display = 'none';
   }
 
+  // Protecție row
+  const gprDisplay = document.getElementById('gpr-val-display');
+  if (baseExpense > 0) {
+    gprDisplay.innerHTML = `+${protectionPct}% buffer → cheltuieli: <span id="gpr-base-expense">${fmt(baseExpense)}</span>`;
+  } else {
+    gprDisplay.innerHTML = `+${protectionPct}% buffer → obiectiv din API`;
+  }
+
+  // Goal card
+  const gCurEl      = document.getElementById('g-cur');
+  const gTargetEl   = document.getElementById('g-target');
+  const gBarEl      = document.getElementById('g-bar');
+  const gPctEl      = document.getElementById('g-pct');
+  const diffBadge   = document.getElementById('goal-diff-badge');
+  const goalCard    = document.getElementById('goal-card');
+  const gttlIco     = document.getElementById('goal-card-ico');
+  const statusBadge = document.getElementById('goal-status-badge');
+
+  gCurEl.textContent    = fmt(monthly);
+  gTargetEl.textContent = goal > 0 ? fmt(goal) : '--';
+
+  const pct = goal > 0 ? Math.min(100, (monthly / goal) * 100) : 0;
+  gBarEl.style.width  = pct + '%';
+  gPctEl.textContent  = pct.toFixed(0) + '%';
+
+  diffBadge.className = 'goal-diff-badge';
+  if (goal <= 0) {
+    diffBadge.className += ' neutral';
+    diffBadge.textContent = '— aștept obiectiv API';
+  } else {
+    const diff = monthly - goal;
+    if (Math.abs(diff) < 1) {
+      diffBadge.className += ' neutral';
+      diffBadge.textContent = '= exact pe țintă';
+    } else if (diff > 0) {
+      diffBadge.className += ' surplus';
+      diffBadge.textContent = `+${fmt(diff)} surplus`;
+    } else {
+      diffBadge.className += ' deficit';
+      diffBadge.textContent = `−${fmt(Math.abs(diff))} deficit`;
+    }
+  }
+
+  goalCard.classList.remove('state-achieved', 'state-deficit');
+  if (goal > 0) {
+    if (monthly >= goal) {
+      goalCard.classList.add('state-achieved');
+      gttlIco.textContent = '✅';
+      statusBadge.textContent = 'OBIECTIV ATINS';
+      statusBadge.style.color = 'var(--green)';
+    } else if (monthly > 0 && (monthly / goal) < 0.5) {
+      goalCard.classList.add('state-deficit');
+      gttlIco.textContent = '⚠️';
+      statusBadge.textContent = '';
+    } else {
+      gttlIco.textContent = '🎯';
+      statusBadge.textContent = '';
+    }
+  } else {
+    gttlIco.textContent = '🎯';
+    statusBadge.textContent = '';
+  }
+
+  // Next coupon
   const nccEl = document.getElementById('ncc-body');
   let allNextPays = [];
   active.forEach(b => {
@@ -1395,6 +1830,7 @@ function renderDash() {
       <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
   }
 
+  // Maturity
   const mnEl = document.getElementById('mn-body');
   const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
   if (!activeSorted.length) {
@@ -1410,12 +1846,7 @@ function renderDash() {
       </div>`;
   }
 
-  document.getElementById('g-cur').textContent    = fmt(monthly);
-  document.getElementById('g-target').textContent = fmt(goal);
-  const pct = goal > 0 ? Math.min(100, (monthly/goal)*100) : 0;
-  document.getElementById('g-bar').style.width = pct + '%';
-  document.getElementById('g-pct').textContent = pct.toFixed(0) + '%';
-
+  // Luna aceasta
   const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
   let pays = [];
   bonds.forEach(b => {
@@ -1460,10 +1891,7 @@ function renderBondsSummary() {
   const yearlyAll  = monthlyAll * 12;
 
   const bar = document.getElementById('bonds-summary-bar');
-  if (totalCount === 0) {
-    bar.style.display = 'none';
-    return;
-  }
+  if (totalCount === 0) { bar.style.display = 'none'; return; }
   bar.style.display = '';
 
   document.getElementById('bsb-total').textContent      = fmt(totalAmt);
@@ -1483,10 +1911,10 @@ let searchQuery = '';
 
 function filterBonds() {
   searchQuery = document.getElementById('bond-search').value.trim().toLowerCase();
-  const clearBtn  = document.getElementById('search-clear-btn');
-  const countEl   = document.getElementById('search-count');
-  const addBtn    = document.getElementById('bonds-add-btn-wrap');
-  const summaryBar= document.getElementById('bonds-summary-bar');
+  const clearBtn   = document.getElementById('search-clear-btn');
+  const countEl    = document.getElementById('search-count');
+  const addBtn     = document.getElementById('bonds-add-btn-wrap');
+  const summaryBar = document.getElementById('bonds-summary-bar');
 
   clearBtn.classList.toggle('vis', searchQuery.length > 0);
 
@@ -1518,7 +1946,7 @@ function renderBonds() {
 }
 
 function renderBondsList() {
-  const el = document.getElementById('bonds-list');
+  const el      = document.getElementById('bonds-list');
   const countEl = document.getElementById('search-count');
 
   if (!bonds.length) {
@@ -1553,8 +1981,8 @@ function bondCard(b, ri) {
   const next = nextPay(b);
   const days = next ? daysDiff(next) : null;
   let banner = '';
-  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate -- o poți șterge.</div>`;
-  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă -- start: ${fmtD(b.start)}</div>`;
+  if (mat) banner = `<div class="mat-banner">🔔 Obligațiunea a ajuns la maturitate — o poți șterge.</div>`;
+  if (fut) banner = `<div class="fut-banner">⏳ Nu a început încă — start: ${fmtD(b.start)}</div>`;
   let nextBlock = '';
   if (!mat && !fut && next) {
     nextBlock = `<div class="bcnext">
@@ -1659,14 +2087,25 @@ let formOpen=false;
 function toggleForm() {
   formOpen=!formOpen;
   const w=document.getElementById('formwrap');
-  if(formOpen){w.classList.add('open');document.getElementById('fttl').textContent='Obligațiune nouă';clearForm();setTimeout(()=>w.scrollIntoView({behavior:'smooth',block:'start'}),60);}
-  else w.classList.remove('open');
+  if(formOpen){
+    w.classList.add('open');
+    document.getElementById('fttl').textContent='Obligațiune nouă';
+    clearForm();
+    setTimeout(()=>{
+      w.scrollIntoView({behavior:'smooth',block:'start'});
+      // Focus pe primul câmp (rata cuponului)
+      setTimeout(()=>document.getElementById('f-rate').focus(), 120);
+    },60);
+  } else {
+    w.classList.remove('open');
+  }
 }
 function cancelForm() { formOpen=false; document.getElementById('formwrap').classList.remove('open'); clearForm(); }
 function clearForm() {
   ['f-name','f-start','f-mat','f-amt','f-rate'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('f-freq').value='6';
   document.getElementById('eid').value='';
+  document.getElementById('autofill-hint').style.display='none';
 }
 
 function importDateFormat(str) {
@@ -1696,12 +2135,13 @@ async function saveBond() {
   const freq  = document.getElementById('f-freq').value;
   const eid   = document.getElementById('eid').value;
 
-  if (!name||!start||!mat||isNaN(amt)||isNaN(rate)) { toast('⚠️ Completează toate câmpurile'); return; }
-  if (start.length !== 10 || mat.length !== 10) {
-    toast('⚠️ Format dată incorect! Folosește ZZ-LL-AAAA');
-    return;
-  }
-  if (new Date(mat) <= new Date(start)) { toast('Maturitatea trebuie să fie după data de start'); return; }
+  // Validare + focus automat pe primul câmp lipsă
+  if (!rate || isNaN(rate)) { focusFirstEmpty(); toast('⚠️ Completează rata cuponului'); return; }
+  if (!name) { document.getElementById('f-name').focus(); toast('⚠️ Completează denumirea'); return; }
+  if (!start || start.length !== 10) { document.getElementById('f-start').focus(); toast('⚠️ Completează data de start (ZZ-LL-AAAA)'); return; }
+  if (!mat || mat.length !== 10) { document.getElementById('f-mat').focus(); toast('⚠️ Completează maturitatea (ZZ-LL-AAAA)'); return; }
+  if (isNaN(amt)) { document.getElementById('f-amt').focus(); toast('⚠️ Completează suma investită'); return; }
+  if (new Date(mat) <= new Date(start)) { document.getElementById('f-mat').focus(); toast('Maturitatea trebuie să fie după data de start'); return; }
 
   const bond = { id: eid || Date.now().toString(), name, start, mat, amt, rate, freq };
 
@@ -1721,6 +2161,17 @@ async function saveBond() {
   await saveTotalInvestitRON();
 }
 
+// Focus automat pe primul câmp necompletat
+function focusFirstEmpty() {
+  for (const id of FORM_ORDER) {
+    const el = document.getElementById(id);
+    if (el && !el.value.trim()) {
+      el.focus();
+      return;
+    }
+  }
+}
+
 function formatDateInput(input) {
   let v = input.value.replace(/\D/g, '');
   if (v.length > 2 && v.length <= 4) {
@@ -1738,15 +2189,16 @@ function formatDateInput(input) {
 function editBond(i) {
   const b = bonds[i];
   document.getElementById('eid').value      = b.id;
+  document.getElementById('f-rate').value   = b.rate;
   document.getElementById('f-name').value   = b.name;
   document.getElementById('f-start').value  = exportDateFormat(b.start);
   document.getElementById('f-mat').value    = exportDateFormat(b.mat);
   document.getElementById('f-amt').value    = b.amt;
-  document.getElementById('f-rate').value   = b.rate;
   document.getElementById('f-freq').value   = b.freq;
   document.getElementById('fttl').textContent = 'Editează obligațiunea';
   document.getElementById('formwrap').classList.add('open');
   formOpen = true;
+  updateAutofillHint();
   setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
 
