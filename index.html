@@ -56,7 +56,7 @@ body::before{
 }
 
 #app{position:relative;z-index:1;width:100%;max-width:460px;margin:0 auto;height:100vh;display:flex;flex-direction:column;}
-.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 86px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.scroll-area{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 0 100px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .scroll-area::-webkit-scrollbar{display:none}
 
 .panel{display:none;animation:fu .3s ease;}
@@ -87,18 +87,89 @@ cursor:pointer;
 .panel-hdr-title{font-family:'DM Serif Display',serif;font-size:34px;color:var(--text);letter-spacing:.02em;}
 .panel-hdr-title span{font-style:italic;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 
-/* ── NAV ── */
-.nav{
-position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-width:100%;max-width:460px;
-background:rgba(6,8,14,0.95);border-top:1px solid var(--gborder);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-display:flex;padding:10px 0 22px;z-index:100;
+/* ── NAV PILL ── */
+.nav {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 360px;
+  background: rgba(10, 12, 22, 0.72);
+  border: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  display: flex;
+  padding: 8px 6px;
+  z-index: 100;
+  border-radius: 100px;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.55),
+    0 2px 8px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 1px 0 rgba(255,255,255,0.06) inset;
 }
-.nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:5px 0;transition:.2s;}
-.nav-ico{font-size:19px;transition:.2s;}
-.nav-it.on .nav-lbl{color:var(--gold);}
-.nav-it.on .nav-ico{filter:drop-shadow(0 0 6px rgba(201,168,76,.75));}
+.nav-it {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 7px 4px;
+  transition: .2s;
+  border-radius: 80px;
+  position: relative;
+}
+.nav-it.on {
+  background: rgba(201,168,76,0.12);
+}
+.nav-ico {
+  font-size: 17px;
+  transition: .2s;
+  line-height: 1;
+}
+.nav-lbl {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--muted);
+  transition: color .2s;
+}
+.nav-it.on .nav-lbl { color: var(--gold); }
+.nav-it.on .nav-ico { filter: drop-shadow(0 0 5px rgba(201,168,76,.8)); }
+
+/* Nav badge */
+.nav-badge {
+  position: absolute;
+  top: 4px;
+  right: calc(50% - 18px);
+  min-width: 17px;
+  height: 17px;
+  border: 2px solid rgba(10,12,22,0.85);
+  border-radius: 50px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  pointer-events: none;
+  animation: badge-pop .25s cubic-bezier(.34,1.56,.64,1);
+}
+.nav-badge.red {
+  background: var(--red);
+  box-shadow: 0 2px 8px rgba(224,112,112,.45);
+}
+.nav-badge.blue {
+  background: var(--blue);
+  box-shadow: 0 2px 8px rgba(126,184,247,.45);
+}
+@keyframes badge-pop {
+  from { transform: scale(0); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
 
 /* ── STATUS STRIP ── */
 .status-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 12px;}
@@ -262,10 +333,38 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 6px;
   transition: color 0.4s;
+}
+.gttl-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .goal-card.state-achieved .gttl { color: var(--green); }
 .goal-card.state-deficit .gttl { color: var(--red); }
+
+#goal-status-badge {
+  font-family: 'Outfit', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+  border: 1px solid transparent;
+  transition: all 0.4s;
+}
+#goal-status-badge.badge-achieved {
+  background: var(--green-dim);
+  border-color: var(--green-border);
+  color: var(--green);
+}
+#goal-status-badge.badge-deficit {
+  background: var(--red-dim);
+  border-color: var(--red-border);
+  color: var(--red);
+}
 
 .goal-main-row {
   display: flex;
@@ -470,17 +569,6 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
 .survival-val.red-text { color: var(--red); }
 .survival-val.green-text { color: var(--green); }
 
-/* ── SIM CARD ── */
-.sim-res{
-background:rgba(126,184,247,.07);border:1px solid var(--blue-border);
-border-radius:var(--rsm);padding:16px;text-align:center;
-}
-.sim-res.achieved{background:rgba(78,205,164,.07);border-color:var(--green-border);}
-.srval{font-size:28px;font-weight:700;color:var(--blue);letter-spacing:-.01em;}
-.sim-res.achieved .srval{color:var(--green);}
-.srlbl{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.5;}
-.sim-res.achieved .srlbl{color:rgba(78,205,164,.7);}
-
 /* ── FIELDS ── */
 .field{margin-bottom:12px;}
 .field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
@@ -607,6 +695,7 @@ content:'';position:absolute;top:0;left:0;right:0;height:1px;
 background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
 }
 .bsb-ttl{font-family:'DM Serif Display',serif;font-size:13px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;opacity:.8;}
+/* Updated: 2 columns only (removed active/pending) */
 .bsb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .bsb-lbl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
 .bsb-val{font-size:19px;font-weight:700;letter-spacing:-.01em;}
@@ -674,11 +763,103 @@ max-height: 80px;
 }
 
 /* ── PAYMENTS ── */
-.pay-list-wrap{margin:0 14px;}
-.pay-card{background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:18px;box-shadow:var(--shadow);}
-.pay-month-hdr{display:flex;justify-content:space-between;align-items:center;padding:0 0 10px;margin-bottom:4px;border-bottom:1px solid var(--gold-border);}
-.pml{font-size:10px;color:var(--gold);font-weight:600;letter-spacing:.1em;text-transform:uppercase;}
-.pmv{font-size:13px;font-weight:700;color:var(--gold-l);}
+.pay-month-card {
+  background: var(--card);
+  border: 1px solid var(--gborder);
+  border-radius: var(--r);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  box-shadow: var(--shadow);
+  margin: 0 14px 14px;
+  overflow: hidden;
+  position: relative;
+}
+.pay-month-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-l), transparent);
+  opacity: .5;
+}
+.pay-month-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--gold-border);
+  background: linear-gradient(145deg, rgba(201,168,76,.07), rgba(201,168,76,.01));
+}
+.pay-month-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  color: var(--gold-l);
+  letter-spacing: .02em;
+  margin-bottom: 4px;
+}
+.pay-month-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pay-month-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  border-radius: 50px;
+  padding: 3px 10px;
+  font-size: 10px;
+  color: var(--green);
+  font-weight: 600;
+}
+.pay-month-totals-block {
+  text-align: right;
+  min-width: 110px;
+}
+.pay-month-total {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: -.02em;
+  line-height: 1;
+}
+.pay-month-total-lbl {
+  font-size: 9px;
+  color: rgba(78,205,164,.5);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 3px;
+  margin-bottom: 6px;
+}
+.pay-month-returned {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.pay-month-returned-ico {
+  font-size: 12px;
+  line-height: 1;
+}
+.pay-month-returned-amt {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: -.01em;
+}
+.pay-month-returned-lbl {
+  font-size: 9px;
+  color: rgba(126,184,247,.5);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-top: 2px;
+  text-align: right;
+}
+
+.pay-month-body { padding: 0 18px; }
 .pay-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.048);}
 .pay-row:last-child{border-bottom:none;}
 .pay-date{font-size:14px;font-weight:500;color:var(--text);}
@@ -692,6 +873,24 @@ max-height: 80px;
 .pay-row-mat{border-bottom:1px solid rgba(224,112,112,.12) !important;}
 .mat-badge{display:inline-block;background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:50px;padding:2px 7px;vertical-align:middle;margin-left:5px;}
 .pay-amt-mat{color:var(--red) !important;}
+
+.pay-returned-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--blue-dim);
+  border: 1px solid var(--blue-border);
+  border-radius: 50px;
+  padding: 3px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue);
+  margin-top: 4px;
+}
+.pay-returned-arrow {
+  font-size: 13px;
+  line-height: 1;
+}
 
 /* ── EMPTY ── */
 .empty{text-align:center;padding:48px 16px;color:var(--muted);}
@@ -726,32 +925,22 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 .mbtns { display:flex; gap:10px; }
 .mbtns .btn { flex:1; }
 
-/* Settings */
-.settings-card { background: var(--card); border: 1px solid var(--gborder); border-radius: var(--r); padding: 20px; }
-.sc-ttl { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--gold-l); margin-bottom: 6px; }
-.sc-desc { font-size: 12px; color: var(--dim); margin-bottom: 16px; line-height: 1.4; }
-.currency-toggle { display: flex; background: rgba(0,0,0,0.2); border: 1px solid var(--gborder); border-radius: var(--rsm); overflow: hidden; margin-bottom: 12px; }
-.ct-opt { flex: 1; padding: 12px; text-align: center; cursor: pointer; transition: background 0.2s; }
-.ct-opt.active { background: var(--gold-dim); border: 1px solid var(--gold-border); }
-.ct-sym { font-size: 18px; font-weight: 700; color: var(--gold); }
-.ct-name { font-size: 11px; color: var(--text); margin-top: 2px; }
-.ct-code { font-size: 9px; color: var(--muted); }
-.ct-divider { width: 1px; background: var(--gborder); }
-.ct-note { font-size: 11px; color: var(--muted); }
-
 /* ── FAB REFRESH ── */
 .fab-refresh {
   position: fixed;
-  bottom: 102px;
+  bottom: 106px;
   right: calc(50% - 218px);
-  width: 50px;
-  height: 50px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  background: linear-gradient(145deg, rgba(201,168,76,0.18), rgba(201,168,76,0.06));
-  border: 1px solid var(--gold-border);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  box-shadow: 0 4px 24px rgba(0,0,0,.45), 0 0 0 1px rgba(201,168,76,.08) inset;
+  background: linear-gradient(145deg, rgba(20,24,40,0.92), rgba(12,15,26,0.96));
+  border: 1px solid rgba(201,168,76,0.3);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 4px 24px rgba(0,0,0,.5),
+    0 0 0 1px rgba(201,168,76,.06) inset,
+    0 1px 0 rgba(255,255,255,.06) inset;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -762,12 +951,23 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   transition: opacity .32s cubic-bezier(.4,0,.2,1),
               transform .32s cubic-bezier(.4,0,.2,1),
               background .2s,
+              border-color .2s,
               box-shadow .2s;
   pointer-events: all;
+  overflow: hidden;
 }
 
 @media (max-width: 460px) {
   .fab-refresh { right: 16px; }
+}
+
+.fab-refresh::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(201,168,76,.18), transparent 65%);
+  pointer-events: none;
 }
 
 .fab-refresh.fab-hidden {
@@ -775,28 +975,63 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   transform: scale(0.72) translateY(8px);
   pointer-events: none;
 }
+
 .fab-refresh:active {
   transform: scale(0.88) translateY(0);
-  box-shadow: 0 2px 12px rgba(0,0,0,.35), 0 0 0 1px rgba(201,168,76,.1) inset;
+  box-shadow: 0 2px 12px rgba(0,0,0,.4), 0 0 0 1px rgba(201,168,76,.15) inset;
 }
-.fab-refresh-ico {
-  font-size: 20px;
-  line-height: 1;
+
+.fab-refresh.loading {
+  border-color: rgba(201,168,76,.55);
+  background: linear-gradient(145deg, rgba(30,36,58,0.96), rgba(18,22,38,0.98));
+  pointer-events: none;
+}
+
+.fab-svg {
+  width: 20px;
+  height: 20px;
   display: block;
+  position: relative;
+  z-index: 1;
   transition: transform .55s cubic-bezier(.4,0,.2,1);
   will-change: transform;
+  flex-shrink: 0;
 }
-.fab-refresh.spinning .fab-refresh-ico {
+
+.fab-svg circle {
+  fill: none;
+  stroke: rgba(201,168,76,0.28);
+  stroke-width: 1.5;
+}
+
+.fab-svg path {
+  fill: none;
+  stroke: var(--gold-l);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.fab-svg .arrow-head {
+  fill: var(--gold-l);
+  stroke: none;
+}
+
+.fab-refresh.spinning .fab-svg {
   animation: fab-spin .65s cubic-bezier(.4,0,.2,1);
 }
+
 @keyframes fab-spin {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-.fab-refresh.loading {
-  background: linear-gradient(145deg, rgba(201,168,76,0.28), rgba(201,168,76,0.10));
-  border-color: rgba(201,168,76,.45);
-  pointer-events: none;
+
+.fab-refresh:not(.fab-hidden):not(.loading):hover {
+  border-color: rgba(201,168,76,.5);
+  box-shadow:
+    0 4px 28px rgba(0,0,0,.55),
+    0 0 16px rgba(201,168,76,.15),
+    0 0 0 1px rgba(201,168,76,.1) inset;
 }
 </style>
 </head>
@@ -817,13 +1052,17 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   <!-- 🎯 GOAL CARD -->
   <div class="goal-card" id="goal-card">
     <div class="gttl">
-      <span id="goal-card-ico">🎯</span>&nbsp;Obiectiv lunar
-      <span id="goal-status-badge" style="font-family:'Outfit',sans-serif;font-size:10px;font-weight:600;letter-spacing:.08em;"></span>
+      <div class="gttl-left">
+        <span id="goal-card-ico">🎯</span>
+        <span>Obiectiv lunar</span>
+      </div>
+      <span id="goal-status-badge"></span>
     </div>
 
     <div class="goal-main-row">
       <div class="goal-earned-block">
-        <div class="goal-earned-lbl">CÂȘTIG LUNAR CURENT</div>
+        <!-- CHANGED: label updated to reflect pending bonds included -->
+        <div class="goal-earned-lbl">CÂȘTIG LUNAR (ACTIV + AȘTEPTARE)</div>
         <div class="gbig" id="g-cur">0 lei</div>
       </div>
       <div class="goal-target-block">
@@ -873,25 +1112,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       <div class="survival-item">
         <div class="survival-lbl">💸 Fără investiții, trăind doar din tot capitalul tău brut, banii îți ajung:</div>
         <div class="survival-val" id="survival-pure-val">-- ani</div>
-      </div>
-    </div>
-
-    <!-- Simulator -->
-    <div id="sim-section" style="border-top:1px solid rgba(201,168,76,.15);padding-top:14px;margin-top:14px;">
-      <div style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:8px;font-weight:600;">📊 Simulator — cât să investești</div>
-      <div class="field" style="margin-bottom:10px;">
-        <label>Rata cuponului nou (%/an)</label>
-        <input type="number" inputmode="decimal" id="sim-rate" placeholder="ex: 6.85" oninput="runSim()">
-      </div>
-      <div class="sim-res" id="sim-res-box" style="display:none;">
-        <div class="srval" id="sim-val">&mdash;</div>
-        <div class="srlbl" id="sim-lbl">introdu rata cuponului și obiectivul</div>
-      </div>
-    </div>
-    <div id="goal-achieved-box" style="display:none;border-top:1px solid rgba(78,205,164,.2);padding-top:14px;margin-top:14px;">
-      <div class="sim-res achieved">
-        <div class="srval">🎉 Obiectiv atins!</div>
-        <div class="srlbl" id="goal-achieved-lbl"></div>
       </div>
     </div>
   </div>
@@ -953,54 +1173,45 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   <div class="formwrap" id="formwrap">
     <div class="fttl" id="fttl">Obligațiune nouă</div>
     <input type="hidden" id="eid">
-    <!-- 1. RATA CUPONULUI -->
     <div class="field">
       <label>Rata cuponului (%/an)</label>
-<input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01"
-  enterkeyhint="next"
-  oninput="updateAutofillHint()"
-  onkeydown="formEnter(event,'f-rate')">
+      <input type="number" inputmode="decimal" id="f-rate" placeholder="ex: 6.85" step="0.01"
+        enterkeyhint="next"
+        oninput="updateAutofillHint()"
+        onkeydown="formEnter(event,'f-rate')">
     </div>
-    <!-- 2. SUMA INVESTITĂ -->
     <div class="field">
       <label id="f-amt-label">Suma investită (lei)</label>
       <div class="amt-field-wrap">
-<input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 25000"
-  enterkeyhint="next"
-  onkeydown="formEnter(event,'f-amt')">
-
+        <input type="number" inputmode="decimal" id="f-amt" placeholder="ex: 25000"
+          enterkeyhint="next"
+          onkeydown="formEnter(event,'f-amt')">
         <button class="amt-autofill-btn" onclick="autofillAmount()" title="Completează automat suma necesară pentru obiectiv">↙</button>
       </div>
       <div id="autofill-hint" style="font-size:10px;color:rgba(201,168,76,.55);margin-top:5px;display:none;padding-left:2px;"></div>
     </div>
-    <!-- 3. DATA START / MATURITATE -->
     <div class="row2">
       <div class="field">
         <label>Data start</label>
-<input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
-  enterkeyhint="next"
-  oninput="formatDateInput(this)"
-  onkeydown="formEnter(event,'f-start')">
-
+        <input type="text" id="f-start" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
+          enterkeyhint="next"
+          oninput="formatDateInput(this)"
+          onkeydown="formEnter(event,'f-start')">
       </div>
       <div class="field">
         <label>Maturitate</label>
-<input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
-  enterkeyhint="next"
-  oninput="formatDateInput(this)"
-  onkeydown="formEnter(event,'f-mat')">
+        <input type="text" id="f-mat" inputmode="decimal" maxlength="10" placeholder="ZZ-LL-AAAA"
+          enterkeyhint="next"
+          oninput="formatDateInput(this)"
+          onkeydown="formEnter(event,'f-mat')">
       </div>
     </div>
-    <!-- 4. DENUMIRE — Enter închide tastatura -->
     <div class="field">
       <label>Denumire</label>
-
-<input type="text" id="f-name" placeholder="ex: FIDELIS 2027"
-  enterkeyhint="done"
-  onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
-
+      <input type="text" id="f-name" placeholder="ex: FIDELIS 2027"
+        enterkeyhint="done"
+        onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">
     </div>
-    <!-- 5. INTERVAL PLATĂ -->
     <div class="field">
       <label>Interval plată cupon</label>
       <select id="f-freq" onkeydown="formEnter(event,'f-freq')">
@@ -1010,7 +1221,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
         <option value="1">Lunar</option>
       </select>
     </div>
-
     <div class="row2">
       <button class="btn btn-gold" onclick="saveBond()">Salvează</button>
       <button class="btn btn-out" onclick="cancelForm()">Anulează</button>
@@ -1023,8 +1233,9 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   </div>
   <div class="search-count" id="search-count" style="display:none;"></div>
 
+  <!-- CHANGED: summary bar now has only 2 items (total + monthly), active/pending removed -->
   <div class="bonds-summary-bar" id="bonds-summary-bar">
-    <div class="bsb-ttl">💼 Sumar portofoliu activ</div>
+    <div class="bsb-ttl">💼 Sumar portofoliu (activ + așteptare)</div>
     <div class="bsb-grid">
       <div class="bsb-item">
         <div class="bsb-lbl">Total investit</div>
@@ -1035,16 +1246,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
         <div class="bsb-lbl">Câștig lunar total</div>
         <div class="bsb-val green" id="bsb-monthly">--</div>
         <div class="bsb-sub" id="bsb-yearly">-- / an</div>
-      </div>
-      <div class="bsb-item">
-        <div class="bsb-lbl">Active acum</div>
-        <div class="bsb-val gold" id="bsb-active-amt">--</div>
-        <div class="bsb-sub" id="bsb-active-cnt">-- obligațiuni</div>
-      </div>
-      <div class="bsb-item">
-        <div class="bsb-lbl">În așteptare</div>
-        <div class="bsb-val blue" id="bsb-pending-amt">--</div>
-        <div class="bsb-sub" id="bsb-pending-cnt">-- obligațiuni</div>
       </div>
     </div>
   </div>
@@ -1057,9 +1258,7 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   <div class="panel-hdr">
     <div class="panel-hdr-title">Plăți <span>viitoare</span></div>
   </div>
-  <div class="pay-list-wrap">
-    <div class="pay-card" id="pay-list"></div>
-  </div>
+  <div id="pay-list"></div>
 </div>
 
 <!-- ══════════════════════════════════════════ SETTINGS ══════ -->
@@ -1069,23 +1268,10 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <div class="panel-hdr-title">Se<span>tări</span></div>
   </div>
   <div style="margin:0 14px 13px;">
-    <div class="settings-card">
-      <div class="sc-ttl">💱 Valută</div>
-      <div class="sc-desc">Alege valuta în care sunt exprimate sumele. Toate valorile vor fi afișate în valuta selectată, fără conversie.</div>
-      <div class="currency-toggle">
-        <div class="ct-opt" id="ct-ron" onclick="setCurrency('RON')">
-          <div class="ct-sym">lei</div>
-          <div class="ct-name">Leu românesc</div>
-          <div class="ct-code">RON</div>
-        </div>
-        <div class="ct-divider"></div>
-        <div class="ct-opt" id="ct-eur" onclick="setCurrency('EUR')">
-          <div class="ct-sym">€</div>
-          <div class="ct-name">Euro</div>
-          <div class="ct-code">EUR</div>
-        </div>
-      </div>
-      <div class="ct-note">Valuta curentă: <strong id="ct-cur-lbl">Leu românesc (lei)</strong></div>
+    <div style="background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);padding:24px 20px;text-align:center;">
+      <div style="font-size:32px;margin-bottom:10px;">⚙️</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--gold-l);margin-bottom:8px;">Setări</div>
+      <div style="font-size:13px;color:var(--dim);line-height:1.5;">Toate valorile sunt afișate în <strong style="color:var(--gold-l);">lei (RON)</strong>.</div>
     </div>
   </div>
 </div>
@@ -1093,15 +1279,30 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 </div><!-- end scroll-area -->
 </div><!-- end app -->
 
-<!-- ── FAB REFRESH ── -->
+<!-- FAB REFRESH -->
 <button class="fab-refresh" id="fab-refresh" onclick="handleFabRefresh()" title="Actualizează datele" aria-label="Actualizează datele">
-  <span class="fab-refresh-ico" id="fab-ico">🔄</span>
+  <svg class="fab-svg" id="fab-svg" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="11" cy="11" r="9.5"/>
+    <path d="M 11 3.5 A 7.5 7.5 0 1 1 4.2 15" stroke-dasharray="none"/>
+    <polygon class="arrow-head" points="4.2,15 1.6,12.2 5.8,12.6"/>
+  </svg>
 </button>
 
+<!-- NAV PILL -->
 <div class="nav">
-  <div class="nav-it on" onclick="sw('dashboard',0)"><span class="nav-ico">🏠</span><span class="nav-lbl">Acasă</span></div>
-  <div class="nav-it" onclick="sw('bonds',1)"><span class="nav-ico">📋</span><span class="nav-lbl">Obligațiuni</span></div>
-  <div class="nav-it" onclick="sw('payments',2)"><span class="nav-ico">💰</span><span class="nav-lbl">Plăți</span></div>
+  <div class="nav-it on" onclick="sw('dashboard',0)">
+    <span class="nav-ico">🏠</span>
+    <span class="nav-lbl">Acasă</span>
+  </div>
+  <div class="nav-it" onclick="sw('bonds',1)" id="nav-bonds" style="position:relative;">
+    <span class="nav-ico">📋</span>
+    <span class="nav-lbl">Obligațiuni</span>
+    <!-- Badge injected by JS -->
+  </div>
+  <div class="nav-it" onclick="sw('payments',2)">
+    <span class="nav-ico">💰</span>
+    <span class="nav-lbl">Plăți</span>
+  </div>
 </div>
 
 <div class="overlay" id="overlay">
@@ -1163,14 +1364,13 @@ async function sbDelete(table, filter) {
 //  DATA
 // ══════════════════════════════════════════════
 let bonds         = [];
-let baseExpense   = 0;   // cheltuielile lunare brute din API extern (fără buffer)
-let protectionPct = 0;   // procentul de buffer setat de user (0-100)
-let currency      = 'RON'; // default RON
+let baseExpense   = 0;
+let protectionPct = 0;
+const currency    = 'RON';
 let survivalTotal = 0;
 let survivalSpent = 0;
 const CURRENT_AGE = 23;
 
-// Obiectivul efectiv = baseExpense * (1 + protectionPct/100)
 function effectiveGoal() {
   if (baseExpense <= 0) return 0;
   return baseExpense * (1 + protectionPct / 100);
@@ -1180,7 +1380,6 @@ async function loadFromSupabase() {
   try {
     const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent,protection_pct`);
     if (prefs.length) {
-      currency      = prefs[0].currency || 'RON';
       protectionPct = parseFloat(prefs[0].protection_pct) || 0;
     }
 
@@ -1226,11 +1425,8 @@ async function loadFromSupabase() {
   document.getElementById('protection-pct').value = protectionPct;
   if (survivalTotal > 0) document.getElementById('survival-total-funds').value = survivalTotal;
 
-  updateCurrencyUI();
-  updateFormLabels();
   renderDash();
   renderBonds();
-  runSim();
   calculateSurvival();
 }
 
@@ -1242,7 +1438,7 @@ async function savePrefsToSupabase() {
       method: 'PATCH',
       headers: { ...SB_HEADERS },
       body: JSON.stringify({
-        currency:        currency,
+        currency:        'RON',
         survival_total:  survivalTotalVal,
         protection_pct:  protectionPct,
         updated_at:      new Date().toISOString()
@@ -1254,7 +1450,8 @@ async function savePrefsToSupabase() {
 }
 
 async function saveTotalInvestitRON() {
-  const relevant = [...bonds.filter(isActive), ...bonds.filter(isNotStarted)];
+  // Include both active and pending (not matured)
+  const relevant = bonds.filter(b => !isMatured(b));
   const total = relevant.reduce((s, b) => s + b.amt, 0);
   const valoare = Math.round(total);
   try {
@@ -1304,7 +1501,7 @@ let fabScrollTimer   = null;
 let fabVisible       = true;
 
 const fabEl    = document.getElementById('fab-refresh');
-const fabIco   = document.getElementById('fab-ico');
+const fabSvg   = document.getElementById('fab-svg');
 const scrollEl = document.getElementById('scroll-area');
 
 scrollEl.addEventListener('scroll', () => {
@@ -1325,7 +1522,6 @@ async function handleFabRefresh() {
   fabEl.classList.add('spinning', 'loading');
 
   const userFundsInput = document.getElementById('survival-total-funds').value;
-  const userSimRate    = document.getElementById('sim-rate').value;
 
   try {
     await refreshRemoteDataOnly();
@@ -1338,7 +1534,6 @@ async function handleFabRefresh() {
   if (userFundsInput && !survivalTotal) {
     document.getElementById('survival-total-funds').value = userFundsInput;
   }
-  if (userSimRate) document.getElementById('sim-rate').value = userSimRate;
 
   setTimeout(() => {
     fabEl.classList.remove('spinning', 'loading');
@@ -1350,7 +1545,6 @@ async function refreshRemoteDataOnly() {
   try {
     const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent,protection_pct`);
     if (prefs.length) {
-      currency      = prefs[0].currency || 'RON';
       protectionPct = parseFloat(prefs[0].protection_pct) || protectionPct;
     }
   } catch(e) { console.error('Prefs refresh error:', e); }
@@ -1398,11 +1592,8 @@ async function refreshRemoteDataOnly() {
   }
 
   document.getElementById('protection-pct').value = protectionPct;
-  updateCurrencyUI();
-  updateFormLabels();
   renderDash();
   renderBonds();
-  runSim();
   calculateSurvival();
 
   if (document.getElementById('panel-payments').classList.contains('on')) {
@@ -1412,10 +1603,8 @@ async function refreshRemoteDataOnly() {
 
 // ══════════════════════════════════════════════
 //  FORM ENTER KEY NAVIGATION
-//  Ordinea câmpurilor: f-rate → f-name → f-start → f-mat → f-amt → f-freq → save
 // ══════════════════════════════════════════════
 const FORM_ORDER = ['f-rate', 'f-amt', 'f-start', 'f-mat', 'f-name', 'f-freq'];
-
 
 function formEnter(event, currentId) {
   if (event.key !== 'Enter') return;
@@ -1423,7 +1612,6 @@ function formEnter(event, currentId) {
 
   const currentIdx = FORM_ORDER.indexOf(currentId);
 
-  // Caută primul câmp necompletat după cel curent
   for (let i = currentIdx + 1; i < FORM_ORDER.length; i++) {
     const el = document.getElementById(FORM_ORDER[i]);
     if (el && !el.value.toString().trim()) {
@@ -1432,7 +1620,6 @@ function formEnter(event, currentId) {
     }
   }
 
-  // Caută primul câmp necompletat de la început
   for (let i = 0; i < currentIdx; i++) {
     const el = document.getElementById(FORM_ORDER[i]);
     if (el && !el.value.toString().trim()) {
@@ -1441,14 +1628,12 @@ function formEnter(event, currentId) {
     }
   }
 
-  // Totul completat → mergi la următorul sau salvează
   if (currentIdx + 1 < FORM_ORDER.length) {
     document.getElementById(FORM_ORDER[currentIdx + 1]).focus();
   } else {
     saveBond();
   }
 }
-
 
 // ══════════════════════════════════════════════
 //  PROTECTION / BUFFER
@@ -1466,8 +1651,6 @@ function onProtectionInput() {
   const val = parseFloat(document.getElementById('protection-pct').value);
   protectionPct = (!isNaN(val) && val >= 0) ? Math.min(100, val) : 0;
   renderDash();
-  runSim();
-  // calculateSurvival() va folosi baseExpense, nu effectiveGoal()
   calculateSurvival();
   updateAutofillHint();
   clearTimeout(protSaveTimer);
@@ -1481,7 +1664,8 @@ function updateAutofillHint() {
   const hintEl = document.getElementById('autofill-hint');
   const rate = parseFloat(document.getElementById('f-rate').value);
   const goal = effectiveGoal();
-  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+  // Include pending bonds in current monthly for autofill calculation
+  const curMo = bonds.filter(b => !isMatured(b)).reduce((s,b) => s + monthlyVal(b), 0);
   const gap = goal > 0 ? goal - curMo : 0;
 
   if (gap <= 0 || isNaN(rate) || rate <= 0) {
@@ -1497,7 +1681,8 @@ function updateAutofillHint() {
 function autofillAmount() {
   const rate = parseFloat(document.getElementById('f-rate').value);
   const goal = effectiveGoal();
-  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
+  // Include pending bonds in current monthly for autofill calculation
+  const curMo = bonds.filter(b => !isMatured(b)).reduce((s,b) => s + monthlyVal(b), 0);
   const gap = goal > 0 ? goal - curMo : 0;
 
   if (goal <= 0) { toast('⚠️ Niciun obiectiv disponibil din API'); return; }
@@ -1510,39 +1695,11 @@ function autofillAmount() {
 }
 
 // ══════════════════════════════════════════════
-//  CURRENCY — default RON
+//  CURRENCY — always RON
 // ══════════════════════════════════════════════
-function currSym() { return currency === 'RON' ? 'lei' : '€'; }
 function fmt(n) {
-  if (isNaN(n) || n === null) return currency === 'RON' ? '0 lei' : '€0';
-  const num = Math.round(n).toLocaleString('ro-RO');
-  return currency === 'RON' ? num + ' lei' : '€' + num;
-}
-function setCurrency(c) {
-  currency = c;
-  updateCurrencyUI();
-  updateFormLabels();
-  savePrefsToSupabase();
-  renderDash();
-  renderBonds();
-  runSim();
-  calculateSurvival();
-  if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
-}
-function updateCurrencyUI() {
-  document.getElementById('ct-eur').classList.toggle('active', currency === 'EUR');
-  document.getElementById('ct-ron').classList.toggle('active', currency === 'RON');
-  document.getElementById('ct-cur-lbl').textContent = currency === 'RON' ? 'Leu românesc (lei)' : 'Euro (€)';
-  document.body.classList.toggle('currency-ron', currency === 'RON');
-}
-function updateFormLabels() {
-  const sym = currSym();
-  const amtLabel = document.getElementById('f-amt-label');
-  if (amtLabel) amtLabel.textContent = `Suma investită (${sym})`;
-  const amtInp = document.getElementById('f-amt');
-  if (amtInp) amtInp.placeholder = currency === 'RON' ? 'ex: 25000' : 'ex: 5000';
-  const fundsLabel = document.getElementById('total-funds-label');
-  if (fundsLabel) fundsLabel.textContent = `Total bani avuți (${sym})`;
+  if (isNaN(n) || n === null) return '0 lei';
+  return Math.round(n).toLocaleString('ro-RO') + ' lei';
 }
 
 // ══════════════════════════════════════════════
@@ -1557,7 +1714,6 @@ function sw(tab, idx) {
   if (tab === 'payments')  renderPayments();
   if (tab === 'dashboard') renderDash();
   if (tab === 'bonds')     renderBonds();
-  if (tab === 'settings')  updateCurrencyUI();
 }
 
 // ══════════════════════════════════════════════
@@ -1612,19 +1768,45 @@ function dateToKey(d) {
 }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function monthName(d) { return d.toLocaleDateString('ro-RO', { month:'long', year:'numeric' }); }
+function monthKey(d)  { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
 function sortedBonds() {
   return [...bonds.filter(isMatured), ...bonds.filter(isNotStarted), ...bonds.filter(isActive)];
 }
 
 // ══════════════════════════════════════════════
-//  SURVIVAL — calculele folosesc baseExpense (FĂRĂ buffer)
+//  NAV BADGE — red (expired) takes priority, blue (pending) if no expired
+// ══════════════════════════════════════════════
+function updateNavBadge() {
+  const expired = bonds.filter(isMatured).length;
+  const pending = bonds.filter(isNotStarted).length;
+  const navBondsEl = document.getElementById('nav-bonds');
+
+  // Remove existing badge
+  const existing = navBondsEl.querySelector('.nav-badge');
+  if (existing) existing.remove();
+
+  if (expired > 0) {
+    // Red badge — priority: show expired count
+    const badge = document.createElement('span');
+    badge.className = 'nav-badge red';
+    badge.textContent = expired;
+    navBondsEl.appendChild(badge);
+  } else if (pending > 0) {
+    // Blue badge — only if no expired bonds
+    const badge = document.createElement('span');
+    badge.className = 'nav-badge blue';
+    badge.textContent = pending;
+    navBondsEl.appendChild(badge);
+  }
+}
+
+// ══════════════════════════════════════════════
+//  SURVIVAL
 // ══════════════════════════════════════════════
 function calculateSurvival() {
   const fundsInp = parseFloat(document.getElementById('survival-total-funds').value);
   survivalTotal = (!isNaN(fundsInp) && fundsInp >= 0) ? fundsInp : 0;
 
-  // !! Folosim baseExpense (cheltuielile reale), NU effectiveGoal() !!
-  // Bufferul NU afectează calculele de supraviețuire
   const rawExpense = baseExpense > 0 ? baseExpense : 0;
   survivalSpent = rawExpense;
 
@@ -1640,7 +1822,8 @@ function calculateSurvival() {
 
   box.style.display = 'block';
 
-  const curMonthlyYield = bonds.filter(isActive).reduce((s, b) => s + monthlyVal(b), 0);
+  // Include pending bonds in survival calculation
+  const curMonthlyYield = bonds.filter(b => !isMatured(b)).reduce((s, b) => s + monthlyVal(b), 0);
 
   if (curMonthlyYield >= survivalSpent) {
     paceEl.innerHTML = '<span style="color:var(--green)">∞ Nemărginit (Câștigul acoperă cheltuielile!)</span>';
@@ -1688,49 +1871,22 @@ function formatYearsAndAge(y) {
 }
 
 // ══════════════════════════════════════════════
-//  SIMULATOR
-// ══════════════════════════════════════════════
-function runSim() {
-  const rate = parseFloat(document.getElementById('sim-rate').value);
-  const sv   = document.getElementById('sim-val');
-  const sl   = document.getElementById('sim-lbl');
-  const box  = document.getElementById('sim-res-box');
-  const simSection  = document.getElementById('sim-section');
-  const achievedBox = document.getElementById('goal-achieved-box');
-  const achievedLbl = document.getElementById('goal-achieved-lbl');
-  const curMo = bonds.filter(isActive).reduce((s,b) => s + monthlyVal(b), 0);
-  const goal  = effectiveGoal();
-
-  if (goal > 0 && curMo >= goal) {
-    simSection.style.display  = 'none';
-    achievedBox.style.display = 'block';
-    achievedLbl.textContent   = `Câștigi deja ${fmt(curMo)}/lună față de ținta ${fmt(goal)}`;
-    return;
-  }
-  simSection.style.display  = 'block';
-  achievedBox.style.display = 'none';
-  box.classList.remove('achieved');
-
-  if (isNaN(rate) || rate <= 0) { box.style.display = 'none'; return; }
-  box.style.display = '';
-  const gap = goal > 0 ? goal - curMo : 0;
-  if (!goal) { sv.textContent='--'; sl.textContent='obiectivul se preia automat din API'; return; }
-  sv.textContent = fmt(gap / (rate / 100 / 12));
-  sl.textContent = `de investit la ${rate}% pentru +${fmt(gap)}/lună`;
-}
-
-// ══════════════════════════════════════════════
 //  DASHBOARD
 // ══════════════════════════════════════════════
 function renderDash() {
   const active  = bonds.filter(isActive);
   const pending = bonds.filter(isNotStarted);
   const expired = bonds.filter(isMatured);
-  const monthly = active.reduce((s,b) => s + monthlyVal(b), 0);
+
+  // CHANGED: monthly includes active + pending (all non-matured)
+  const monthly = bonds.filter(b => !isMatured(b)).reduce((s,b) => s + monthlyVal(b), 0);
   const goal    = effectiveGoal();
 
   document.getElementById('s-active').textContent  = active.length;
   document.getElementById('s-pending').textContent = pending.length;
+
+  // Update nav badge
+  updateNavBadge();
 
   const expiredBadge = document.getElementById('expired-badge');
   if (expired.length > 0) {
@@ -1784,26 +1940,26 @@ function renderDash() {
   }
 
   goalCard.classList.remove('state-achieved', 'state-deficit');
-  if (goal > 0) {
-    if (monthly >= goal) {
+  gttlIco.textContent = '🎯';
+  statusBadge.textContent = '';
+  statusBadge.className = '';
+
+  if (goal > 0 || baseExpense > 0) {
+    const checkAgainst = baseExpense > 0 ? baseExpense : goal;
+    if (monthly >= checkAgainst) {
       goalCard.classList.add('state-achieved');
       gttlIco.textContent = '✅';
       statusBadge.textContent = 'OBIECTIV ATINS';
-      statusBadge.style.color = 'var(--green)';
-    } else if (monthly > 0 && (monthly / goal) < 0.5) {
+      statusBadge.className = 'badge-achieved';
+    } else if (monthly > 0 && goal > 0 && (monthly / goal) < 0.5) {
       goalCard.classList.add('state-deficit');
       gttlIco.textContent = '⚠️';
-      statusBadge.textContent = '';
-    } else {
-      gttlIco.textContent = '🎯';
-      statusBadge.textContent = '';
+      statusBadge.textContent = 'DEFICIT';
+      statusBadge.className = 'badge-deficit';
     }
-  } else {
-    gttlIco.textContent = '🎯';
-    statusBadge.textContent = '';
   }
 
-  // Next coupon
+  // Next coupon — only from active bonds (pending haven't started yet)
   const nccEl = document.getElementById('ncc-body');
   let allNextPays = [];
   active.forEach(b => {
@@ -1871,37 +2027,28 @@ function renderDash() {
       </div>`).join('') + '</div>';
   }
 
-  runSim();
   calculateSurvival();
 }
 
 // ══════════════════════════════════════════════
-//  BONDS SUMMARY BAR
+//  BONDS SUMMARY BAR — CHANGED: includes pending, only 2 metrics
 // ══════════════════════════════════════════════
 function renderBondsSummary() {
-  const active  = bonds.filter(isActive);
-  const pending = bonds.filter(isNotStarted);
-  const relevant = [...active, ...pending];
-
+  // Include active + pending (all non-matured)
+  const relevant   = bonds.filter(b => !isMatured(b));
   const totalAmt   = relevant.reduce((s,b) => s + b.amt, 0);
   const totalCount = relevant.length;
-  const activeAmt  = active.reduce((s,b) => s + b.amt, 0);
-  const pendingAmt = pending.reduce((s,b) => s + b.amt, 0);
-  const monthlyAll = active.reduce((s,b) => s + monthlyVal(b), 0);
+  const monthlyAll = relevant.reduce((s,b) => s + monthlyVal(b), 0);
   const yearlyAll  = monthlyAll * 12;
 
   const bar = document.getElementById('bonds-summary-bar');
   if (totalCount === 0) { bar.style.display = 'none'; return; }
   bar.style.display = '';
 
-  document.getElementById('bsb-total').textContent      = fmt(totalAmt);
-  document.getElementById('bsb-count').textContent      = `${totalCount} obligațiun${totalCount===1?'e':'i'}`;
-  document.getElementById('bsb-monthly').textContent    = fmt(monthlyAll);
-  document.getElementById('bsb-yearly').textContent     = fmt(yearlyAll) + ' / an';
-  document.getElementById('bsb-active-amt').textContent = fmt(activeAmt);
-  document.getElementById('bsb-active-cnt').textContent = `${active.length} active`;
-  document.getElementById('bsb-pending-amt').textContent= fmt(pendingAmt);
-  document.getElementById('bsb-pending-cnt').textContent= `${pending.length} în așteptare`;
+  document.getElementById('bsb-total').textContent   = fmt(totalAmt);
+  document.getElementById('bsb-count').textContent   = `${totalCount} obligațiun${totalCount===1?'e':'i'}`;
+  document.getElementById('bsb-monthly').textContent = fmt(monthlyAll);
+  document.getElementById('bsb-yearly').textContent  = fmt(yearlyAll) + ' / an';
 }
 
 // ══════════════════════════════════════════════
@@ -2022,6 +2169,7 @@ function renderPayments() {
   const el = document.getElementById('pay-list');
   const t  = today0();
   let all  = [];
+
   bonds.forEach(b => {
     const val   = couponVal(b);
     const dates = getPayDates(b);
@@ -2029,55 +2177,139 @@ function renderPayments() {
     dates.forEach(d => {
       if (d >= t) {
         const isMat = lastDate && dateToKey(d) === dateToKey(lastDate);
-        all.push({date:d, bond:b.name, amt:val, isMat});
+        all.push({ date:d, bond:b, amt:val, isMat });
       }
     });
   });
+
   if (!all.length) {
     el.innerHTML='<div class="empty"><div class="empty-ico">📅</div><p>Nicio plată viitoare.<br>Adaugă obligațiuni mai întâi.</p></div>';
     return;
   }
+
   all.sort((a,b) => a.date - b.date);
-  const grp = {};
-  all.forEach(p => { const k=dateToKey(p.date); if(!grp[k])grp[k]={date:p.date,items:[]}; grp[k].items.push(p); });
-  const now = new Date(); let inThisMonth=false; const keys=Object.keys(grp).sort();
-  let html='';
-  keys.forEach(k => {
-    const g=grp[k]; const d=g.date; const dys=daysDiff(k);
-    const isThisM=d.getFullYear()===now.getFullYear()&&d.getMonth()===now.getMonth();
-    if (isThisM && !inThisMonth) {
-      inThisMonth=true;
-      const mTotal=keys.filter(kk=>{const dd=grp[kk].date;return dd.getFullYear()===now.getFullYear()&&dd.getMonth()===now.getMonth();})
-        .reduce((s,kk)=>s+grp[kk].items.reduce((ss,ii)=>ss+ii.amt,0),0);
-      html+=`<div class="pay-month-hdr"><div class="pml">Luna curentă</div><div class="pmv">${fmt(mTotal)}</div></div>`;
+
+  const byDate = {};
+  all.forEach(p => {
+    const k = dateToKey(p.date);
+    if (!byDate[k]) byDate[k] = { date: p.date, items: [] };
+    byDate[k].items.push(p);
+  });
+
+  const byMonth = {};
+  const monthOrder = [];
+  Object.keys(byDate).sort().forEach(dk => {
+    const d = byDate[dk].date;
+    const mk = monthKey(d);
+    if (!byMonth[mk]) {
+      byMonth[mk] = { date: d, dateKeys: [], couponTotal: 0, returnedTotal: 0, bondNames: new Set() };
+      monthOrder.push(mk);
     }
-    g.items.forEach((item,idx) => {
-      const matRow = item.isMat ? ' pay-row-mat' : '';
-      if (item.isMat) {
-        html+=`<div class="pay-row${matRow}" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;">
-          <div>
-            ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
-            <div class="pay-bond">${esc(item.bond)}</div>
+    byMonth[mk].dateKeys.push(dk);
+    byDate[dk].items.forEach(item => {
+      byMonth[mk].couponTotal += item.amt;
+      if (item.isMat) byMonth[mk].returnedTotal += item.bond.amt;
+      byMonth[mk].bondNames.add(item.bond.name);
+    });
+  });
+
+  const now = new Date();
+  const curMk = monthKey(now);
+
+  let html = '';
+  monthOrder.forEach(mk => {
+    const mData = byMonth[mk];
+    const mDate = mData.date;
+    const mName = mDate.toLocaleDateString('ro-RO', { month: 'long', year: 'numeric' });
+    const mNameCap = mName.charAt(0).toUpperCase() + mName.slice(1);
+    const bondCount = mData.bondNames.size;
+    const isCurrent = mk === curMk;
+    const payCount = mData.dateKeys.reduce((s, dk) => s + byDate[dk].items.length, 0);
+
+    let totalsHtml = `
+      <div class="pay-month-totals-block">
+        <div class="pay-month-total">${fmt(mData.couponTotal)}</div>
+        <div class="pay-month-total-lbl">CÂȘTIG CUPOANE</div>`;
+
+    if (mData.returnedTotal > 0) {
+      totalsHtml += `
+        <div class="pay-month-returned">
+          <span class="pay-month-returned-ico">↩</span>
+          <span class="pay-month-returned-amt">${fmt(mData.returnedTotal)}</span>
+        </div>
+        <div class="pay-month-returned-lbl">capital înapoiat</div>`;
+    }
+    totalsHtml += `</div>`;
+
+    html += `<div class="pay-month-card">
+      <div class="pay-month-header">
+        <div>
+          <div class="pay-month-name">${isCurrent ? '📅 ' : ''}${mNameCap}</div>
+          <div class="pay-month-meta">
+            <span class="pay-month-badge">💰 ${payCount} plăt${payCount === 1 ? 'ă' : 'i'}</span>
+            <span class="pay-month-badge" style="background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold-l);">📋 ${bondCount} obligațiun${bondCount === 1 ? 'e' : 'i'}</span>
           </div>
-          <div style="display:flex;align-items:center;justify-content:center;"><span class="mat-badge">maturitate</span></div>
-          <div style="text-align:right"><div class="pay-amt pay-amt-mat">${fmt(item.amt)}</div></div>
-        </div>`;
-      } else {
-        html+=`<div class="pay-row">
-          <div>
-            ${idx===0?`<div class="pay-date">${fmtD(k)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`:`<div class="pay-date" style="visibility:hidden">${fmtD(k)}</div>`}
-            <div class="pay-bond">${esc(item.bond)}</div>
+        </div>
+        ${totalsHtml}
+      </div>
+      <div class="pay-month-body">`;
+
+    mData.dateKeys.forEach(dk => {
+      const g = byDate[dk];
+      const dys = daysDiff(dk);
+      g.items.forEach((item, idx) => {
+        const matRow = item.isMat ? ' pay-row-mat' : '';
+        const datePart = idx === 0
+          ? `<div class="pay-date">${fmtD(dk)}</div><div class="pay-days">în ${dys} ${dys===1?'zi':'zile'}</div>`
+          : `<div class="pay-date" style="visibility:hidden">${fmtD(dk)}</div>`;
+
+        if (item.isMat) {
+          html += `<div class="pay-row${matRow}">
+            <div>
+              ${datePart}
+              <div class="pay-bond">${esc(item.bond.name)} <span class="mat-badge">maturitate</span></div>
+              <div class="pay-returned-pill">
+                <span class="pay-returned-arrow">↩</span>
+                ${fmt(item.bond.amt)} capital înapoiat
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="pay-amt pay-amt-mat">${fmt(item.amt)}</div>
+              <div style="font-size:9px;color:rgba(224,112,112,.5);margin-top:2px;letter-spacing:.05em;">CUPON FINAL</div>
+            </div>
+          </div>`;
+        } else {
+          html += `<div class="pay-row">
+            <div>
+              ${datePart}
+              <div class="pay-bond">${esc(item.bond.name)}</div>
+            </div>
+            <div style="text-align:right"><div class="pay-amt">${fmt(item.amt)}</div></div>
+          </div>`;
+        }
+      });
+
+      if (g.items.length > 1) {
+        const dt = g.items.reduce((s,i) => s + i.amt, 0);
+        const retOnDay = g.items.filter(i => i.isMat).reduce((s,i) => s + i.bond.amt, 0);
+        let dtExtra = '';
+        if (retOnDay > 0) {
+          dtExtra = `<span style="font-size:10px;color:rgba(126,184,247,.7);margin-left:8px;">+ ↩ ${fmt(retOnDay)}</span>`;
+        }
+        html += `<div class="pay-dtotal">
+          <div class="pay-dtl">Total ${fmtD(dk)}</div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="pay-dtv">${fmt(dt)}</div>
+            ${dtExtra}
           </div>
-          <div style="text-align:right"><div class="pay-amt">${fmt(item.amt)}</div></div>
         </div>`;
       }
     });
-    if (g.items.length>1) {
-      const dt=g.items.reduce((s,i)=>s+i.amt,0);
-      html+=`<div class="pay-dtotal"><div class="pay-dtl">Total ${fmtD(k)}</div><div class="pay-dtv">${fmt(dt)}</div></div>`;
-    }
+
+    html += `</div></div>`;
   });
-  el.innerHTML=html;
+
+  el.innerHTML = html;
 }
 
 // ══════════════════════════════════════════════
@@ -2093,7 +2325,6 @@ function toggleForm() {
     clearForm();
     setTimeout(()=>{
       w.scrollIntoView({behavior:'smooth',block:'start'});
-      // Focus pe primul câmp (rata cuponului)
       setTimeout(()=>document.getElementById('f-rate').focus(), 120);
     },60);
   } else {
@@ -2126,6 +2357,35 @@ function exportDateFormat(str) {
   return str;
 }
 
+function formatDateInput(input) {
+  let raw = input.value.replace(/\D/g, '');
+  if (raw.length > 8) raw = raw.slice(0, 8);
+
+  let day   = raw.slice(0, 2);
+  let month = raw.slice(2, 4);
+  let year  = raw.slice(4, 8);
+
+  if (day.length === 2) {
+    let d = parseInt(day, 10);
+    if (d > 31) d = 31;
+    if (d < 1 && raw.length >= 2) d = 1;
+    day = String(d).padStart(2, '0');
+  }
+
+  if (month.length === 2) {
+    let m = parseInt(month, 10);
+    if (m > 12) m = 12;
+    if (m < 1 && raw.length >= 4) m = 1;
+    month = String(m).padStart(2, '0');
+  }
+
+  let result = day;
+  if (raw.length > 2) result += '-' + month;
+  if (raw.length > 4) result += '-' + year;
+
+  input.value = result;
+}
+
 async function saveBond() {
   const name  = document.getElementById('f-name').value.trim();
   const start = importDateFormat(document.getElementById('f-start').value.trim());
@@ -2135,7 +2395,6 @@ async function saveBond() {
   const freq  = document.getElementById('f-freq').value;
   const eid   = document.getElementById('eid').value;
 
-  // Validare + focus automat pe primul câmp lipsă
   if (!rate || isNaN(rate)) { focusFirstEmpty(); toast('⚠️ Completează rata cuponului'); return; }
   if (!name) { document.getElementById('f-name').focus(); toast('⚠️ Completează denumirea'); return; }
   if (!start || start.length !== 10) { document.getElementById('f-start').focus(); toast('⚠️ Completează data de start (ZZ-LL-AAAA)'); return; }
@@ -2155,13 +2414,11 @@ async function saveBond() {
   cancelForm();
   renderBonds();
   renderDash();
-  runSim();
   calculateSurvival();
   await saveBondToSupabase(bond);
   await saveTotalInvestitRON();
 }
 
-// Focus automat pe primul câmp necompletat
 function focusFirstEmpty() {
   for (const id of FORM_ORDER) {
     const el = document.getElementById(id);
@@ -2169,17 +2426,6 @@ function focusFirstEmpty() {
       el.focus();
       return;
     }
-  }
-}
-
-function formatDateInput(input) {
-  let v = input.value.replace(/\D/g, '');
-  if (v.length > 2 && v.length <= 4) {
-    input.value = v.slice(0, 2) + '-' + v.slice(2);
-  } else if (v.length > 4) {
-    input.value = v.slice(0, 2) + '-' + v.slice(2, 4) + '-' + v.slice(4, 8);
-  } else {
-    input.value = v;
   }
 }
 
@@ -2216,7 +2462,6 @@ function confirmDel(i) {
     closeOv();
     renderBonds();
     renderDash();
-    runSim();
     calculateSurvival();
     toast('🗑️ Obligațiune ștearsă');
   };
