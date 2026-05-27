@@ -139,7 +139,6 @@ cursor:pointer;
 .nav-it.on .nav-lbl { color: var(--gold); }
 .nav-it.on .nav-ico { filter: drop-shadow(0 0 5px rgba(201,168,76,.8)); }
 
-/* Nav badge */
 .nav-badge {
   position: absolute;
   top: 4px;
@@ -158,95 +157,392 @@ cursor:pointer;
   pointer-events: none;
   animation: badge-pop .25s cubic-bezier(.34,1.56,.64,1);
 }
-.nav-badge.red {
-  background: var(--red);
-  box-shadow: 0 2px 8px rgba(224,112,112,.45);
-}
-.nav-badge.blue {
-  background: var(--blue);
-  box-shadow: 0 2px 8px rgba(126,184,247,.45);
+.nav-badge.red { background: var(--red); box-shadow: 0 2px 8px rgba(224,112,112,.45); }
+.nav-badge.blue { background: var(--blue); box-shadow: 0 2px 8px rgba(126,184,247,.45); }
+.nav-badge.gold {
+  background: linear-gradient(135deg, var(--gold-l), var(--gold));
+  color: #06080e;
+  box-shadow: 0 2px 8px rgba(201,168,76,.5);
+  font-weight: 800;
 }
 @keyframes badge-pop {
   from { transform: scale(0); opacity: 0; }
   to   { transform: scale(1); opacity: 1; }
 }
 
-/* ── STATUS STRIP ── */
-.status-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 14px 12px;}
-.sum-tile{
-background:var(--card);border:1px solid var(--gborder);border-radius:var(--rsm);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-padding:14px 12px;text-align:center;box-shadow:var(--shadow);
-position:relative;overflow:hidden;
-}
-.sum-tile::after{content:'';position:absolute;top:0;left:0;right:0;height:1px;}
-.sum-tile.gold {border-color:var(--gold-border);}
-.sum-tile.gold::after{background:linear-gradient(90deg,transparent,var(--gold-l),transparent);}
-.sum-tile.grn {border-color:var(--green-border);}
-.sum-tile.grn::after{background:linear-gradient(90deg,transparent,var(--green),transparent);}
-.sum-tile.red {border-color:var(--red-border);}
-.sum-tile.red::after{background:linear-gradient(90deg,transparent,var(--red),transparent);}
-.sum-tile.blu {border-color:var(--blue-border);}
-.sum-tile.blu::after{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
-.stl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;}
-.stv{font-size:20px;font-weight:700;letter-spacing:-.01em;}
-.sum-tile.gold .stv{color:var(--gold-l);}
-.sum-tile.grn .stv{color:var(--green);}
-.sum-tile.red .stv{color:var(--red);}
-.sum-tile.blu .stv{color:var(--blue);}
-.sts{font-size:10px;margin-top:2px;}
-.sum-tile.gold .sts{color:rgba(232,201,122,0.5);}
-.sum-tile.grn  .sts{color:rgba(78,205,164,0.5);}
-.sum-tile.red  .sts{color:rgba(224,112,112,0.5);}
-.sum-tile.blu  .sts{color:rgba(126,184,247,0.5);}
+/* ══════════════════════════════════════════
+   ✨ DUAL PANEL: COUPON + MATURITY
+══════════════════════════════════════════ */
 
-/* ── NEXT COUPON CARD ── */
-.next-coupon-card{
-margin:0 14px 12px;
-background:linear-gradient(145deg,rgba(201,168,76,.11),rgba(201,168,76,.02));
-border:1px solid var(--gold-border);border-radius:var(--r);
-padding:20px;
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+.events-panel {
+  margin: 0 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.next-coupon-card::before{
-content:'';position:absolute;top:-20px;left:-20px;
-width:110px;height:110px;border-radius:50%;
-background:radial-gradient(circle,rgba(201,168,76,.13),transparent 70%);pointer-events:none;
+
+/* ── COUPON CARD ── */
+.coupon-card-new {
+  position: relative;
+  background: linear-gradient(135deg, rgba(15,18,32,0.95) 0%, rgba(10,12,22,0.98) 100%);
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 16px 56px rgba(0,0,0,.6),
+    0 0 0 1px rgba(201,168,76,.06) inset,
+    0 1px 0 rgba(255,255,255,.05) inset;
 }
-.nccttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--gold-l);margin-bottom:13px;letter-spacing:.02em;}
-.ncc-body{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
-.ncc-days{font-size:44px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-.03em;}
-.ncc-days-lbl{font-size:10px;color:rgba(201,168,76,.55);margin-top:3px;letter-spacing:.06em;}
-.ncc-right{text-align:right;}
-.ncc-amt{font-size:26px;font-weight:700;color:var(--gold-l);letter-spacing:-.02em;line-height:1;}
-.ncc-from{font-size:11px;color:rgba(201,168,76,.55);margin-top:3px;}
-.ncc-date{font-size:11px;color:var(--dim);margin-top:8px;}
-.ncc-empty{font-size:12px;color:var(--muted);text-align:center;padding:8px 0;}
+
+.coupon-card-new::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(201,168,76,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 50% at 90% 80%, rgba(201,168,76,0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.coupon-card-new::after {
+  content: '';
+  position: absolute;
+  top: -1px; right: -1px;
+  width: 60px; height: 60px;
+  background: conic-gradient(from 225deg at 100% 0%, rgba(201,168,76,0.18) 0deg, transparent 90deg);
+  border-radius: 0 20px 0 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Main row inside coupon card */
+.coupon-main-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 18px 18px 18px;
+  position: relative;
+  z-index: 1;
+}
+
+/* SVG ring countdown */
+.coupon-ring-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+}
+.coupon-ring-svg {
+  width: 72px;
+  height: 72px;
+  transform: rotate(-90deg);
+}
+.coupon-ring-bg {
+  fill: none;
+  stroke: rgba(201,168,76,0.10);
+  stroke-width: 3;
+}
+.coupon-ring-fill {
+  fill: none;
+  stroke: url(#couponGrad);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(.4,0,.2,1);
+}
+.coupon-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.coupon-ring-days {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--gold-l);
+  line-height: 1;
+  letter-spacing: -.03em;
+}
+.coupon-ring-lbl {
+  font-size: 7px;
+  font-weight: 600;
+  color: rgba(201,168,76,0.5);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
+
+/* Right content */
+.coupon-content {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+.coupon-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.coupon-ico-tag {
+  width: 18px;
+  height: 18px;
+  background: rgba(201,168,76,0.14);
+  border: 1px solid rgba(201,168,76,0.28);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+}
+.coupon-label-text {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(201,168,76,0.55);
+}
+.coupon-amount {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--gold-l);
+  letter-spacing: -.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.coupon-from {
+  font-size: 11px;
+  color: var(--dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 8px;
+  max-width: 180px;
+}
+.coupon-date-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.coupon-date-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px rgba(201,168,76,0.6);
+  flex-shrink: 0;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+.coupon-date-txt {
+  font-size: 11px;
+  color: rgba(201,168,76,0.5);
+  font-weight: 500;
+}
+
+/* ── MATURITY STRIP — fixed at bottom of coupon card ── */
+.coupon-mat-strip {
+  /* sits BELOW the main row, full width, inside the card */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  background: linear-gradient(90deg, rgba(224,112,112,0.10), rgba(224,112,112,0.05));
+  border-top: 1px solid rgba(224,112,112,0.18);
+  position: relative;
+  z-index: 1;
+}
+.coupon-mat-strip-ico {
+  font-size: 13px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.coupon-mat-strip-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(224,112,112,0.8);
+  letter-spacing: .06em;
+  flex: 1;
+}
+.coupon-mat-strip-return {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: -.01em;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.coupon-mat-strip-return-ico {
+  font-size: 13px;
+  color: rgba(126,184,247,0.7);
+}
+
+/* empty state for both */
+.event-empty {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: var(--muted);
+}
 
 /* ── MATURITY CARD ── */
-.mat-next-card{
-margin:0 14px 12px;
-background:linear-gradient(145deg,rgba(224,112,112,.09),rgba(224,112,112,.02));
-border:1px solid var(--red-border);border-radius:var(--r);
-padding:18px 20px;
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);position:relative;overflow:hidden;
+.maturity-card-new {
+  position: relative;
+  background: linear-gradient(135deg, rgba(14,10,12,0.97) 0%, rgba(10,12,22,0.98) 100%);
+  border: 1px solid rgba(224,112,112,0.20);
+  border-radius: 20px;
+  padding: 16px 18px;
+  overflow: hidden;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.55),
+    0 0 0 1px rgba(224,112,112,.05) inset;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
-.mat-next-card::before{
-content:'';position:absolute;bottom:-25px;right:-25px;
-width:100px;height:100px;border-radius:50%;
-background:radial-gradient(circle,rgba(224,112,112,.12),transparent 70%);pointer-events:none;
+
+.maturity-card-new::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  background: radial-gradient(ellipse 70% 80% at 95% 50%, rgba(224,112,112,0.06) 0%, transparent 55%);
+  pointer-events: none;
 }
-.mnttl{font-family:'DM Serif Display',serif;font-size:15px;color:var(--red);margin-bottom:11px;letter-spacing:.02em;}
-.mn-body{display:flex;align-items:flex-end;justify-content:space-between;}
-.mn-name{font-size:17px;color:var(--text);font-family:'DM Serif Display',serif;letter-spacing:.01em;}
-.mn-sub{font-size:11px;color:var(--dim);margin-top:3px;}
-.mn-right{text-align:right;}
-.mn-days{font-size:26px;font-weight:700;color:var(--red);letter-spacing:-.02em;line-height:1;}
-.mn-daysl{font-size:9px;color:rgba(224,112,112,.5);margin-top:3px;letter-spacing:.06em;}
-.mn-date{font-size:10px;color:rgba(224,112,112,.6);margin-top:2px;}
-.mn-empty{font-size:12px;color:var(--muted);text-align:center;padding:4px 0;}
+
+/* Hourglass icon block */
+.mat-icon-block {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(224,112,112,0.12), rgba(224,112,112,0.04));
+  border: 1px solid rgba(224,112,112,0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+.mat-icon-inner {
+  font-size: 22px;
+  line-height: 1;
+  animation: hourglass-rock 3s ease-in-out infinite;
+}
+@keyframes hourglass-rock {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+
+/* Days countdown big */
+.mat-days-block {
+  flex-shrink: 0;
+  text-align: center;
+  padding: 0 4px;
+  border-right: 1px solid rgba(224,112,112,0.12);
+  margin-right: 2px;
+  position: relative;
+  z-index: 1;
+  min-width: 54px;
+}
+.mat-days-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--red);
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+.mat-days-lbl {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(224,112,112,0.45);
+  margin-top: 2px;
+}
+
+/* Right info */
+.mat-info {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+.mat-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(224,112,112,0.5);
+  margin-bottom: 4px;
+}
+.mat-bond-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 15px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+.mat-bond-meta {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+/* ── REDESIGNED DATE LINE — minimal, no pill ── */
+.mat-date-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.mat-date-tick {
+  width: 3px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+  /* color injected inline */
+}
+.mat-date-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  /* color injected inline */
+}
+
+/* Expired badge on maturity card */
+.mat-expired-wrap {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  z-index: 2;
+}
+.mat-expired-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+  border-radius: 50px;
+  padding: 3px 9px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
 
 /* ── MONTH CARD ── */
 .month-card{
@@ -265,6 +561,50 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
 .mctotal{font-size:32px;font-weight:700;color:var(--green);letter-spacing:-.02em;line-height:1;}
 .mcsub{font-size:10px;color:rgba(78,205,164,.6);margin-top:4px;letter-spacing:.05em;}
 .mcbadge{display:inline-flex;align-items:center;gap:4px;background:var(--green-dim);border:1px solid var(--green-border);border-radius:50px;padding:5px 13px;font-size:12px;color:var(--green);font-weight:600;}
+
+.mc-pay-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 0;
+}
+.mc-pay-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.mc-status-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 700;
+  position: relative;
+  transition: all .25s;
+}
+.mc-status-circle.paid {
+  background: rgba(78,205,164,.15);
+  border: 1.5px solid rgba(78,205,164,.45);
+  color: var(--green);
+  box-shadow: 0 0 8px rgba(78,205,164,.2);
+}
+.mc-status-circle.pending {
+  background: rgba(201,168,76,.12);
+  border: 1.5px solid rgba(201,168,76,.35);
+  color: var(--gold-l);
+  box-shadow: 0 0 8px rgba(201,168,76,.15);
+}
+.mc-status-circle.paid::after { content: '✓'; font-size: 11px; font-weight: 800; color: var(--green); }
+.mc-status-circle.pending::after { content: '◷'; font-size: 12px; color: var(--gold-l); }
+.mc-pay-name { font-size: 12px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+.mc-pay-date { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.mc-pay-amt { font-size: 13px; font-weight: 600; color: var(--green); flex-shrink: 0; }
+.mc-pay-divider { height: 1px; background: rgba(255,255,255,.05); margin: 2px 0; }
 
 /* ══════════════════════════════════════════
    🎯 GOAL CARD
@@ -297,17 +637,13 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
   border-color: var(--green-border);
   box-shadow: 0 12px 48px rgba(0,0,0,.55), 0 0 0 1px rgba(78,205,164,.08) inset;
 }
-.goal-card.state-achieved::before {
-  background: radial-gradient(circle, rgba(78,205,164,.12), transparent 70%);
-}
+.goal-card.state-achieved::before { background: radial-gradient(circle, rgba(78,205,164,.12), transparent 70%); }
 .goal-card.state-deficit {
   background: linear-gradient(145deg, rgba(224,112,112,.12), rgba(224,112,112,.03));
   border-color: var(--red-border);
   box-shadow: 0 12px 48px rgba(0,0,0,.55), 0 0 0 1px rgba(224,112,112,.08) inset;
 }
-.goal-card.state-deficit::before {
-  background: radial-gradient(circle, rgba(224,112,112,.12), transparent 70%);
-}
+.goal-card.state-deficit::before { background: radial-gradient(circle, rgba(224,112,112,.12), transparent 70%); }
 
 .goal-card::after {
   content: '';
@@ -317,12 +653,8 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
   transition: background 0.5s ease;
   background: linear-gradient(90deg, transparent, var(--gold-l), transparent);
 }
-.goal-card.state-achieved::after {
-  background: linear-gradient(90deg, transparent, var(--green), transparent);
-}
-.goal-card.state-deficit::after {
-  background: linear-gradient(90deg, transparent, var(--red), transparent);
-}
+.goal-card.state-achieved::after { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+.goal-card.state-deficit::after { background: linear-gradient(90deg, transparent, var(--red), transparent); }
 
 .gttl {
   font-family: 'DM Serif Display', serif;
@@ -336,11 +668,7 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
   gap: 6px;
   transition: color 0.4s;
 }
-.gttl-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.gttl-left { display: flex; align-items: center; gap: 6px; }
 .goal-card.state-achieved .gttl { color: var(--green); }
 .goal-card.state-deficit .gttl { color: var(--red); }
 
@@ -355,16 +683,8 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
   border: 1px solid transparent;
   transition: all 0.4s;
 }
-#goal-status-badge.badge-achieved {
-  background: var(--green-dim);
-  border-color: var(--green-border);
-  color: var(--green);
-}
-#goal-status-badge.badge-deficit {
-  background: var(--red-dim);
-  border-color: var(--red-border);
-  color: var(--red);
-}
+#goal-status-badge.badge-achieved { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+#goal-status-badge.badge-deficit { background: var(--red-dim); border-color: var(--red-border); color: var(--red); }
 
 .goal-main-row {
   display: flex;
@@ -396,175 +716,69 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
 .goal-card.state-deficit .gbig { color: var(--red); }
 
 .goal-target-block { text-align: right; }
-.goal-target-lbl {
-  font-size: 9px;
-  color: var(--muted);
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  margin-bottom: 3px;
-}
+.goal-target-lbl { font-size: 9px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
 .goal-target-val {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-  transition: color 0.4s;
+  font-size: 18px; font-weight: 700; color: var(--gold); line-height: 1; transition: color 0.4s;
 }
 .goal-card.state-achieved .goal-target-val { color: var(--green); opacity: .75; }
 .goal-card.state-deficit .goal-target-val { color: var(--red); opacity: .75; }
 
-.barwrap {
-  background: rgba(255,255,255,.06);
-  border-radius: 50px;
-  height: 6px;
-  overflow: hidden;
-  margin-bottom: 10px;
-  position: relative;
-}
+.barwrap { background: rgba(255,255,255,.06); border-radius: 50px; height: 6px; overflow: hidden; margin-bottom: 10px; }
 .barfill {
-  height: 100%;
-  border-radius: 50px;
+  height: 100%; border-radius: 50px;
   background: linear-gradient(90deg, var(--gold), var(--gold-l));
   transition: width .65s cubic-bezier(.4,0,.2,1), background 0.5s ease;
 }
-.goal-card.state-achieved .barfill {
-  background: linear-gradient(90deg, var(--green), #7effd4);
-}
-.goal-card.state-deficit .barfill {
-  background: linear-gradient(90deg, var(--red), #ff9e9e);
-}
+.goal-card.state-achieved .barfill { background: linear-gradient(90deg, var(--green), #7effd4); }
+.goal-card.state-deficit .barfill { background: linear-gradient(90deg, var(--red), #ff9e9e); }
 
 .goal-meta-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-  flex-wrap: wrap;
-  gap: 6px;
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 6px;
 }
-.gpct {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--gold);
-  transition: color 0.4s;
-}
+.gpct { font-size: 13px; font-weight: 700; color: var(--gold); transition: color 0.4s; }
 .goal-card.state-achieved .gpct { color: var(--green); }
 .goal-card.state-deficit .gpct { color: var(--red); }
 
 .goal-diff-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  border-radius: 50px;
-  padding: 4px 12px;
-  font-size: 12px;
-  font-weight: 600;
-  transition: all 0.4s;
+  display: inline-flex; align-items: center; gap: 5px; border-radius: 50px; padding: 4px 12px; font-size: 12px; font-weight: 600; transition: all 0.4s;
 }
-.goal-diff-badge.deficit {
-  background: var(--red-dim);
-  border: 1px solid var(--red-border);
-  color: var(--red);
-}
-.goal-diff-badge.surplus {
-  background: var(--green-dim);
-  border: 1px solid var(--green-border);
-  color: var(--green);
-}
-.goal-diff-badge.neutral {
-  background: var(--gold-dim);
-  border: 1px solid var(--gold-border);
-  color: var(--gold-l);
-}
+.goal-diff-badge.deficit { background: var(--red-dim); border: 1px solid var(--red-border); color: var(--red); }
+.goal-diff-badge.surplus { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+.goal-diff-badge.neutral { background: var(--gold-dim); border: 1px solid var(--gold-border); color: var(--gold-l); }
 
 .goal-protection-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: var(--rsm);
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  gap: 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07); border-radius: var(--rsm);
+  padding: 10px 14px; margin-bottom: 14px; gap: 10px;
 }
 .gpr-left { flex: 1; }
-.gpr-lbl {
-  font-size: 9px;
-  color: var(--muted);
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.gpr-val {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--gold-l);
-}
-.gpr-right {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+.gpr-lbl { font-size: 9px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 4px; }
+.gpr-val { font-size: 14px; font-weight: 700; color: var(--gold-l); }
+.gpr-right { display: flex; align-items: center; gap: 6px; }
 .protection-minus, .protection-plus {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: rgba(255,255,255,.05);
-  border: 1px solid var(--gborder);
-  color: var(--text);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s, border-color .2s;
-  font-family: 'Outfit', sans-serif;
-  line-height: 1;
-  user-select: none;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,.05); border: 1px solid var(--gborder);
+  color: var(--text); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, border-color .2s; font-family: 'Outfit', sans-serif; line-height: 1; user-select: none;
 }
-.protection-minus:active, .protection-plus:active {
-  background: var(--gold-dim);
-  border-color: var(--gold-border);
-}
+.protection-minus:active, .protection-plus:active { background: var(--gold-dim); border-color: var(--gold-border); }
 .protection-pct-inp {
-  width: 52px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid var(--gold-border);
-  border-radius: 8px;
-  padding: 6px 8px;
-  color: var(--gold-l);
-  font-family: 'Outfit', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  text-align: center;
-  outline: none;
+  width: 52px; background: rgba(255,255,255,.06); border: 1px solid var(--gold-border);
+  border-radius: 8px; padding: 6px 8px; color: var(--gold-l);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; text-align: center; outline: none;
 }
-.protection-pct-inp:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 3px rgba(201,168,76,.1);
-}
+.protection-pct-inp:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,.1); }
 
 .survival-box {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: var(--rsm);
-  padding: 12px;
-  margin-top: 2px;
+  background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.05);
+  border-radius: var(--rsm); padding: 12px; margin-top: 2px;
 }
 .survival-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 0;
-  font-size: 12px;
+  display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 12px;
 }
-.survival-item:not(:last-child) {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  padding-bottom: 8px;
-  margin-bottom: 4px;
-}
-.survival-lbl { color: var(--dim); max-width: 60%; line-height: 1.3;}
+.survival-item:not(:last-child) { border-bottom: 1px solid rgba(255,255,255,.04); padding-bottom: 8px; margin-bottom: 4px; }
+.survival-lbl { color: var(--dim); max-width: 60%; line-height: 1.3; }
 .survival-val { font-weight: 700; color: var(--gold-l); text-align: right; max-width: 40%; }
 .survival-val.red-text { color: var(--red); }
 .survival-val.green-text { color: var(--green); }
@@ -573,10 +787,10 @@ background:radial-gradient(circle,rgba(78,205,164,.12),transparent 70%);pointer-
 .field{margin-bottom:12px;}
 .field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:5px;}
 .field input,.field select{
-width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gborder);border-radius:var(--rsm);
-padding:11px 14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:16px;
-outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
--webkit-appearance:none;appearance:none;
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--gborder);border-radius:var(--rsm);
+  padding:11px 14px;color:var(--text);font-family:'Outfit',sans-serif;font-size:16px;
+  outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
 }
 .field input:focus,.field select:focus{border-color:var(--gold);background:rgba(255,255,255,.065);box-shadow:0 0 0 3px rgba(201,168,76,.08);}
 .field select option{background:#0c0f1e;}
@@ -593,9 +807,9 @@ outline:none;transition:border-color .2s,background .2s,box-shadow .2s;
 
 /* ── BOND CARD ── */
 .bc{
-background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:border-color .25s;
+  background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:border-color .25s;
 }
 .bc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold-l),transparent);opacity:.5;}
 .bc.mat{border-color:var(--red-border);}
@@ -620,9 +834,9 @@ padding:18px;margin:0 14px 13px;box-shadow:var(--shadow);position:relative;overf
 .divider-line{height:1px;background:var(--gborder);margin:0 0 13px;}
 
 .bcnext{
-background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);
-border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;
-display:flex;justify-content:space-between;align-items:center;
+  background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.16);
+  border-radius:var(--rsm);padding:12px 14px;margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:center;
 }
 .bcnl{font-size:9px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px;}
 .bcndays{font-size:22px;font-weight:700;color:var(--gold);letter-spacing:-.01em;}
@@ -634,68 +848,47 @@ display:flex;justify-content:space-between;align-items:center;
 
 /* ── FORM ── */
 .formwrap{
-margin:0 14px 13px;
-background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-padding:0 18px;max-height:0;overflow:hidden;
-transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
+  margin:0 14px 13px;
+  background:var(--card);border:1px solid var(--gborder);border-radius:var(--r);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  padding:0 18px;max-height:0;overflow:hidden;
+  transition:max-height .38s cubic-bezier(.4,0,.2,1),padding .28s,opacity .28s;opacity:0;
 }
 .formwrap.open{max-height:1200px;opacity:1;padding:18px;}
 .fttl{font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-l);margin-bottom:16px;letter-spacing:.01em;}
 .row2{display:flex;gap:9px;}
 .row2 .field{flex:1;}
 
-.amt-field-wrap {
-  position: relative;
-}
-.amt-field-wrap input {
-  padding-right: 44px !important;
-}
+.amt-field-wrap { position: relative; }
+.amt-field-wrap input { padding-right: 44px !important; }
 .amt-autofill-btn {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--gold-dim);
-  border: 1px solid var(--gold-border);
-  color: var(--gold-l);
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background .2s, transform .2s;
-  flex-shrink: 0;
+  position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--gold-dim); border: 1px solid var(--gold-border);
+  color: var(--gold-l); font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .2s, transform .2s; flex-shrink: 0;
 }
-.amt-autofill-btn:active {
-  background: rgba(201,168,76,.25);
-  transform: translateY(-50%) scale(.9);
-}
-.amt-autofill-btn:hover {
-  background: rgba(201,168,76,.2);
-}
+.amt-autofill-btn:active { background: rgba(201,168,76,.25); transform: translateY(-50%) scale(.9); }
+.amt-autofill-btn:hover { background: rgba(201,168,76,.2); }
 
 /* ── BONDS SUMMARY BAR ── */
 .bonds-summary-bar{
-margin:0 14px 14px;
-background:linear-gradient(145deg,rgba(201,168,76,.10),rgba(201,168,76,.02));
-border:1px solid var(--gold-border);
-border-radius:var(--r);
-padding:18px 20px;
-backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
-box-shadow:var(--shadow);
-position:relative;overflow:hidden;
-transition:opacity .22s, transform .22s;
+  margin:0 14px 14px;
+  background:linear-gradient(145deg,rgba(201,168,76,.10),rgba(201,168,76,.02));
+  border:1px solid var(--gold-border);
+  border-radius:var(--r);
+  padding:18px 20px;
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+  transition:opacity .22s, transform .22s;
 }
 .bonds-summary-bar::before{
-content:'';position:absolute;top:0;left:0;right:0;height:1px;
-background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
 }
 .bsb-ttl{font-family:'DM Serif Display',serif;font-size:13px;color:var(--gold-l);margin-bottom:14px;letter-spacing:.02em;opacity:.8;}
-/* Updated: 2 columns only (removed active/pending) */
 .bsb-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .bsb-lbl{font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;}
 .bsb-val{font-size:19px;font-weight:700;letter-spacing:-.01em;}
@@ -705,159 +898,62 @@ background:linear-gradient(90deg,transparent,var(--gold-l),transparent);
 .bsb-sub{font-size:10px;color:var(--muted);margin-top:2px;}
 
 /* ── SEARCH BAR ── */
-.search-wrap{
-margin:0 14px 12px;
-position:relative;
-}
+.search-wrap{ margin:0 14px 12px; position:relative; }
 .search-wrap::before{
-content:'🔍';
-position:absolute;left:14px;top:50%;transform:translateY(-50%);
-font-size:14px;pointer-events:none;
-filter:grayscale(1) opacity(.45);
+  content:'🔍'; position:absolute;left:14px;top:50%;transform:translateY(-50%);
+  font-size:14px;pointer-events:none; filter:grayscale(1) opacity(.45);
 }
 .search-inp{
-width:100%;
-background:rgba(255,255,255,.04);
-border:1px solid var(--gborder);
-border-radius:50px;
-padding:11px 14px 11px 40px;
-color:var(--text);
-font-family:'Outfit',sans-serif;
-font-size:14px;
-outline:none;
-transition:border-color .2s,background .2s,box-shadow .2s;
--webkit-appearance:none;appearance:none;
+  width:100%; background:rgba(255,255,255,.04); border:1px solid var(--gborder);
+  border-radius:50px; padding:11px 14px 11px 40px;
+  color:var(--text); font-family:'Outfit',sans-serif; font-size:14px;
+  outline:none; transition:border-color .2s,background .2s,box-shadow .2s;
+  -webkit-appearance:none;appearance:none;
 }
-.search-inp:focus{
-border-color:var(--gold);
-background:rgba(255,255,255,.065);
-box-shadow:0 0 0 3px rgba(201,168,76,.08);
-}
+.search-inp:focus{ border-color:var(--gold); background:rgba(255,255,255,.065); box-shadow:0 0 0 3px rgba(201,168,76,.08); }
 .search-inp::placeholder{color:var(--muted);}
-.search-clear{
-position:absolute;right:14px;top:50%;transform:translateY(-50%);
-background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;
-padding:4px;line-height:1;display:none;
-}
+.search-clear{ position:absolute;right:14px;top:50%;transform:translateY(-50%); background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer; padding:4px;line-height:1;display:none; }
 .search-clear.vis{display:block;}
-.search-count{
-font-size:10px;color:var(--muted);text-align:center;
-padding:0 0 8px;letter-spacing:.06em;
-}
+.search-count{ font-size:10px;color:var(--muted);text-align:center; padding:0 0 8px;letter-spacing:.06em; }
 
 #bonds-add-btn-wrap,
 #bonds-summary-bar {
-transition: opacity .22s, max-height .28s cubic-bezier(.4,0,.2,1), margin .28s;
-overflow: hidden;
+  transition: opacity .22s, max-height .28s cubic-bezier(.4,0,.2,1), margin .28s;
+  overflow: hidden;
 }
 #bonds-add-btn-wrap.search-hidden,
-#bonds-summary-bar.search-hidden {
-opacity: 0;
-max-height: 0 !important;
-margin-top: 0 !important;
-margin-bottom: 0 !important;
-pointer-events: none;
-}
-#bonds-add-btn-wrap {
-max-height: 80px;
-}
+#bonds-summary-bar.search-hidden { opacity: 0; max-height: 0 !important; margin-top: 0 !important; margin-bottom: 0 !important; pointer-events: none; }
+#bonds-add-btn-wrap { max-height: 80px; }
 
 /* ── PAYMENTS ── */
 .pay-month-card {
-  background: var(--card);
-  border: 1px solid var(--gborder);
-  border-radius: var(--r);
-  backdrop-filter: var(--blur);
-  -webkit-backdrop-filter: var(--blur);
-  box-shadow: var(--shadow);
-  margin: 0 14px 14px;
-  overflow: hidden;
-  position: relative;
+  background: var(--card); border: 1px solid var(--gborder); border-radius: var(--r);
+  backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+  box-shadow: var(--shadow); margin: 0 14px 14px; overflow: hidden; position: relative;
 }
 .pay-month-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold-l), transparent);
-  opacity: .5;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-l), transparent); opacity: .5;
 }
 .pay-month-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 16px 18px 12px;
-  border-bottom: 1px solid var(--gold-border);
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 16px 18px 12px; border-bottom: 1px solid var(--gold-border);
   background: linear-gradient(145deg, rgba(201,168,76,.07), rgba(201,168,76,.01));
 }
-.pay-month-name {
-  font-family: 'DM Serif Display', serif;
-  font-size: 17px;
-  color: var(--gold-l);
-  letter-spacing: .02em;
-  margin-bottom: 4px;
-}
-.pay-month-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+.pay-month-name { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--gold-l); letter-spacing: .02em; margin-bottom: 4px; }
+.pay-month-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .pay-month-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: var(--green-dim);
-  border: 1px solid var(--green-border);
-  border-radius: 50px;
-  padding: 3px 10px;
-  font-size: 10px;
-  color: var(--green);
-  font-weight: 600;
+  display: inline-flex; align-items: center; gap: 3px;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  border-radius: 50px; padding: 3px 10px; font-size: 10px; color: var(--green); font-weight: 600;
 }
-.pay-month-totals-block {
-  text-align: right;
-  min-width: 110px;
-}
-.pay-month-total {
-  font-size: 21px;
-  font-weight: 700;
-  color: var(--green);
-  letter-spacing: -.02em;
-  line-height: 1;
-}
-.pay-month-total-lbl {
-  font-size: 9px;
-  color: rgba(78,205,164,.5);
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  margin-top: 3px;
-  margin-bottom: 6px;
-}
-.pay-month-returned {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 4px;
-}
-.pay-month-returned-ico {
-  font-size: 12px;
-  line-height: 1;
-}
-.pay-month-returned-amt {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--blue);
-  letter-spacing: -.01em;
-}
-.pay-month-returned-lbl {
-  font-size: 9px;
-  color: rgba(126,184,247,.5);
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  margin-top: 2px;
-  text-align: right;
-}
+.pay-month-totals-block { text-align: right; min-width: 110px; }
+.pay-month-total { font-size: 21px; font-weight: 700; color: var(--green); letter-spacing: -.02em; line-height: 1; }
+.pay-month-total-lbl { font-size: 9px; color: rgba(78,205,164,.5); letter-spacing: .08em; text-transform: uppercase; margin-top: 3px; margin-bottom: 6px; }
+.pay-month-returned { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
+.pay-month-returned-ico { font-size: 12px; line-height: 1; }
+.pay-month-returned-amt { font-size: 14px; font-weight: 700; color: var(--blue); letter-spacing: -.01em; }
+.pay-month-returned-lbl { font-size: 9px; color: rgba(126,184,247,.5); letter-spacing: .06em; text-transform: uppercase; margin-top: 2px; text-align: right; }
 
 .pay-month-body { padding: 0 18px; }
 .pay-row{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.048);}
@@ -873,24 +969,12 @@ max-height: 80px;
 .pay-row-mat{border-bottom:1px solid rgba(224,112,112,.12) !important;}
 .mat-badge{display:inline-block;background:var(--red-dim);border:1px solid var(--red-border);color:var(--red);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;border-radius:50px;padding:2px 7px;vertical-align:middle;margin-left:5px;}
 .pay-amt-mat{color:var(--red) !important;}
-
 .pay-returned-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--blue-dim);
-  border: 1px solid var(--blue-border);
-  border-radius: 50px;
-  padding: 3px 9px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--blue);
-  margin-top: 4px;
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--blue-dim); border: 1px solid var(--blue-border);
+  border-radius: 50px; padding: 3px 9px; font-size: 11px; font-weight: 600; color: var(--blue); margin-top: 4px;
 }
-.pay-returned-arrow {
-  font-size: 13px;
-  line-height: 1;
-}
+.pay-returned-arrow { font-size: 13px; line-height: 1; }
 
 /* ── EMPTY ── */
 .empty{text-align:center;padding:48px 16px;color:var(--muted);}
@@ -899,25 +983,25 @@ max-height: 80px;
 
 /* ── TOAST ── */
 .toast{
-position:fixed;bottom:106px;left:50%;transform:translateX(-50%) translateY(12px);
-background:rgba(12,15,26,.97);border:1px solid var(--gborder);border-radius:50px;
-padding:10px 22px;font-size:12px;color:var(--text);z-index:200;opacity:0;transition:all .26s;
-white-space:nowrap;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);pointer-events:none;
+  position:fixed;bottom:106px;left:50%;transform:translateX(-50%) translateY(12px);
+  background:rgba(12,15,26,.97);border:1px solid var(--gborder);border-radius:50px;
+  padding:10px 22px;font-size:12px;color:var(--text);z-index:200;opacity:0;transition:all .26s;
+  white-space:nowrap;backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);pointer-events:none;
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* ── OVERLAY ── */
 .overlay{
-position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.78);
-backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-display:flex;align-items:flex-end;justify-content:center;
-opacity:0;pointer-events:none;transition:opacity .24s;
+  position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.78);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .24s;
 }
 .overlay.open{opacity:1;pointer-events:all;}
 .modal{
-background:#0a0d1c;border:1px solid var(--gborder);border-radius:var(--r) var(--r) 0 0;
-padding:24px 18px 36px;width:100%;max-width:460px;
-transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  background:#0a0d1c;border:1px solid var(--gborder);border-radius:var(--r) var(--r) 0 0;
+  padding:24px 18px 36px;width:100%;max-width:460px;
+  transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 }
 .overlay.open .modal{transform:translateY(0);}
 .mttl { font-size: 18px; font-weight:600; margin-bottom:8px; color:var(--text); }
@@ -927,115 +1011,48 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 
 /* ── FAB REFRESH ── */
 .fab-refresh {
-  position: fixed;
-  bottom: 106px;
-  right: calc(50% - 218px);
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
+  position: fixed; bottom: 106px; right: calc(50% - 218px);
+  width: 46px; height: 46px; border-radius: 50%;
   background: linear-gradient(145deg, rgba(20,24,40,0.92), rgba(12,15,26,0.96));
   border: 1px solid rgba(201,168,76,0.3);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  box-shadow:
-    0 4px 24px rgba(0,0,0,.5),
-    0 0 0 1px rgba(201,168,76,.06) inset,
-    0 1px 0 rgba(255,255,255,.06) inset;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 99;
-  opacity: 1;
-  transform: scale(1) translateY(0);
-  transition: opacity .32s cubic-bezier(.4,0,.2,1),
-              transform .32s cubic-bezier(.4,0,.2,1),
-              background .2s,
-              border-color .2s,
-              box-shadow .2s;
-  pointer-events: all;
-  overflow: hidden;
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: 0 4px 24px rgba(0,0,0,.5), 0 0 0 1px rgba(201,168,76,.06) inset, 0 1px 0 rgba(255,255,255,.06) inset;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  z-index: 99; opacity: 1; transform: scale(1) translateY(0);
+  transition: opacity .32s cubic-bezier(.4,0,.2,1), transform .32s cubic-bezier(.4,0,.2,1), background .2s, border-color .2s, box-shadow .2s;
+  pointer-events: all; overflow: hidden;
 }
-
-@media (max-width: 460px) {
-  .fab-refresh { right: 16px; }
-}
-
+@media (max-width: 460px) { .fab-refresh { right: 16px; } }
 .fab-refresh::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, rgba(201,168,76,.18), transparent 65%);
-  pointer-events: none;
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(201,168,76,.18), transparent 65%); pointer-events: none;
 }
-
-.fab-refresh.fab-hidden {
-  opacity: 0;
-  transform: scale(0.72) translateY(8px);
-  pointer-events: none;
-}
-
-.fab-refresh:active {
-  transform: scale(0.88) translateY(0);
-  box-shadow: 0 2px 12px rgba(0,0,0,.4), 0 0 0 1px rgba(201,168,76,.15) inset;
-}
-
-.fab-refresh.loading {
-  border-color: rgba(201,168,76,.55);
-  background: linear-gradient(145deg, rgba(30,36,58,0.96), rgba(18,22,38,0.98));
-  pointer-events: none;
-}
-
-.fab-svg {
-  width: 20px;
-  height: 20px;
-  display: block;
-  position: relative;
-  z-index: 1;
-  transition: transform .55s cubic-bezier(.4,0,.2,1);
-  will-change: transform;
-  flex-shrink: 0;
-}
-
-.fab-svg circle {
-  fill: none;
-  stroke: rgba(201,168,76,0.28);
-  stroke-width: 1.5;
-}
-
-.fab-svg path {
-  fill: none;
-  stroke: var(--gold-l);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.fab-svg .arrow-head {
-  fill: var(--gold-l);
-  stroke: none;
-}
-
-.fab-refresh.spinning .fab-svg {
-  animation: fab-spin .65s cubic-bezier(.4,0,.2,1);
-}
-
-@keyframes fab-spin {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
+.fab-refresh.fab-hidden { opacity: 0; transform: scale(0.72) translateY(8px); pointer-events: none; }
+.fab-refresh:active { transform: scale(0.88) translateY(0); box-shadow: 0 2px 12px rgba(0,0,0,.4), 0 0 0 1px rgba(201,168,76,.15) inset; }
+.fab-refresh.loading { border-color: rgba(201,168,76,.55); background: linear-gradient(145deg, rgba(30,36,58,0.96), rgba(18,22,38,0.98)); pointer-events: none; }
+.fab-svg { width: 20px; height: 20px; display: block; position: relative; z-index: 1; transition: transform .55s cubic-bezier(.4,0,.2,1); will-change: transform; flex-shrink: 0; }
+.fab-svg circle { fill: none; stroke: rgba(201,168,76,0.28); stroke-width: 1.5; }
+.fab-svg path { fill: none; stroke: var(--gold-l); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.fab-svg .arrow-head { fill: var(--gold-l); stroke: none; }
+.fab-refresh.spinning .fab-svg { animation: fab-spin .65s cubic-bezier(.4,0,.2,1); }
+@keyframes fab-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .fab-refresh:not(.fab-hidden):not(.loading):hover {
   border-color: rgba(201,168,76,.5);
-  box-shadow:
-    0 4px 28px rgba(0,0,0,.55),
-    0 0 16px rgba(201,168,76,.15),
-    0 0 0 1px rgba(201,168,76,.1) inset;
+  box-shadow: 0 4px 28px rgba(0,0,0,.55), 0 0 16px rgba(201,168,76,.15), 0 0 0 1px rgba(201,168,76,.1) inset;
 }
 </style>
 </head>
 <body>
+
+<!-- SVG defs for gradients used in rings -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="couponGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5e4a8"/>
+      <stop offset="100%" style="stop-color:#c9a84c"/>
+    </linearGradient>
+  </defs>
+</svg>
 
 <div id="app">
   <div class="scroll-area" id="scroll-area">
@@ -1061,7 +1078,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
 
     <div class="goal-main-row">
       <div class="goal-earned-block">
-        <!-- CHANGED: label updated to reflect pending bonds included -->
         <div class="goal-earned-lbl">CÂȘTIG LUNAR (ACTIV + AȘTEPTARE)</div>
         <div class="gbig" id="g-cur">0 lei</div>
       </div>
@@ -1077,7 +1093,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       <div class="goal-diff-badge neutral" id="goal-diff-badge">— echilibru</div>
     </div>
 
-    <!-- Protecție % -->
     <div class="goal-protection-row">
       <div class="gpr-left">
         <div class="gpr-lbl">🛡️ Protecție buffer (%)</div>
@@ -1090,7 +1105,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
       </div>
     </div>
 
-    <!-- Total fonduri -->
     <div class="field" style="margin-bottom:12px;">
       <label id="total-funds-label">Total bani avuți (lei)</label>
       <div style="position:relative;">
@@ -1116,22 +1130,19 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     </div>
   </div>
 
-  <div class="next-coupon-card">
-    <div class="nccttl">🏷️ Următorul cupon</div>
-    <div id="ncc-body"></div>
-  </div>
+  <!-- ══ NEW DUAL EVENTS PANEL ══ -->
+  <div class="events-panel">
 
-  <div class="status-strip">
-    <div class="sum-tile blu">
-      <div class="stl">În așteptare</div>
-      <div class="stv" id="s-pending">0</div>
-      <div class="sts">neîncepute</div>
+    <!-- COUPON CARD -->
+    <div class="coupon-card-new" id="coupon-card-new">
+      <!-- filled by JS -->
     </div>
-    <div class="sum-tile grn">
-      <div class="stl">Active</div>
-      <div class="stv" id="s-active">0</div>
-      <div class="sts">obligațiuni</div>
+
+    <!-- MATURITY CARD -->
+    <div class="maturity-card-new" id="maturity-card-new">
+      <!-- filled by JS -->
     </div>
+
   </div>
 
   <div class="month-card">
@@ -1148,16 +1159,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
     <div id="mc-breakdown"></div>
   </div>
 
-  <div class="mat-next-card">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px;">
-      <div class="mnttl" style="margin-bottom:0;">⏰ Prima obligațiune la maturitate</div>
-      <div id="expired-badge" style="display:none;align-items:center;gap:4px;background:var(--red-dim);border:1px solid var(--red-border);border-radius:50px;padding:3px 8px;flex-shrink:0;margin-left:10px;">
-        <span style="font-size:10px;color:rgba(224,112,112,.6);">expirate</span>
-        <span style="font-size:10px;font-weight:700;color:var(--red);" id="s-expired">0</span>
-      </div>
-    </div>
-    <div id="mn-body"></div>
-  </div>
 </div>
 
 <!-- ══════════════════════════════════════════ BONDS ══════ -->
@@ -1233,7 +1234,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   </div>
   <div class="search-count" id="search-count" style="display:none;"></div>
 
-  <!-- CHANGED: summary bar now has only 2 items (total + monthly), active/pending removed -->
   <div class="bonds-summary-bar" id="bonds-summary-bar">
     <div class="bsb-ttl">💼 Sumar portofoliu (activ + așteptare)</div>
     <div class="bsb-grid">
@@ -1297,7 +1297,6 @@ transform:translateY(32px);transition:transform .28s cubic-bezier(.4,0,.2,1);
   <div class="nav-it" onclick="sw('bonds',1)" id="nav-bonds" style="position:relative;">
     <span class="nav-ico">📋</span>
     <span class="nav-lbl">Obligațiuni</span>
-    <!-- Badge injected by JS -->
   </div>
   <div class="nav-it" onclick="sw('payments',2)">
     <span class="nav-ico">💰</span>
@@ -1336,9 +1335,7 @@ const SB_HEADERS = {
 const EXTERNAL_GOAL_API_URL = 'https://fndjrfieitieqzafhyzz.supabase.co/rest/v1/fd_settings?select=*&apikey=sb_publishable_bHDKjiKAVHqW199ICw7i2g_O3olYMAr';
 
 async function sbGet(table, filter = '') {
-  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, {
-    headers: { ...SB_HEADERS }
-  });
+  const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filter}`, { headers: { ...SB_HEADERS } });
   if (!r.ok) throw new Error(await r.text());
   return r.json();
 }
@@ -1444,13 +1441,10 @@ async function savePrefsToSupabase() {
         updated_at:      new Date().toISOString()
       })
     });
-  } catch(e) {
-    console.error('Eroare la salvarea preferințelor:', e);
-  }
+  } catch(e) { console.error('Eroare la salvarea preferințelor:', e); }
 }
 
 async function saveTotalInvestitRON() {
-  // Include both active and pending (not matured)
   const relevant = bonds.filter(b => !isMatured(b));
   const total = relevant.reduce((s, b) => s + b.amt, 0);
   const valoare = Math.round(total);
@@ -1461,9 +1455,7 @@ async function saveTotalInvestitRON() {
       body: JSON.stringify({ total_investit_ron: valoare, updated_at: new Date().toISOString() })
     });
     if (!r.ok) throw new Error(await r.text());
-  } catch (e) {
-    console.error('Eroare salvare total investit:', e);
-  }
+  } catch (e) { console.error('Eroare salvare total investit:', e); }
 }
 
 async function saveBondToSupabase(b) {
@@ -1479,18 +1471,13 @@ async function saveBondToSupabase(b) {
       freq:       parseInt(b.freq),
       updated_at: new Date().toISOString()
     });
-  } catch (e) {
-    console.error('Bond save error:', e);
-    toast('⚠️ Eroare la salvare');
-  }
+  } catch (e) { console.error('Bond save error:', e); toast('⚠️ Eroare la salvare'); }
 }
 
 async function deleteBondFromSupabase(id) {
   try {
     await sbDelete('bf_bonds', `id=eq.${id}&user_key=eq.${USER_KEY}`);
-  } catch (e) {
-    console.error('Bond delete error:', e);
-  }
+  } catch (e) { console.error('Bond delete error:', e); }
 }
 
 // ══════════════════════════════════════════════
@@ -1505,48 +1492,30 @@ const fabSvg   = document.getElementById('fab-svg');
 const scrollEl = document.getElementById('scroll-area');
 
 scrollEl.addEventListener('scroll', () => {
-  if (fabVisible) {
-    fabVisible = false;
-    fabEl.classList.add('fab-hidden');
-  }
+  if (fabVisible) { fabVisible = false; fabEl.classList.add('fab-hidden'); }
   clearTimeout(fabScrollTimer);
-  fabScrollTimer = setTimeout(() => {
-    fabVisible = true;
-    fabEl.classList.remove('fab-hidden');
-  }, 800);
+  fabScrollTimer = setTimeout(() => { fabVisible = true; fabEl.classList.remove('fab-hidden'); }, 800);
 }, { passive: true });
 
 async function handleFabRefresh() {
   if (fabRefreshLocked) return;
   fabRefreshLocked = true;
   fabEl.classList.add('spinning', 'loading');
-
   const userFundsInput = document.getElementById('survival-total-funds').value;
-
   try {
     await refreshRemoteDataOnly();
     toast('✅ Date actualizate');
-  } catch (e) {
-    console.error('Refresh error:', e);
-    toast('⚠️ Eroare la actualizare');
-  }
-
+  } catch (e) { console.error('Refresh error:', e); toast('⚠️ Eroare la actualizare'); }
   if (userFundsInput && !survivalTotal) {
     document.getElementById('survival-total-funds').value = userFundsInput;
   }
-
-  setTimeout(() => {
-    fabEl.classList.remove('spinning', 'loading');
-    fabRefreshLocked = false;
-  }, 700);
+  setTimeout(() => { fabEl.classList.remove('spinning', 'loading'); fabRefreshLocked = false; }, 700);
 }
 
 async function refreshRemoteDataOnly() {
   try {
     const prefs = await sbGet('bf_preferences', `user_key=eq.${USER_KEY}&select=currency,survival_spent,protection_pct`);
-    if (prefs.length) {
-      protectionPct = parseFloat(prefs[0].protection_pct) || protectionPct;
-    }
+    if (prefs.length) { protectionPct = parseFloat(prefs[0].protection_pct) || protectionPct; }
   } catch(e) { console.error('Prefs refresh error:', e); }
 
   try {
@@ -1571,9 +1540,7 @@ async function refreshRemoteDataOnly() {
         }
       }
     }
-  } catch (extError) {
-    console.error('Eroare la reîncărcarea datelor externe:', extError);
-  }
+  } catch (extError) { console.error('Eroare la reîncărcarea datelor externe:', extError); }
 
   try {
     const rows = await sbGet('bf_bonds', `user_key=eq.${USER_KEY}&order=created_at.asc`);
@@ -1586,19 +1553,13 @@ async function refreshRemoteDataOnly() {
       rate:  parseFloat(r.rate),
       freq:  String(r.freq)
     }));
-  } catch (e) {
-    console.error('Bonds refresh error:', e);
-    throw e;
-  }
+  } catch (e) { console.error('Bonds refresh error:', e); throw e; }
 
   document.getElementById('protection-pct').value = protectionPct;
   renderDash();
   renderBonds();
   calculateSurvival();
-
-  if (document.getElementById('panel-payments').classList.contains('on')) {
-    renderPayments();
-  }
+  if (document.getElementById('panel-payments').classList.contains('on')) renderPayments();
 }
 
 // ══════════════════════════════════════════════
@@ -1609,30 +1570,17 @@ const FORM_ORDER = ['f-rate', 'f-amt', 'f-start', 'f-mat', 'f-name', 'f-freq'];
 function formEnter(event, currentId) {
   if (event.key !== 'Enter') return;
   event.preventDefault();
-
   const currentIdx = FORM_ORDER.indexOf(currentId);
-
   for (let i = currentIdx + 1; i < FORM_ORDER.length; i++) {
     const el = document.getElementById(FORM_ORDER[i]);
-    if (el && !el.value.toString().trim()) {
-      el.focus();
-      return;
-    }
+    if (el && !el.value.toString().trim()) { el.focus(); return; }
   }
-
   for (let i = 0; i < currentIdx; i++) {
     const el = document.getElementById(FORM_ORDER[i]);
-    if (el && !el.value.toString().trim()) {
-      el.focus();
-      return;
-    }
+    if (el && !el.value.toString().trim()) { el.focus(); return; }
   }
-
-  if (currentIdx + 1 < FORM_ORDER.length) {
-    document.getElementById(FORM_ORDER[currentIdx + 1]).focus();
-  } else {
-    saveBond();
-  }
+  if (currentIdx + 1 < FORM_ORDER.length) document.getElementById(FORM_ORDER[currentIdx + 1]).focus();
+  else saveBond();
 }
 
 // ══════════════════════════════════════════════
@@ -1664,15 +1612,9 @@ function updateAutofillHint() {
   const hintEl = document.getElementById('autofill-hint');
   const rate = parseFloat(document.getElementById('f-rate').value);
   const goal = effectiveGoal();
-  // Include pending bonds in current monthly for autofill calculation
   const curMo = bonds.filter(b => !isMatured(b)).reduce((s,b) => s + monthlyVal(b), 0);
   const gap = goal > 0 ? goal - curMo : 0;
-
-  if (gap <= 0 || isNaN(rate) || rate <= 0) {
-    hintEl.style.display = 'none';
-    return;
-  }
-
+  if (gap <= 0 || isNaN(rate) || rate <= 0) { hintEl.style.display = 'none'; return; }
   const needed = gap / (rate / 100 / 12);
   hintEl.textContent = `↙ Completează automat: ${fmt(needed)} (pentru +${fmt(gap)}/lună la ${rate}%)`;
   hintEl.style.display = 'block';
@@ -1681,14 +1623,11 @@ function updateAutofillHint() {
 function autofillAmount() {
   const rate = parseFloat(document.getElementById('f-rate').value);
   const goal = effectiveGoal();
-  // Include pending bonds in current monthly for autofill calculation
   const curMo = bonds.filter(b => !isMatured(b)).reduce((s,b) => s + monthlyVal(b), 0);
   const gap = goal > 0 ? goal - curMo : 0;
-
   if (goal <= 0) { toast('⚠️ Niciun obiectiv disponibil din API'); return; }
   if (isNaN(rate) || rate <= 0) { toast('⚠️ Introdu mai întâi rata cuponului'); return; }
   if (gap <= 0) { toast('🎉 Obiectivul e deja atins!'); return; }
-
   const needed = gap / (rate / 100 / 12);
   document.getElementById('f-amt').value = Math.ceil(needed);
   toast(`✅ Sumă completată: ${fmt(Math.ceil(needed))}`);
@@ -1774,29 +1713,37 @@ function sortedBonds() {
 }
 
 // ══════════════════════════════════════════════
-//  NAV BADGE — red (expired) takes priority, blue (pending) if no expired
+//  NAV BADGE
 // ══════════════════════════════════════════════
 function updateNavBadge() {
   const expired = bonds.filter(isMatured).length;
   const pending = bonds.filter(isNotStarted).length;
   const navBondsEl = document.getElementById('nav-bonds');
-
-  // Remove existing badge
   const existing = navBondsEl.querySelector('.nav-badge');
   if (existing) existing.remove();
-
   if (expired > 0) {
-    // Red badge — priority: show expired count
     const badge = document.createElement('span');
     badge.className = 'nav-badge red';
     badge.textContent = expired;
     navBondsEl.appendChild(badge);
   } else if (pending > 0) {
-    // Blue badge — only if no expired bonds
     const badge = document.createElement('span');
     badge.className = 'nav-badge blue';
     badge.textContent = pending;
     navBondsEl.appendChild(badge);
+  } else {
+    const activeBonds = bonds.filter(isActive);
+    if (activeBonds.length > 0) {
+      const sorted = [...activeBonds].sort((a, b) => new Date(a.mat) - new Date(b.mat));
+      const nearest = sorted[0];
+      const daysToMat = daysDiff(nearest.mat);
+      if (daysToMat > 0 && daysToMat <= 365) {
+        const badge = document.createElement('span');
+        badge.className = 'nav-badge gold';
+        badge.textContent = daysToMat + 'd';
+        navBondsEl.appendChild(badge);
+      }
+    }
   }
 }
 
@@ -1806,25 +1753,18 @@ function updateNavBadge() {
 function calculateSurvival() {
   const fundsInp = parseFloat(document.getElementById('survival-total-funds').value);
   survivalTotal = (!isNaN(fundsInp) && fundsInp >= 0) ? fundsInp : 0;
-
   const rawExpense = baseExpense > 0 ? baseExpense : 0;
   survivalSpent = rawExpense;
 
-  const box      = document.getElementById('survival-results-box');
-  const paceEl   = document.getElementById('survival-current-pace-val');
-  const crashEl  = document.getElementById('survival-crash-val');
-  const pureEl   = document.getElementById('survival-pure-val');
+  const box     = document.getElementById('survival-results-box');
+  const paceEl  = document.getElementById('survival-current-pace-val');
+  const crashEl = document.getElementById('survival-crash-val');
+  const pureEl  = document.getElementById('survival-pure-val');
 
-  if (survivalTotal === 0 || survivalSpent === 0) {
-    box.style.display = 'none';
-    return;
-  }
-
+  if (survivalTotal === 0 || survivalSpent === 0) { box.style.display = 'none'; return; }
   box.style.display = 'block';
 
-  // Include pending bonds in survival calculation
   const curMonthlyYield = bonds.filter(b => !isMatured(b)).reduce((s, b) => s + monthlyVal(b), 0);
-
   if (curMonthlyYield >= survivalSpent) {
     paceEl.innerHTML = '<span style="color:var(--green)">∞ Nemărginit (Câștigul acoperă cheltuielile!)</span>';
   } else {
@@ -1855,7 +1795,6 @@ function formatYearsAndAge(y) {
   const luniRamase  = totalMonthsRemaining % 12;
   const finalAgeYears  = CURRENT_AGE + aniRamasi;
   const finalAgeMonths = luniRamase;
-
   let durataStr = '';
   if (aniRamasi > 0) durataStr += `${aniRamasi} an${aniRamasi === 1 ? '' : 'i'}`;
   if (luniRamase > 0) {
@@ -1863,11 +1802,195 @@ function formatYearsAndAge(y) {
     durataStr += `${luniRamase} lun${luniRamase === 1 ? 'ă' : 'i'}`;
   }
   if (durataStr === '') durataStr = '0 luni';
-
   let varstaStr = `până la ${finalAgeYears} ani`;
   if (finalAgeMonths > 0) varstaStr += ` și ${finalAgeMonths} lun${finalAgeMonths === 1 ? 'ă' : 'i'}`;
-
   return `${durataStr} (${varstaStr})`;
+}
+
+// ══════════════════════════════════════════════
+//  RENDER COUPON CARD — fixed structure
+// ══════════════════════════════════════════════
+function renderCouponCard() {
+  const el     = document.getElementById('coupon-card-new');
+  const active = bonds.filter(isActive);
+
+  if (!active.length) {
+    el.innerHTML = `
+      <div class="coupon-main-row">
+        <div class="coupon-ring-wrap">
+          <svg class="coupon-ring-svg" viewBox="0 0 72 72">
+            <circle class="coupon-ring-bg" cx="36" cy="36" r="30"/>
+          </svg>
+          <div class="coupon-ring-center">
+            <div style="font-size:22px">🏷️</div>
+          </div>
+        </div>
+        <div class="coupon-content">
+          <div class="coupon-eyebrow">
+            <div class="coupon-ico-tag">🏷️</div>
+            <span class="coupon-label-text">Următorul cupon</span>
+          </div>
+          <div class="event-empty" style="padding:4px 0 0;text-align:left;">Nicio obligațiune activă.</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  let allNextPays = [];
+  active.forEach(b => {
+    const np = nextPay(b);
+    if (np) {
+      const matDate = new Date(b.mat + 'T00:00:00');
+      const isMat = np.getTime() === matDate.getTime();
+      allNextPays.push({ bond: b, date: np, amt: couponVal(b), isMat });
+    }
+  });
+  allNextPays.sort((a, b) => a.date - b.date);
+
+  if (!allNextPays.length) {
+    el.innerHTML = `<div class="coupon-main-row"><div class="coupon-content"><div class="event-empty">Nicio plată viitoare.</div></div></div>`;
+    return;
+  }
+
+  const earliest    = allNextPays[0].date.getTime();
+  const sameDay     = allNextPays.filter(p => p.date.getTime() === earliest);
+  const totalAmt    = sameDay.reduce((s, p) => s + p.amt, 0);
+  const dys         = daysDiff(allNextPays[0].date);
+  const names       = sameDay.map(p => esc(p.bond.name)).join(', ');
+  const hasMaturity = sameDay.some(p => p.isMat);
+  const matBonds    = sameDay.filter(p => p.isMat);
+  const totalReturn = matBonds.reduce((s, p) => s + p.bond.amt, 0);
+
+  // Ring circumference for r=30
+  const circumference = 2 * Math.PI * 30;
+  const maxDays = 180;
+  const pct = Math.max(0, Math.min(1, 1 - (dys / maxDays)));
+  const dashOffset = circumference * (1 - pct);
+
+  // Build maturity strip — rendered BELOW the main row, NOT inside it
+  const matStripHtml = hasMaturity ? `
+    <div class="coupon-mat-strip">
+      <span class="coupon-mat-strip-ico">🔔</span>
+      <span class="coupon-mat-strip-label">Maturitate inclusă</span>
+      <span class="coupon-mat-strip-return">
+        <span class="coupon-mat-strip-return-ico">↩</span>
+        ${fmt(totalReturn)}
+      </span>
+    </div>` : '';
+
+  el.innerHTML = `
+    <div class="coupon-main-row">
+      <div class="coupon-ring-wrap">
+        <svg class="coupon-ring-svg" viewBox="0 0 72 72">
+          <defs>
+            <linearGradient id="cg2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#f5e4a8"/>
+              <stop offset="100%" style="stop-color:#c9a84c"/>
+            </linearGradient>
+          </defs>
+          <circle class="coupon-ring-bg" cx="36" cy="36" r="30"/>
+          <circle class="coupon-ring-fill" cx="36" cy="36" r="30"
+            stroke="url(#cg2)"
+            stroke-dasharray="${circumference}"
+            stroke-dashoffset="${dashOffset}"
+          />
+        </svg>
+        <div class="coupon-ring-center">
+          <div class="coupon-ring-days">${dys}</div>
+          <div class="coupon-ring-lbl">zile</div>
+        </div>
+      </div>
+      <div class="coupon-content">
+        <div class="coupon-eyebrow">
+          <div class="coupon-ico-tag">🏷️</div>
+          <span class="coupon-label-text">Următorul cupon</span>
+        </div>
+        <div class="coupon-amount">${fmt(totalAmt)}</div>
+        <div class="coupon-from">${names}</div>
+        <div class="coupon-date-row">
+          <div class="coupon-date-dot"></div>
+          <span class="coupon-date-txt">${fmtD(allNextPays[0].date)}</span>
+        </div>
+      </div>
+    </div>
+    ${matStripHtml}`;
+}
+
+// ══════════════════════════════════════════════
+//  RENDER MATURITY CARD — minimal date line
+// ══════════════════════════════════════════════
+function renderMaturityCard() {
+  const el      = document.getElementById('maturity-card-new');
+  const active  = bonds.filter(isActive);
+  const expired = bonds.filter(isMatured);
+
+  // Expired badge top-right
+  let expiredBadgeHtml = '';
+  if (expired.length > 0) {
+    expiredBadgeHtml = `
+      <div class="mat-expired-wrap">
+        <div class="mat-expired-badge">
+          <span>⚠️</span>
+          <span>${expired.length} expirate</span>
+        </div>
+      </div>`;
+  }
+
+  if (!active.length) {
+    el.innerHTML = `
+      ${expiredBadgeHtml}
+      <div class="mat-icon-block">
+        <div class="mat-icon-inner">⏳</div>
+      </div>
+      <div class="mat-info">
+        <div class="mat-eyebrow">Prima la maturitate</div>
+        <div class="mat-bond-name" style="color:var(--muted);font-family:'Outfit',sans-serif;font-size:13px;">
+          ${expired.length > 0 ? 'Obligațiunile au expirat' : 'Nicio obligațiune activă'}
+        </div>
+      </div>`;
+    return;
+  }
+
+  const sorted  = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
+  const first   = sorted[0];
+  const matDate = new Date(first.mat + 'T00:00:00');
+  const dys     = daysDiff(matDate);
+
+  // Urgency palette
+  let urgencyColor  = 'rgba(224,112,112,0.9)';
+  let urgencyBg     = 'rgba(224,112,112,0.12)';
+  let urgencyBorder = 'rgba(224,112,112,0.22)';
+  let tickColor     = 'var(--red)';
+  if (dys > 180) {
+    urgencyColor  = 'rgba(236,232,222,0.50)';
+    urgencyBg     = 'rgba(255,255,255,0.04)';
+    urgencyBorder = 'rgba(255,255,255,0.08)';
+    tickColor     = 'rgba(236,232,222,0.35)';
+  } else if (dys > 60) {
+    urgencyColor  = 'var(--gold-l)';
+    urgencyBg     = 'rgba(201,168,76,0.08)';
+    urgencyBorder = 'rgba(201,168,76,0.20)';
+    tickColor     = 'var(--gold)';
+  }
+
+  el.innerHTML = `
+    ${expiredBadgeHtml}
+    <div class="mat-icon-block" style="background:${urgencyBg};border-color:${urgencyBorder};">
+      <div class="mat-icon-inner">⏳</div>
+    </div>
+    <div class="mat-days-block" style="border-color:${urgencyBorder};">
+      <div class="mat-days-num" style="color:${urgencyColor};">${dys}</div>
+      <div class="mat-days-lbl" style="color:${urgencyColor};opacity:.55;">ZILE</div>
+    </div>
+    <div class="mat-info">
+      <div class="mat-eyebrow">Prima la maturitate</div>
+      <div class="mat-bond-name">${esc(first.name)}</div>
+      <div class="mat-bond-meta">${fmt(first.amt)} · ${first.rate}%/an</div>
+      <div class="mat-date-line">
+        <div class="mat-date-tick" style="background:${tickColor};"></div>
+        <span class="mat-date-text" style="color:${urgencyColor};">${fmtD(matDate)}</span>
+      </div>
+    </div>`;
 }
 
 // ══════════════════════════════════════════════
@@ -1878,23 +2001,10 @@ function renderDash() {
   const pending = bonds.filter(isNotStarted);
   const expired = bonds.filter(isMatured);
 
-  // CHANGED: monthly includes active + pending (all non-matured)
   const monthly = bonds.filter(b => !isMatured(b)).reduce((s,b) => s + monthlyVal(b), 0);
   const goal    = effectiveGoal();
 
-  document.getElementById('s-active').textContent  = active.length;
-  document.getElementById('s-pending').textContent = pending.length;
-
-  // Update nav badge
   updateNavBadge();
-
-  const expiredBadge = document.getElementById('expired-badge');
-  if (expired.length > 0) {
-    document.getElementById('s-expired').textContent = expired.length;
-    expiredBadge.style.display = 'inline-flex';
-  } else {
-    expiredBadge.style.display = 'none';
-  }
 
   // Protecție row
   const gprDisplay = document.getElementById('gpr-val-display');
@@ -1959,50 +2069,11 @@ function renderDash() {
     }
   }
 
-  // Next coupon — only from active bonds (pending haven't started yet)
-  const nccEl = document.getElementById('ncc-body');
-  let allNextPays = [];
-  active.forEach(b => {
-    const np = nextPay(b);
-    if (np) allNextPays.push({ bond:b, date:np, amt:couponVal(b) });
-  });
-  allNextPays.sort((a,b) => a.date - b.date);
-  if (!allNextPays.length) {
-    nccEl.innerHTML = '<div class="ncc-empty">Nicio plată viitoare de la obligațiunile active.</div>';
-  } else {
-    const earliest = allNextPays[0].date.getTime();
-    const sameDay  = allNextPays.filter(p => p.date.getTime() === earliest);
-    const totalAmt = sameDay.reduce((s,p) => s + p.amt, 0);
-    const dys      = daysDiff(allNextPays[0].date);
-    const names    = sameDay.map(p => esc(p.bond.name)).join(', ');
-    nccEl.innerHTML = `
-      <div class="ncc-body">
-        <div><div class="ncc-days">${dys}</div><div class="ncc-days-lbl">ZILE RĂMASE</div></div>
-        <div class="ncc-right">
-          <div class="ncc-amt">${fmt(totalAmt)}</div>
-          <div class="ncc-from">${names}</div>
-        </div>
-      </div>
-      <div class="ncc-date" style="margin-top:10px;font-size:11px;color:rgba(201,168,76,.5);">📅 ${fmtD(allNextPays[0].date)}</div>`;
-  }
+  // New cards
+  renderCouponCard();
+  renderMaturityCard();
 
-  // Maturity
-  const mnEl = document.getElementById('mn-body');
-  const activeSorted = [...active].sort((a,b) => new Date(a.mat) - new Date(b.mat));
-  if (!activeSorted.length) {
-    mnEl.innerHTML = '<div class="mn-empty">Nicio obligațiune activă.</div>';
-  } else {
-    const first   = activeSorted[0];
-    const matDate = new Date(first.mat + 'T00:00:00');
-    const dys     = daysDiff(matDate);
-    mnEl.innerHTML = `
-      <div class="mn-body">
-        <div><div class="mn-name">${esc(first.name)}</div><div class="mn-sub">${fmt(first.amt)} · ${first.rate}%/an</div></div>
-        <div class="mn-right"><div class="mn-days">${dys}</div><div class="mn-daysl">ZILE RĂMASE</div><div class="mn-date">${fmtD(matDate)}</div></div>
-      </div>`;
-  }
-
-  // Luna aceasta
+  // ── Luna aceasta ──
   const now = new Date(); const cy = now.getFullYear(); const cm = now.getMonth();
   let pays = [];
   bonds.forEach(b => {
@@ -2016,35 +2087,46 @@ function renderDash() {
   document.getElementById('mc-badge').textContent = pays.length + ' plăți';
   document.getElementById('mc-total').textContent = fmt(mTotal);
   document.getElementById('mc-month').textContent = monthName(now);
+
   const bd = document.getElementById('mc-breakdown');
   if (!pays.length) {
     bd.innerHTML = '<div class="small" style="margin-top:4px;padding-top:10px;border-top:1px solid rgba(255,255,255,.06);">Nicio plată în această lună.</div>';
   } else {
-    bd.innerHTML = '<div style="border-top:1px solid rgba(78,205,164,.15);margin-top:2px;padding-top:8px;">' +
-      pays.map(p=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;">
-        <div><div style="font-size:12px;color:var(--text);">${esc(p.bond)}</div><div style="font-size:10px;color:rgba(78,205,164,.55);">${fmtD(p.date)}</div></div>
-        <div style="font-size:13px;font-weight:600;color:var(--green);">${fmt(p.amt)}</div>
-      </div>`).join('') + '</div>';
+    const todayMs = today0().getTime();
+    const rows = pays.map(p => {
+      const payDateMs = new Date(p.date).setHours(0,0,0,0);
+      const isPaid = payDateMs < todayMs;
+      const circleClass = isPaid ? 'paid' : 'pending';
+      return `
+        <div class="mc-pay-row">
+          <div class="mc-pay-left">
+            <div class="mc-status-circle ${circleClass}"></div>
+            <div>
+              <div class="mc-pay-name">${esc(p.bond)}</div>
+              <div class="mc-pay-date">${fmtD(p.date)}</div>
+            </div>
+          </div>
+          <div class="mc-pay-amt">${fmt(p.amt)}</div>
+        </div>`;
+    }).join('<div class="mc-pay-divider"></div>');
+    bd.innerHTML = `<div style="border-top:1px solid rgba(78,205,164,.15);margin-top:2px;padding-top:4px;">${rows}</div>`;
   }
 
   calculateSurvival();
 }
 
 // ══════════════════════════════════════════════
-//  BONDS SUMMARY BAR — CHANGED: includes pending, only 2 metrics
+//  BONDS SUMMARY BAR
 // ══════════════════════════════════════════════
 function renderBondsSummary() {
-  // Include active + pending (all non-matured)
   const relevant   = bonds.filter(b => !isMatured(b));
   const totalAmt   = relevant.reduce((s,b) => s + b.amt, 0);
   const totalCount = relevant.length;
   const monthlyAll = relevant.reduce((s,b) => s + monthlyVal(b), 0);
   const yearlyAll  = monthlyAll * 12;
-
   const bar = document.getElementById('bonds-summary-bar');
   if (totalCount === 0) { bar.style.display = 'none'; return; }
   bar.style.display = '';
-
   document.getElementById('bsb-total').textContent   = fmt(totalAmt);
   document.getElementById('bsb-count').textContent   = `${totalCount} obligațiun${totalCount===1?'e':'i'}`;
   document.getElementById('bsb-monthly').textContent = fmt(monthlyAll);
@@ -2062,9 +2144,7 @@ function filterBonds() {
   const countEl    = document.getElementById('search-count');
   const addBtn     = document.getElementById('bonds-add-btn-wrap');
   const summaryBar = document.getElementById('bonds-summary-bar');
-
   clearBtn.classList.toggle('vis', searchQuery.length > 0);
-
   if (searchQuery.length > 0) {
     addBtn.classList.add('search-hidden');
     summaryBar.classList.add('search-hidden');
@@ -2074,7 +2154,6 @@ function filterBonds() {
     summaryBar.classList.remove('search-hidden');
     countEl.style.display = 'none';
   }
-
   renderBondsList();
 }
 
@@ -2095,13 +2174,11 @@ function renderBonds() {
 function renderBondsList() {
   const el      = document.getElementById('bonds-list');
   const countEl = document.getElementById('search-count');
-
   if (!bonds.length) {
     el.innerHTML = '<div class="empty"><div class="empty-ico">📄</div><p>Nicio obligațiune adăugată.<br>Apasă butonul de mai sus.</p></div>';
     countEl.style.display = 'none';
     return;
   }
-
   let filtered = sortedBonds();
   if (searchQuery) {
     filtered = filtered.filter(b => b.name.toLowerCase().includes(searchQuery));
@@ -2114,12 +2191,10 @@ function renderBondsList() {
   } else {
     countEl.style.display = 'none';
   }
-
   if (!filtered.length) {
     el.innerHTML = `<div class="empty"><div class="empty-ico">🔍</div><p>Nicio obligațiune găsită.<br>Încearcă alt termen de căutare.</p></div>`;
     return;
   }
-
   el.innerHTML = filtered.map(b => bondCard(b, bonds.indexOf(b))).join('');
 }
 
@@ -2230,7 +2305,6 @@ function renderPayments() {
       <div class="pay-month-totals-block">
         <div class="pay-month-total">${fmt(mData.couponTotal)}</div>
         <div class="pay-month-total-lbl">CÂȘTIG CUPOANE</div>`;
-
     if (mData.returnedTotal > 0) {
       totalsHtml += `
         <div class="pay-month-returned">
@@ -2327,9 +2401,7 @@ function toggleForm() {
       w.scrollIntoView({behavior:'smooth',block:'start'});
       setTimeout(()=>document.getElementById('f-rate').focus(), 120);
     },60);
-  } else {
-    w.classList.remove('open');
-  }
+  } else { w.classList.remove('open'); }
 }
 function cancelForm() { formOpen=false; document.getElementById('formwrap').classList.remove('open'); clearForm(); }
 function clearForm() {
@@ -2342,47 +2414,28 @@ function clearForm() {
 function importDateFormat(str) {
   if (!str) return '';
   const parti = str.split('-');
-  if (parti.length === 3 && parti[2].length === 4) {
-    return `${parti[2]}-${parti[1]}-${parti[0]}`;
-  }
+  if (parti.length === 3 && parti[2].length === 4) return `${parti[2]}-${parti[1]}-${parti[0]}`;
   return str;
 }
 
 function exportDateFormat(str) {
   if (!str) return '';
   const parti = str.split('-');
-  if (parti.length === 3 && parti[0].length === 4) {
-    return `${parti[2]}-${parti[1]}-${parti[0]}`;
-  }
+  if (parti.length === 3 && parti[0].length === 4) return `${parti[2]}-${parti[1]}-${parti[0]}`;
   return str;
 }
 
 function formatDateInput(input) {
   let raw = input.value.replace(/\D/g, '');
   if (raw.length > 8) raw = raw.slice(0, 8);
-
   let day   = raw.slice(0, 2);
   let month = raw.slice(2, 4);
   let year  = raw.slice(4, 8);
-
-  if (day.length === 2) {
-    let d = parseInt(day, 10);
-    if (d > 31) d = 31;
-    if (d < 1 && raw.length >= 2) d = 1;
-    day = String(d).padStart(2, '0');
-  }
-
-  if (month.length === 2) {
-    let m = parseInt(month, 10);
-    if (m > 12) m = 12;
-    if (m < 1 && raw.length >= 4) m = 1;
-    month = String(m).padStart(2, '0');
-  }
-
+  if (day.length === 2) { let d = parseInt(day, 10); if (d > 31) d = 31; if (d < 1 && raw.length >= 2) d = 1; day = String(d).padStart(2, '0'); }
+  if (month.length === 2) { let m = parseInt(month, 10); if (m > 12) m = 12; if (m < 1 && raw.length >= 4) m = 1; month = String(m).padStart(2, '0'); }
   let result = day;
   if (raw.length > 2) result += '-' + month;
   if (raw.length > 4) result += '-' + year;
-
   input.value = result;
 }
 
@@ -2403,7 +2456,6 @@ async function saveBond() {
   if (new Date(mat) <= new Date(start)) { document.getElementById('f-mat').focus(); toast('Maturitatea trebuie să fie după data de start'); return; }
 
   const bond = { id: eid || Date.now().toString(), name, start, mat, amt, rate, freq };
-
   if (eid) {
     const idx = bonds.findIndex(b => b.id === eid);
     if (idx !== -1) bonds[idx] = bond;
@@ -2422,16 +2474,10 @@ async function saveBond() {
 function focusFirstEmpty() {
   for (const id of FORM_ORDER) {
     const el = document.getElementById(id);
-    if (el && !el.value.trim()) {
-      el.focus();
-      return;
-    }
+    if (el && !el.value.trim()) { el.focus(); return; }
   }
 }
 
-// ══════════════════════════════════════════════
-//  EDIT
-// ══════════════════════════════════════════════
 function editBond(i) {
   const b = bonds[i];
   document.getElementById('eid').value      = b.id;
@@ -2448,9 +2494,6 @@ function editBond(i) {
   setTimeout(()=>document.getElementById('formwrap').scrollIntoView({behavior:'smooth',block:'start'}),60);
 }
 
-// ══════════════════════════════════════════════
-//  DELETE
-// ══════════════════════════════════════════════
 function confirmDel(i) {
   const b = bonds[i];
   document.getElementById('ov-ttl').textContent = 'Șterge obligațiunea';
@@ -2470,9 +2513,6 @@ function confirmDel(i) {
 
 function closeOv() { document.getElementById('overlay').classList.remove('open'); }
 
-// ══════════════════════════════════════════════
-//  TOAST
-// ══════════════════════════════════════════════
 function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
